@@ -1,7 +1,0 @@
-C:\Users\chris\GitReps\CS\ihk-project\bin\Debug\Service\SM.Service.exe.config
-C:\Users\chris\GitReps\CS\ihk-project\bin\Debug\Service\SM.Service.exe
-C:\Users\chris\GitReps\CS\ihk-project\bin\Debug\Service\SM.Service.pdb
-C:\Users\chris\GitReps\CS\ihk-project\src\Service\SM.Service\obj\Debug\SM.Service.csprojAssemblyReference.cache
-C:\Users\chris\GitReps\CS\ihk-project\src\Service\SM.Service\obj\Debug\SM.Service.csproj.CoreCompileInputs.cache
-C:\Users\chris\GitReps\CS\ihk-project\src\Service\SM.Service\obj\Debug\SM.Service.exe
-C:\Users\chris\GitReps\CS\ihk-project\src\Service\SM.Service\obj\Debug\SM.Service.pdb

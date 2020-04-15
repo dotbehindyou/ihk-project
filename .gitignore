@@ -1,1 +1,5 @@
-/.vs
+.vs
+bin
+/src/API/SM.API
+/src/API/SM.API/bin
+/src/Service/SM.Service/bin
