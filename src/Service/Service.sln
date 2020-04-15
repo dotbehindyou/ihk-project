@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30002.166
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SM.Service", "SM.Service\SM.Service.csproj", "{2F95DDD1-BF11-469C-8827-F96D03554078}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SM.UI", "..\UI\SM.UI\SM.UI.csproj", "{FD32D7C7-87DD-4109-9E1C-060EFBD608F7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SM.API", "..\API\SM.API\SM.API.csproj", "{449559AD-491E-485A-97CC-129BC39CB696}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2F95DDD1-BF11-469C-8827-F96D03554078}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F95DDD1-BF11-469C-8827-F96D03554078}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F95DDD1-BF11-469C-8827-F96D03554078}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F95DDD1-BF11-469C-8827-F96D03554078}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD32D7C7-87DD-4109-9E1C-060EFBD608F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD32D7C7-87DD-4109-9E1C-060EFBD608F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD32D7C7-87DD-4109-9E1C-060EFBD608F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD32D7C7-87DD-4109-9E1C-060EFBD608F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{449559AD-491E-485A-97CC-129BC39CB696}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{449559AD-491E-485A-97CC-129BC39CB696}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{449559AD-491E-485A-97CC-129BC39CB696}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{449559AD-491E-485A-97CC-129BC39CB696}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E439F0F1-7CD7-44A7-9A68-64FEF0FB6D98}
+	EndGlobalSection
+EndGlobal
