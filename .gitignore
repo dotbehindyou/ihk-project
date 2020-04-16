@@ -3,3 +3,5 @@ bin
 /src/API/SM.API
 /src/API/SM.API/bin
 /src/Service/SM.Service/bin
+/src/SM.API/obj
+/src/SM.Service/obj
