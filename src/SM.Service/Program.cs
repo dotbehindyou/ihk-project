@@ -10,6 +10,7 @@ namespace SM.Service
     {
         static void Main(string[] args)
         {
+            Console.Read();
         }
     }
 }

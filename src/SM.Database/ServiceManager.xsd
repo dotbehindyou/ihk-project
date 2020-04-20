@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ServiceManager" targetNamespace="http://tempuri.org/ServiceManager.xsd" xmlns:mstns="http://tempuri.org/ServiceManager.xsd" xmlns="http://tempuri.org/ServiceManager.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="ServiceManager" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="ServiceManager" msprop:Generator_UserDSName="ServiceManager">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="SM_Modules" msprop:Generator_TableClassName="SM_ModulesDataTable" msprop:Generator_TableVarName="tableSM_Modules" msprop:Generator_TablePropName="SM_Modules" msprop:Generator_RowDeletingName="SM_ModulesRowDeleting" msprop:Generator_RowChangingName="SM_ModulesRowChanging" msprop:Generator_RowEvHandlerName="SM_ModulesRowChangeEventHandler" msprop:Generator_RowDeletedName="SM_ModulesRowDeleted" msprop:Generator_UserTableName="SM_Modules" msprop:Generator_RowChangedName="SM_ModulesRowChanged" msprop:Generator_RowEvArgName="SM_ModulesRowChangeEvent" msprop:Generator_RowClassName="SM_ModulesRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ID" msprop:Generator_ColumnVarNameInTable="columnID" msprop:Generator_ColumnPropNameInRow="ID" msprop:Generator_ColumnPropNameInTable="IDColumn" msprop:Generator_UserColumnName="ID" type="xs:string" />
+              <xs:element name="Name" msprop:Generator_ColumnVarNameInTable="columnName" msprop:Generator_ColumnPropNameInRow="Name" msprop:Generator_ColumnPropNameInTable="NameColumn" msprop:Generator_UserColumnName="Name" type="xs:string" minOccurs="0" />
+              <xs:element name="Created" msprop:Generator_ColumnVarNameInTable="columnCreated" msprop:Generator_ColumnPropNameInRow="Created" msprop:Generator_ColumnPropNameInTable="CreatedColumn" msprop:Generator_UserColumnName="Created" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="SM_Modules_Version" msprop:Generator_TableClassName="SM_Modules_VersionDataTable" msprop:Generator_TableVarName="tableSM_Modules_Version" msprop:Generator_TablePropName="SM_Modules_Version" msprop:Generator_RowDeletingName="SM_Modules_VersionRowDeleting" msprop:Generator_RowChangingName="SM_Modules_VersionRowChanging" msprop:Generator_RowEvHandlerName="SM_Modules_VersionRowChangeEventHandler" msprop:Generator_RowDeletedName="SM_Modules_VersionRowDeleted" msprop:Generator_UserTableName="SM_Modules_Version" msprop:Generator_RowChangedName="SM_Modules_VersionRowChanged" msprop:Generator_RowEvArgName="SM_Modules_VersionRowChangeEvent" msprop:Generator_RowClassName="SM_Modules_VersionRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Module_ID" msprop:Generator_ColumnVarNameInTable="columnModule_ID" msprop:Generator_ColumnPropNameInRow="Module_ID" msprop:Generator_ColumnPropNameInTable="Module_IDColumn" msprop:Generator_UserColumnName="Module_ID" type="xs:string" />
+              <xs:element name="Version" msprop:Generator_ColumnVarNameInTable="columnVersion" msprop:Generator_ColumnPropNameInRow="Version" msprop:Generator_ColumnPropNameInTable="VersionColumn" msprop:Generator_UserColumnName="Version" type="xs:string" />
+              <xs:element name="Token" msprop:Generator_ColumnVarNameInTable="columnToken" msprop:Generator_ColumnPropNameInRow="Token" msprop:Generator_ColumnPropNameInTable="TokenColumn" msprop:Generator_UserColumnName="Token" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:SM_Modules" />
+      <xs:field xpath="mstns:ID" />
+    </xs:unique>
+    <xs:unique name="Modules_VersionKey1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:SM_Modules_Version" />
+      <xs:field xpath="mstns:Module_ID" />
+      <xs:field xpath="mstns:Version" />
+    </xs:unique>
+  </xs:element>
+  <xs:annotation>
+    <xs:appinfo>
+      <msdata:Relationship name="Modules_Modules_Version" msdata:parent="SM_Modules" msdata:child="SM_Modules_Version" msdata:parentkey="ID" msdata:childkey="Module_ID" msprop:Generator_UserChildTable="SM_Modules_Version" msprop:Generator_ChildPropName="GetSM_Modules_VersionRows" msprop:Generator_UserRelationName="Modules_Modules_Version" msprop:Generator_ParentPropName="SM_ModulesRow" msprop:Generator_RelationVarName="relationModules_Modules_Version" msprop:Generator_UserParentTable="SM_Modules" />
+    </xs:appinfo>
+  </xs:annotation>
+</xs:schema>
