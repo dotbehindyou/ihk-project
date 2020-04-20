@@ -28,7 +28,11 @@ namespace SM.Database {
         
         private SM_Modules_VersionDataTable tableSM_Modules_Version;
         
+        private SM_Modules_ConfigDataTable tableSM_Modules_Config;
+        
         private global::System.Data.DataRelation relationModules_Modules_Version;
+        
+        private global::System.Data.DataRelation relationSM_Modules_Config_SM_Modules_Version;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
@@ -63,6 +67,9 @@ namespace SM.Database {
                 }
                 if ((ds.Tables["SM_Modules_Version"] != null)) {
                     base.Tables.Add(new SM_Modules_VersionDataTable(ds.Tables["SM_Modules_Version"]));
+                }
+                if ((ds.Tables["SM_Modules_Config"] != null)) {
+                    base.Tables.Add(new SM_Modules_ConfigDataTable(ds.Tables["SM_Modules_Config"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -99,6 +106,16 @@ namespace SM.Database {
         public SM_Modules_VersionDataTable SM_Modules_Version {
             get {
                 return this.tableSM_Modules_Version;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public SM_Modules_ConfigDataTable SM_Modules_Config {
+            get {
+                return this.tableSM_Modules_Config;
             }
         }
         
@@ -175,6 +192,9 @@ namespace SM.Database {
                 if ((ds.Tables["SM_Modules_Version"] != null)) {
                     base.Tables.Add(new SM_Modules_VersionDataTable(ds.Tables["SM_Modules_Version"]));
                 }
+                if ((ds.Tables["SM_Modules_Config"] != null)) {
+                    base.Tables.Add(new SM_Modules_ConfigDataTable(ds.Tables["SM_Modules_Config"]));
+                }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
                 this.Namespace = ds.Namespace;
@@ -220,7 +240,14 @@ namespace SM.Database {
                     this.tableSM_Modules_Version.InitVars();
                 }
             }
+            this.tableSM_Modules_Config = ((SM_Modules_ConfigDataTable)(base.Tables["SM_Modules_Config"]));
+            if ((initTable == true)) {
+                if ((this.tableSM_Modules_Config != null)) {
+                    this.tableSM_Modules_Config.InitVars();
+                }
+            }
             this.relationModules_Modules_Version = this.Relations["Modules_Modules_Version"];
+            this.relationSM_Modules_Config_SM_Modules_Version = this.Relations["SM_Modules_Config_SM_Modules_Version"];
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -235,10 +262,16 @@ namespace SM.Database {
             base.Tables.Add(this.tableSM_Modules);
             this.tableSM_Modules_Version = new SM_Modules_VersionDataTable();
             base.Tables.Add(this.tableSM_Modules_Version);
+            this.tableSM_Modules_Config = new SM_Modules_ConfigDataTable();
+            base.Tables.Add(this.tableSM_Modules_Config);
             this.relationModules_Modules_Version = new global::System.Data.DataRelation("Modules_Modules_Version", new global::System.Data.DataColumn[] {
                         this.tableSM_Modules.IDColumn}, new global::System.Data.DataColumn[] {
                         this.tableSM_Modules_Version.Module_IDColumn}, false);
             this.Relations.Add(this.relationModules_Modules_Version);
+            this.relationSM_Modules_Config_SM_Modules_Version = new global::System.Data.DataRelation("SM_Modules_Config_SM_Modules_Version", new global::System.Data.DataColumn[] {
+                        this.tableSM_Modules_Config.IDColumn}, new global::System.Data.DataColumn[] {
+                        this.tableSM_Modules_Version.Config_IDColumn}, false);
+            this.Relations.Add(this.relationSM_Modules_Config_SM_Modules_Version);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -250,6 +283,12 @@ namespace SM.Database {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         private bool ShouldSerializeSM_Modules_Version() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+        private bool ShouldSerializeSM_Modules_Config() {
             return false;
         }
         
@@ -313,6 +352,9 @@ namespace SM.Database {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         public delegate void SM_Modules_VersionRowChangeEventHandler(object sender, SM_Modules_VersionRowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+        public delegate void SM_Modules_ConfigRowChangeEventHandler(object sender, SM_Modules_ConfigRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
@@ -613,6 +655,10 @@ namespace SM.Database {
             
             private global::System.Data.DataColumn columnToken;
             
+            private global::System.Data.DataColumn columnCreated;
+            
+            private global::System.Data.DataColumn columnConfig_ID;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public SM_Modules_VersionDataTable() {
@@ -672,6 +718,22 @@ namespace SM.Database {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn CreatedColumn {
+                get {
+                    return this.columnCreated;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn Config_IDColumn {
+                get {
+                    return this.columnConfig_ID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -707,14 +769,19 @@ namespace SM.Database {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public SM_Modules_VersionRow AddSM_Modules_VersionRow(SM_ModulesRow parentSM_ModulesRowByModules_Modules_Version, string Version, string Token) {
+            public SM_Modules_VersionRow AddSM_Modules_VersionRow(SM_ModulesRow parentSM_ModulesRowByModules_Modules_Version, string Version, string Token, string Created, SM_Modules_ConfigRow parentSM_Modules_ConfigRowBySM_Modules_Config_SM_Modules_Version) {
                 SM_Modules_VersionRow rowSM_Modules_VersionRow = ((SM_Modules_VersionRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
                         Version,
-                        Token};
+                        Token,
+                        Created,
+                        null};
                 if ((parentSM_ModulesRowByModules_Modules_Version != null)) {
                     columnValuesArray[0] = parentSM_ModulesRowByModules_Modules_Version[0];
+                }
+                if ((parentSM_Modules_ConfigRowBySM_Modules_Config_SM_Modules_Version != null)) {
+                    columnValuesArray[4] = parentSM_Modules_ConfigRowBySM_Modules_Config_SM_Modules_Version[0];
                 }
                 rowSM_Modules_VersionRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowSM_Modules_VersionRow);
@@ -749,6 +816,8 @@ namespace SM.Database {
                 this.columnModule_ID = base.Columns["Module_ID"];
                 this.columnVersion = base.Columns["Version"];
                 this.columnToken = base.Columns["Token"];
+                this.columnCreated = base.Columns["Created"];
+                this.columnConfig_ID = base.Columns["Config_ID"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -760,11 +829,18 @@ namespace SM.Database {
                 base.Columns.Add(this.columnVersion);
                 this.columnToken = new global::System.Data.DataColumn("Token", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnToken);
+                this.columnCreated = new global::System.Data.DataColumn("Created", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCreated);
+                this.columnConfig_ID = new global::System.Data.DataColumn("Config_ID", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnConfig_ID);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Modules_VersionKey1", new global::System.Data.DataColumn[] {
                                 this.columnModule_ID,
                                 this.columnVersion}, true));
+                this.Constraints.Add(new global::System.Data.UniqueConstraint("SM_Modules_VersionKey1", new global::System.Data.DataColumn[] {
+                                this.columnConfig_ID}, false));
                 this.columnModule_ID.AllowDBNull = false;
                 this.columnVersion.AllowDBNull = false;
+                this.columnConfig_ID.Unique = true;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -851,6 +927,298 @@ namespace SM.Database {
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
                 attribute2.FixedValue = "SM_Modules_VersionDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class SM_Modules_ConfigDataTable : global::System.Data.TypedTableBase<SM_Modules_ConfigRow> {
+            
+            private global::System.Data.DataColumn columnID;
+            
+            private global::System.Data.DataColumn columnData;
+            
+            private global::System.Data.DataColumn columnFileName;
+            
+            private global::System.Data.DataColumn columnFormat;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public SM_Modules_ConfigDataTable() {
+                this.TableName = "SM_Modules_Config";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            internal SM_Modules_ConfigDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected SM_Modules_ConfigDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn IDColumn {
+                get {
+                    return this.columnID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn DataColumn {
+                get {
+                    return this.columnData;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn FileNameColumn {
+                get {
+                    return this.columnFileName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn FormatColumn {
+                get {
+                    return this.columnFormat;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public SM_Modules_ConfigRow this[int index] {
+                get {
+                    return ((SM_Modules_ConfigRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public event SM_Modules_ConfigRowChangeEventHandler SM_Modules_ConfigRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public event SM_Modules_ConfigRowChangeEventHandler SM_Modules_ConfigRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public event SM_Modules_ConfigRowChangeEventHandler SM_Modules_ConfigRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public event SM_Modules_ConfigRowChangeEventHandler SM_Modules_ConfigRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void AddSM_Modules_ConfigRow(SM_Modules_ConfigRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public SM_Modules_ConfigRow AddSM_Modules_ConfigRow(string ID, string Data, string FileName, string Format) {
+                SM_Modules_ConfigRow rowSM_Modules_ConfigRow = ((SM_Modules_ConfigRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        ID,
+                        Data,
+                        FileName,
+                        Format};
+                rowSM_Modules_ConfigRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowSM_Modules_ConfigRow);
+                return rowSM_Modules_ConfigRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                SM_Modules_ConfigDataTable cln = ((SM_Modules_ConfigDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new SM_Modules_ConfigDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            internal void InitVars() {
+                this.columnID = base.Columns["ID"];
+                this.columnData = base.Columns["Data"];
+                this.columnFileName = base.Columns["FileName"];
+                this.columnFormat = base.Columns["Format"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            private void InitClass() {
+                this.columnID = new global::System.Data.DataColumn("ID", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnID);
+                this.columnData = new global::System.Data.DataColumn("Data", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnData);
+                this.columnFileName = new global::System.Data.DataColumn("FileName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnFileName);
+                this.columnFormat = new global::System.Data.DataColumn("Format", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnFormat);
+                this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
+                                this.columnID}, false));
+                this.columnID.Unique = true;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public SM_Modules_ConfigRow NewSM_Modules_ConfigRow() {
+                return ((SM_Modules_ConfigRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new SM_Modules_ConfigRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(SM_Modules_ConfigRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.SM_Modules_ConfigRowChanged != null)) {
+                    this.SM_Modules_ConfigRowChanged(this, new SM_Modules_ConfigRowChangeEvent(((SM_Modules_ConfigRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.SM_Modules_ConfigRowChanging != null)) {
+                    this.SM_Modules_ConfigRowChanging(this, new SM_Modules_ConfigRowChangeEvent(((SM_Modules_ConfigRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.SM_Modules_ConfigRowDeleted != null)) {
+                    this.SM_Modules_ConfigRowDeleted(this, new SM_Modules_ConfigRowChangeEvent(((SM_Modules_ConfigRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.SM_Modules_ConfigRowDeleting != null)) {
+                    this.SM_Modules_ConfigRowDeleting(this, new SM_Modules_ConfigRowChangeEvent(((SM_Modules_ConfigRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void RemoveSM_Modules_ConfigRow(SM_Modules_ConfigRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                ServiceManager ds = new ServiceManager();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "SM_Modules_ConfigDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -1038,12 +1406,55 @@ namespace SM.Database {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string Created {
+                get {
+                    try {
+                        return ((string)(this[this.tableSM_Modules_Version.CreatedColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Der Wert für Spalte Created in Tabelle SM_Modules_Version ist DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSM_Modules_Version.CreatedColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string Config_ID {
+                get {
+                    try {
+                        return ((string)(this[this.tableSM_Modules_Version.Config_IDColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Der Wert für Spalte Config_ID in Tabelle SM_Modules_Version ist DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSM_Modules_Version.Config_IDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public SM_ModulesRow SM_ModulesRow {
                 get {
                     return ((SM_ModulesRow)(this.GetParentRow(this.Table.ParentRelations["Modules_Modules_Version"])));
                 }
                 set {
                     this.SetParentRow(value, this.Table.ParentRelations["Modules_Modules_Version"]);
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public SM_Modules_ConfigRow SM_Modules_ConfigRow {
+                get {
+                    return ((SM_Modules_ConfigRow)(this.GetParentRow(this.Table.ParentRelations["SM_Modules_Config_SM_Modules_Version"])));
+                }
+                set {
+                    this.SetParentRow(value, this.Table.ParentRelations["SM_Modules_Config_SM_Modules_Version"]);
                 }
             }
             
@@ -1057,6 +1468,168 @@ namespace SM.Database {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetTokenNull() {
                 this[this.tableSM_Modules_Version.TokenColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsCreatedNull() {
+                return this.IsNull(this.tableSM_Modules_Version.CreatedColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetCreatedNull() {
+                this[this.tableSM_Modules_Version.CreatedColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsConfig_IDNull() {
+                return this.IsNull(this.tableSM_Modules_Version.Config_IDColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetConfig_IDNull() {
+                this[this.tableSM_Modules_Version.Config_IDColumn] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class SM_Modules_ConfigRow : global::System.Data.DataRow {
+            
+            private SM_Modules_ConfigDataTable tableSM_Modules_Config;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            internal SM_Modules_ConfigRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableSM_Modules_Config = ((SM_Modules_ConfigDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string ID {
+                get {
+                    try {
+                        return ((string)(this[this.tableSM_Modules_Config.IDColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Der Wert für Spalte ID in Tabelle SM_Modules_Config ist DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSM_Modules_Config.IDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string Data {
+                get {
+                    try {
+                        return ((string)(this[this.tableSM_Modules_Config.DataColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Der Wert für Spalte Data in Tabelle SM_Modules_Config ist DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSM_Modules_Config.DataColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string FileName {
+                get {
+                    try {
+                        return ((string)(this[this.tableSM_Modules_Config.FileNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Der Wert für Spalte FileName in Tabelle SM_Modules_Config ist DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSM_Modules_Config.FileNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string Format {
+                get {
+                    try {
+                        return ((string)(this[this.tableSM_Modules_Config.FormatColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Der Wert für Spalte Format in Tabelle SM_Modules_Config ist DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSM_Modules_Config.FormatColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsIDNull() {
+                return this.IsNull(this.tableSM_Modules_Config.IDColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetIDNull() {
+                this[this.tableSM_Modules_Config.IDColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsDataNull() {
+                return this.IsNull(this.tableSM_Modules_Config.DataColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetDataNull() {
+                this[this.tableSM_Modules_Config.DataColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsFileNameNull() {
+                return this.IsNull(this.tableSM_Modules_Config.FileNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetFileNameNull() {
+                this[this.tableSM_Modules_Config.FileNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsFormatNull() {
+                return this.IsNull(this.tableSM_Modules_Config.FormatColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetFormatNull() {
+                this[this.tableSM_Modules_Config.FormatColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public SM_Modules_VersionRow[] GetSM_Modules_VersionRows() {
+                if ((this.Table.ChildRelations["SM_Modules_Config_SM_Modules_Version"] == null)) {
+                    return new SM_Modules_VersionRow[0];
+                }
+                else {
+                    return ((SM_Modules_VersionRow[])(base.GetChildRows(this.Table.ChildRelations["SM_Modules_Config_SM_Modules_Version"])));
+                }
             }
         }
         
@@ -1114,6 +1687,40 @@ namespace SM.Database {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public SM_Modules_VersionRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+        public class SM_Modules_ConfigRowChangeEvent : global::System.EventArgs {
+            
+            private SM_Modules_ConfigRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public SM_Modules_ConfigRowChangeEvent(SM_Modules_ConfigRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public SM_Modules_ConfigRow Row {
                 get {
                     return this.eventRow;
                 }

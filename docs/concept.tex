@@ -1,10 +1,18 @@
 \documentclass{article}
 
 \usepackage[utf8]{inputenc}
-
+\usepackage[
+  %showframe,% Seitenlayout anzeigen
+  left=2cm,
+  right=2cm,
+  top=2cm,
+  bottom=2cm,
+  %includeheadfoot
+]{geometry}
 \usepackage{graphicx}
 \usepackage{minted}
 \usepackage[obeyspaces]{url}
+\usepackage{hyperref}
 
 \selectfont
 
@@ -13,6 +21,8 @@
 \date{April 2020}
 
 \renewcommand*\contentsname{Inhalt}
+
+\setlength{\parindent}{0em}
 
 \graphicspath{ {./img/} }
 
@@ -27,25 +37,46 @@
 
 Die Module sind in einer Datenbank-Tabelle hinterlegt. 
 Die einzelnen Versionen sind in einer extra Tabelle hinterlegt.
-
+\begin{center}
 \includegraphics{db_modules}
+\end{center}
 
-\textbf{Modul-Tabelle}
+\subsubsection{SM\_Modules}
 
-\textbf{Versions-Tabelle}
+Hier sind alle Module, die über SM Installiert werden können, hinterlegt.
 
-Ein Satz besteht aus einer ID, Modul, Version, ein Datum wann es hinzugefügt wurde.
-Jede Version bekommt einen eigenen Satz, jede Version bleibt erhalten.
 \begin{itemize}
-  \item \textbf{ID} ist pro Satz eindeutig besteht aus einer GUID.
-  \item \textbf{Modul} zu welchem Modul diese Version zugehört. Es ist eine GUID die zur Modul-Tabelle verknüpft ist.
-  \item \textbf{Version} welche Version es ist.
+  \item \textbf{ID} ist GUID für jedes Modul.
+  \item \textbf{Name} ist ein String/Varchar der den Name des Modul beinhaltet.
+  \item \textbf{Created} ist ein DateTime/TimeStamp der wiedergibt wann dieser Satz erstellt wurde. 
 \end{itemize}
-Die Anwendungen werden in einem bestimmten Verzeichnis aufbewahrt. Die Anwendungen werden pro Version abgelegt.
-Bsp.: 
-\path{/Anwendungen/MailInterface/1.14.1.zip}
+
+\subsubsection{SM\_Modules\_Versions}
+
+Alle Versionen pro Moduls, sind hier hinterlegt.
+
+\begin{itemize}
+  \item \textbf{Module\_ID} hier wird die ID vom Modul hinterlegt, um die Version mit dem Modul zu verknüpfen. Es ist eine "1-zu-n"-Verknüpfung.
+  \item \textbf{Version} die aktuelle Version als String/Varchar. Diese ist der Primärschlüssel der Tabelle.
+  \item \textbf{Token} zum abgleichen für den Service, ob eine Änderung durchgeführt wurde.
+  \item \textbf{Created} wann wurde diese Version hinzugefügt.
+  \item \textbf{Config\_ID} für die Version dazugehörige Konfigurationsdatei. Diese ist mit der SM\_Modules\_Config-Tabelle verknüpft. 
+\end{itemize}
+
+\subsubsection{SM\_Modules\_Config}
+
+Hier wird die Konfigurationsdatei für jede Version gespeichert.
+
+\begin{itemize}
+  \item \textbf{ID} die GUID der Konfigurationsdatei.
+  \item \textbf{Data} der Inhalt als BLOB der Konfigurationsdatei.
+  \item \textbf{FileName} der Dateiname als String, wie die die Konfigurationsdatei heißen muss.
+  \item \textbf{Format} der Format der Konfigurationsdatei, ob es eine JSON oder XML, etc. Format hat.
+\end{itemize}
+
 
 \section{SM.API}
+\label{sec:sm.api}
 
 \subsection{Informationsabruf}
 
@@ -72,6 +103,7 @@ Bsp. wie die JSON-Datei aufgebaut ist:
 \end{minted}
 
 Erklärung: 
+
 \begin{itemize}
   \item \textbf{version}: die aktuelle Version von Service-Manager.
   \item \textbf{changed}: letzte Änderung vom aktuellen Datensatz
@@ -85,6 +117,14 @@ Erklärung:
   \end{itemize}
 \end{itemize}
 
+\subsection{Module}
+
+Die Anwendungen werden in einem bestimmten Verzeichnis aufbewahrt. Jede Version einer Anwendung wird hinterlegt, als ZIP mit der Version als Dateiname.
+Bsp.: 
+\path{/Anwendungen/MailInterface/1.14.1.zip}
+
+Der Pfad kann deshalb Dynamisch hergestellt werden, aus den Daten der Tabellen.
+
 \subsection{Informationsänderung}
 
 TODO
@@ -95,7 +135,7 @@ TODO
 
 \subsection{Ablauf}
 
-Es wird eine Verbindung zur REST-API (siehe SM.Service) hergestellt. Die Informationen werden als JSON-Format übergeben.
+Es wird eine Verbindung zur REST-API (siehe \textit{\nameref{sec:sm.api}}) hergestellt. Die Informationen werden als JSON-Format übergeben.
 Die Daten werden serialisiert in Objekte, damit die Verarbeitung vereinfacht wird.
 
 \newpage
