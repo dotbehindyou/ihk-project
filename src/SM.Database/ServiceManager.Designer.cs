@@ -30,9 +30,17 @@ namespace SM.Database {
         
         private SM_Modules_ConfigDataTable tableSM_Modules_Config;
         
+        private SM_CustomersDataTable tableSM_Customers;
+        
+        private SM_Customers_ModulesDataTable tableSM_Customers_Modules;
+        
         private global::System.Data.DataRelation relationModules_Modules_Version;
         
         private global::System.Data.DataRelation relationSM_Modules_Config_SM_Modules_Version;
+        
+        private global::System.Data.DataRelation relationSM_Customer_SM_Customer_Modules;
+        
+        private global::System.Data.DataRelation relationSM_Modules_Version_SM_Customer_Modules;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
@@ -70,6 +78,12 @@ namespace SM.Database {
                 }
                 if ((ds.Tables["SM_Modules_Config"] != null)) {
                     base.Tables.Add(new SM_Modules_ConfigDataTable(ds.Tables["SM_Modules_Config"]));
+                }
+                if ((ds.Tables["SM_Customers"] != null)) {
+                    base.Tables.Add(new SM_CustomersDataTable(ds.Tables["SM_Customers"]));
+                }
+                if ((ds.Tables["SM_Customers_Modules"] != null)) {
+                    base.Tables.Add(new SM_Customers_ModulesDataTable(ds.Tables["SM_Customers_Modules"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -116,6 +130,26 @@ namespace SM.Database {
         public SM_Modules_ConfigDataTable SM_Modules_Config {
             get {
                 return this.tableSM_Modules_Config;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public SM_CustomersDataTable SM_Customers {
+            get {
+                return this.tableSM_Customers;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public SM_Customers_ModulesDataTable SM_Customers_Modules {
+            get {
+                return this.tableSM_Customers_Modules;
             }
         }
         
@@ -195,6 +229,12 @@ namespace SM.Database {
                 if ((ds.Tables["SM_Modules_Config"] != null)) {
                     base.Tables.Add(new SM_Modules_ConfigDataTable(ds.Tables["SM_Modules_Config"]));
                 }
+                if ((ds.Tables["SM_Customers"] != null)) {
+                    base.Tables.Add(new SM_CustomersDataTable(ds.Tables["SM_Customers"]));
+                }
+                if ((ds.Tables["SM_Customers_Modules"] != null)) {
+                    base.Tables.Add(new SM_Customers_ModulesDataTable(ds.Tables["SM_Customers_Modules"]));
+                }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
                 this.Namespace = ds.Namespace;
@@ -246,8 +286,22 @@ namespace SM.Database {
                     this.tableSM_Modules_Config.InitVars();
                 }
             }
+            this.tableSM_Customers = ((SM_CustomersDataTable)(base.Tables["SM_Customers"]));
+            if ((initTable == true)) {
+                if ((this.tableSM_Customers != null)) {
+                    this.tableSM_Customers.InitVars();
+                }
+            }
+            this.tableSM_Customers_Modules = ((SM_Customers_ModulesDataTable)(base.Tables["SM_Customers_Modules"]));
+            if ((initTable == true)) {
+                if ((this.tableSM_Customers_Modules != null)) {
+                    this.tableSM_Customers_Modules.InitVars();
+                }
+            }
             this.relationModules_Modules_Version = this.Relations["Modules_Modules_Version"];
             this.relationSM_Modules_Config_SM_Modules_Version = this.Relations["SM_Modules_Config_SM_Modules_Version"];
+            this.relationSM_Customer_SM_Customer_Modules = this.Relations["SM_Customer_SM_Customer_Modules"];
+            this.relationSM_Modules_Version_SM_Customer_Modules = this.Relations["SM_Modules_Version_SM_Customer_Modules"];
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -264,6 +318,10 @@ namespace SM.Database {
             base.Tables.Add(this.tableSM_Modules_Version);
             this.tableSM_Modules_Config = new SM_Modules_ConfigDataTable();
             base.Tables.Add(this.tableSM_Modules_Config);
+            this.tableSM_Customers = new SM_CustomersDataTable();
+            base.Tables.Add(this.tableSM_Customers);
+            this.tableSM_Customers_Modules = new SM_Customers_ModulesDataTable();
+            base.Tables.Add(this.tableSM_Customers_Modules);
             this.relationModules_Modules_Version = new global::System.Data.DataRelation("Modules_Modules_Version", new global::System.Data.DataColumn[] {
                         this.tableSM_Modules.IDColumn}, new global::System.Data.DataColumn[] {
                         this.tableSM_Modules_Version.Module_IDColumn}, false);
@@ -272,6 +330,16 @@ namespace SM.Database {
                         this.tableSM_Modules_Config.IDColumn}, new global::System.Data.DataColumn[] {
                         this.tableSM_Modules_Version.Config_IDColumn}, false);
             this.Relations.Add(this.relationSM_Modules_Config_SM_Modules_Version);
+            this.relationSM_Customer_SM_Customer_Modules = new global::System.Data.DataRelation("SM_Customer_SM_Customer_Modules", new global::System.Data.DataColumn[] {
+                        this.tableSM_Customers.IDColumn}, new global::System.Data.DataColumn[] {
+                        this.tableSM_Customers_Modules.Customer_IDColumn}, false);
+            this.Relations.Add(this.relationSM_Customer_SM_Customer_Modules);
+            this.relationSM_Modules_Version_SM_Customer_Modules = new global::System.Data.DataRelation("SM_Modules_Version_SM_Customer_Modules", new global::System.Data.DataColumn[] {
+                        this.tableSM_Modules_Version.Module_IDColumn,
+                        this.tableSM_Modules_Version.VersionColumn}, new global::System.Data.DataColumn[] {
+                        this.tableSM_Customers_Modules.Module_IDColumn,
+                        this.tableSM_Customers_Modules.VersionColumn}, false);
+            this.Relations.Add(this.relationSM_Modules_Version_SM_Customer_Modules);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -289,6 +357,18 @@ namespace SM.Database {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         private bool ShouldSerializeSM_Modules_Config() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+        private bool ShouldSerializeSM_Customers() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+        private bool ShouldSerializeSM_Customers_Modules() {
             return false;
         }
         
@@ -355,6 +435,12 @@ namespace SM.Database {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         public delegate void SM_Modules_ConfigRowChangeEventHandler(object sender, SM_Modules_ConfigRowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+        public delegate void SM_CustomersRowChangeEventHandler(object sender, SM_CustomersRowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+        public delegate void SM_Customers_ModulesRowChangeEventHandler(object sender, SM_Customers_ModulesRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
@@ -836,11 +922,8 @@ namespace SM.Database {
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Modules_VersionKey1", new global::System.Data.DataColumn[] {
                                 this.columnModule_ID,
                                 this.columnVersion}, true));
-                this.Constraints.Add(new global::System.Data.UniqueConstraint("SM_Modules_VersionKey1", new global::System.Data.DataColumn[] {
-                                this.columnConfig_ID}, false));
                 this.columnModule_ID.AllowDBNull = false;
                 this.columnVersion.AllowDBNull = false;
-                this.columnConfig_ID.Unique = true;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1260,6 +1343,685 @@ namespace SM.Database {
         }
         
         /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class SM_CustomersDataTable : global::System.Data.TypedTableBase<SM_CustomersRow> {
+            
+            private global::System.Data.DataColumn columnID;
+            
+            private global::System.Data.DataColumn columnKdnr;
+            
+            private global::System.Data.DataColumn columnAuth_Token;
+            
+            private global::System.Data.DataColumn columnCreated;
+            
+            private global::System.Data.DataColumn columnModified;
+            
+            private global::System.Data.DataColumn columnDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public SM_CustomersDataTable() {
+                this.TableName = "SM_Customers";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            internal SM_CustomersDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected SM_CustomersDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn IDColumn {
+                get {
+                    return this.columnID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn KdnrColumn {
+                get {
+                    return this.columnKdnr;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn Auth_TokenColumn {
+                get {
+                    return this.columnAuth_Token;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn CreatedColumn {
+                get {
+                    return this.columnCreated;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn ModifiedColumn {
+                get {
+                    return this.columnModified;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn DeletedColumn {
+                get {
+                    return this.columnDeleted;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public SM_CustomersRow this[int index] {
+                get {
+                    return ((SM_CustomersRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public event SM_CustomersRowChangeEventHandler SM_CustomersRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public event SM_CustomersRowChangeEventHandler SM_CustomersRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public event SM_CustomersRowChangeEventHandler SM_CustomersRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public event SM_CustomersRowChangeEventHandler SM_CustomersRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void AddSM_CustomersRow(SM_CustomersRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public SM_CustomersRow AddSM_CustomersRow(string ID, string Kdnr, string Auth_Token, string Created, string Modified, string Deleted) {
+                SM_CustomersRow rowSM_CustomersRow = ((SM_CustomersRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        ID,
+                        Kdnr,
+                        Auth_Token,
+                        Created,
+                        Modified,
+                        Deleted};
+                rowSM_CustomersRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowSM_CustomersRow);
+                return rowSM_CustomersRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public SM_CustomersRow FindByID(string ID) {
+                return ((SM_CustomersRow)(this.Rows.Find(new object[] {
+                            ID})));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                SM_CustomersDataTable cln = ((SM_CustomersDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new SM_CustomersDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            internal void InitVars() {
+                this.columnID = base.Columns["ID"];
+                this.columnKdnr = base.Columns["Kdnr"];
+                this.columnAuth_Token = base.Columns["Auth_Token"];
+                this.columnCreated = base.Columns["Created"];
+                this.columnModified = base.Columns["Modified"];
+                this.columnDeleted = base.Columns["Deleted"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            private void InitClass() {
+                this.columnID = new global::System.Data.DataColumn("ID", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnID);
+                this.columnKdnr = new global::System.Data.DataColumn("Kdnr", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnKdnr);
+                this.columnAuth_Token = new global::System.Data.DataColumn("Auth_Token", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAuth_Token);
+                this.columnCreated = new global::System.Data.DataColumn("Created", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCreated);
+                this.columnModified = new global::System.Data.DataColumn("Modified", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnModified);
+                this.columnDeleted = new global::System.Data.DataColumn("Deleted", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDeleted);
+                this.Constraints.Add(new global::System.Data.UniqueConstraint("SM_CustomerKey1", new global::System.Data.DataColumn[] {
+                                this.columnID}, true));
+                this.Constraints.Add(new global::System.Data.UniqueConstraint("SM_CustomerKey2", new global::System.Data.DataColumn[] {
+                                this.columnKdnr}, false));
+                this.columnID.AllowDBNull = false;
+                this.columnID.Unique = true;
+                this.columnKdnr.Unique = true;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public SM_CustomersRow NewSM_CustomersRow() {
+                return ((SM_CustomersRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new SM_CustomersRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(SM_CustomersRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.SM_CustomersRowChanged != null)) {
+                    this.SM_CustomersRowChanged(this, new SM_CustomersRowChangeEvent(((SM_CustomersRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.SM_CustomersRowChanging != null)) {
+                    this.SM_CustomersRowChanging(this, new SM_CustomersRowChangeEvent(((SM_CustomersRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.SM_CustomersRowDeleted != null)) {
+                    this.SM_CustomersRowDeleted(this, new SM_CustomersRowChangeEvent(((SM_CustomersRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.SM_CustomersRowDeleting != null)) {
+                    this.SM_CustomersRowDeleting(this, new SM_CustomersRowChangeEvent(((SM_CustomersRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void RemoveSM_CustomersRow(SM_CustomersRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                ServiceManager ds = new ServiceManager();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "SM_CustomersDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class SM_Customers_ModulesDataTable : global::System.Data.TypedTableBase<SM_Customers_ModulesRow> {
+            
+            private global::System.Data.DataColumn columnCustomer_ID;
+            
+            private global::System.Data.DataColumn columnModule_ID;
+            
+            private global::System.Data.DataColumn columnVersion;
+            
+            private global::System.Data.DataColumn columnChange_Accepted;
+            
+            private global::System.Data.DataColumn columnCreated;
+            
+            private global::System.Data.DataColumn columnModified;
+            
+            private global::System.Data.DataColumn columnDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public SM_Customers_ModulesDataTable() {
+                this.TableName = "SM_Customers_Modules";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            internal SM_Customers_ModulesDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected SM_Customers_ModulesDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn Customer_IDColumn {
+                get {
+                    return this.columnCustomer_ID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn Module_IDColumn {
+                get {
+                    return this.columnModule_ID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn VersionColumn {
+                get {
+                    return this.columnVersion;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn Change_AcceptedColumn {
+                get {
+                    return this.columnChange_Accepted;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn CreatedColumn {
+                get {
+                    return this.columnCreated;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn ModifiedColumn {
+                get {
+                    return this.columnModified;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn DeletedColumn {
+                get {
+                    return this.columnDeleted;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public SM_Customers_ModulesRow this[int index] {
+                get {
+                    return ((SM_Customers_ModulesRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public event SM_Customers_ModulesRowChangeEventHandler SM_Customers_ModulesRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public event SM_Customers_ModulesRowChangeEventHandler SM_Customers_ModulesRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public event SM_Customers_ModulesRowChangeEventHandler SM_Customers_ModulesRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public event SM_Customers_ModulesRowChangeEventHandler SM_Customers_ModulesRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void AddSM_Customers_ModulesRow(SM_Customers_ModulesRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public SM_Customers_ModulesRow AddSM_Customers_ModulesRow(SM_CustomersRow parentSM_CustomersRowBySM_Customer_SM_Customer_Modules, string Module_ID, string Version, string Change_Accepted, string Created, string Modified, string Deleted) {
+                SM_Customers_ModulesRow rowSM_Customers_ModulesRow = ((SM_Customers_ModulesRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        null,
+                        Module_ID,
+                        Version,
+                        Change_Accepted,
+                        Created,
+                        Modified,
+                        Deleted};
+                if ((parentSM_CustomersRowBySM_Customer_SM_Customer_Modules != null)) {
+                    columnValuesArray[0] = parentSM_CustomersRowBySM_Customer_SM_Customer_Modules[0];
+                }
+                rowSM_Customers_ModulesRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowSM_Customers_ModulesRow);
+                return rowSM_Customers_ModulesRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public SM_Customers_ModulesRow FindByCustomer_ID(string Customer_ID) {
+                return ((SM_Customers_ModulesRow)(this.Rows.Find(new object[] {
+                            Customer_ID})));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                SM_Customers_ModulesDataTable cln = ((SM_Customers_ModulesDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new SM_Customers_ModulesDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            internal void InitVars() {
+                this.columnCustomer_ID = base.Columns["Customer_ID"];
+                this.columnModule_ID = base.Columns["Module_ID"];
+                this.columnVersion = base.Columns["Version"];
+                this.columnChange_Accepted = base.Columns["Change_Accepted"];
+                this.columnCreated = base.Columns["Created"];
+                this.columnModified = base.Columns["Modified"];
+                this.columnDeleted = base.Columns["Deleted"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            private void InitClass() {
+                this.columnCustomer_ID = new global::System.Data.DataColumn("Customer_ID", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCustomer_ID);
+                this.columnModule_ID = new global::System.Data.DataColumn("Module_ID", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnModule_ID);
+                this.columnVersion = new global::System.Data.DataColumn("Version", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnVersion);
+                this.columnChange_Accepted = new global::System.Data.DataColumn("Change_Accepted", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnChange_Accepted);
+                this.columnCreated = new global::System.Data.DataColumn("Created", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCreated);
+                this.columnModified = new global::System.Data.DataColumn("Modified", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnModified);
+                this.columnDeleted = new global::System.Data.DataColumn("Deleted", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDeleted);
+                this.Constraints.Add(new global::System.Data.UniqueConstraint("SM_Customer_ModulesKey1", new global::System.Data.DataColumn[] {
+                                this.columnModule_ID,
+                                this.columnVersion}, false));
+                this.Constraints.Add(new global::System.Data.UniqueConstraint("SM_Customer_ModulesKey2", new global::System.Data.DataColumn[] {
+                                this.columnCustomer_ID}, true));
+                this.columnCustomer_ID.AllowDBNull = false;
+                this.columnCustomer_ID.Unique = true;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public SM_Customers_ModulesRow NewSM_Customers_ModulesRow() {
+                return ((SM_Customers_ModulesRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new SM_Customers_ModulesRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(SM_Customers_ModulesRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.SM_Customers_ModulesRowChanged != null)) {
+                    this.SM_Customers_ModulesRowChanged(this, new SM_Customers_ModulesRowChangeEvent(((SM_Customers_ModulesRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.SM_Customers_ModulesRowChanging != null)) {
+                    this.SM_Customers_ModulesRowChanging(this, new SM_Customers_ModulesRowChangeEvent(((SM_Customers_ModulesRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.SM_Customers_ModulesRowDeleted != null)) {
+                    this.SM_Customers_ModulesRowDeleted(this, new SM_Customers_ModulesRowChangeEvent(((SM_Customers_ModulesRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.SM_Customers_ModulesRowDeleting != null)) {
+                    this.SM_Customers_ModulesRowDeleting(this, new SM_Customers_ModulesRowChangeEvent(((SM_Customers_ModulesRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void RemoveSM_Customers_ModulesRow(SM_Customers_ModulesRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                ServiceManager ds = new ServiceManager();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "SM_Customers_ModulesDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
         public partial class SM_ModulesRow : global::System.Data.DataRow {
@@ -1493,6 +2255,17 @@ namespace SM.Database {
             public void SetConfig_IDNull() {
                 this[this.tableSM_Modules_Version.Config_IDColumn] = global::System.Convert.DBNull;
             }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public SM_Customers_ModulesRow[] GetSM_Customers_ModulesRows() {
+                if ((this.Table.ChildRelations["SM_Modules_Version_SM_Customer_Modules"] == null)) {
+                    return new SM_Customers_ModulesRow[0];
+                }
+                else {
+                    return ((SM_Customers_ModulesRow[])(base.GetChildRows(this.Table.ChildRelations["SM_Modules_Version_SM_Customer_Modules"])));
+                }
+            }
         }
         
         /// <summary>
@@ -1634,6 +2407,399 @@ namespace SM.Database {
         }
         
         /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class SM_CustomersRow : global::System.Data.DataRow {
+            
+            private SM_CustomersDataTable tableSM_Customers;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            internal SM_CustomersRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableSM_Customers = ((SM_CustomersDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string ID {
+                get {
+                    return ((string)(this[this.tableSM_Customers.IDColumn]));
+                }
+                set {
+                    this[this.tableSM_Customers.IDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string Kdnr {
+                get {
+                    try {
+                        return ((string)(this[this.tableSM_Customers.KdnrColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Der Wert für Spalte Kdnr in Tabelle SM_Customers ist DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSM_Customers.KdnrColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string Auth_Token {
+                get {
+                    try {
+                        return ((string)(this[this.tableSM_Customers.Auth_TokenColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Der Wert für Spalte Auth_Token in Tabelle SM_Customers ist DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSM_Customers.Auth_TokenColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string Created {
+                get {
+                    try {
+                        return ((string)(this[this.tableSM_Customers.CreatedColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Der Wert für Spalte Created in Tabelle SM_Customers ist DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSM_Customers.CreatedColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string Modified {
+                get {
+                    try {
+                        return ((string)(this[this.tableSM_Customers.ModifiedColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Der Wert für Spalte Modified in Tabelle SM_Customers ist DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSM_Customers.ModifiedColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string Deleted {
+                get {
+                    try {
+                        return ((string)(this[this.tableSM_Customers.DeletedColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Der Wert für Spalte Deleted in Tabelle SM_Customers ist DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSM_Customers.DeletedColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsKdnrNull() {
+                return this.IsNull(this.tableSM_Customers.KdnrColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetKdnrNull() {
+                this[this.tableSM_Customers.KdnrColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsAuth_TokenNull() {
+                return this.IsNull(this.tableSM_Customers.Auth_TokenColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetAuth_TokenNull() {
+                this[this.tableSM_Customers.Auth_TokenColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsCreatedNull() {
+                return this.IsNull(this.tableSM_Customers.CreatedColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetCreatedNull() {
+                this[this.tableSM_Customers.CreatedColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsModifiedNull() {
+                return this.IsNull(this.tableSM_Customers.ModifiedColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetModifiedNull() {
+                this[this.tableSM_Customers.ModifiedColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsDeletedNull() {
+                return this.IsNull(this.tableSM_Customers.DeletedColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetDeletedNull() {
+                this[this.tableSM_Customers.DeletedColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public SM_Customers_ModulesRow[] GetSM_Customers_ModulesRows() {
+                if ((this.Table.ChildRelations["SM_Customer_SM_Customer_Modules"] == null)) {
+                    return new SM_Customers_ModulesRow[0];
+                }
+                else {
+                    return ((SM_Customers_ModulesRow[])(base.GetChildRows(this.Table.ChildRelations["SM_Customer_SM_Customer_Modules"])));
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class SM_Customers_ModulesRow : global::System.Data.DataRow {
+            
+            private SM_Customers_ModulesDataTable tableSM_Customers_Modules;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            internal SM_Customers_ModulesRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableSM_Customers_Modules = ((SM_Customers_ModulesDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string Customer_ID {
+                get {
+                    return ((string)(this[this.tableSM_Customers_Modules.Customer_IDColumn]));
+                }
+                set {
+                    this[this.tableSM_Customers_Modules.Customer_IDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string Module_ID {
+                get {
+                    try {
+                        return ((string)(this[this.tableSM_Customers_Modules.Module_IDColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Der Wert für Spalte Module_ID in Tabelle SM_Customers_Modules ist DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSM_Customers_Modules.Module_IDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string Version {
+                get {
+                    try {
+                        return ((string)(this[this.tableSM_Customers_Modules.VersionColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Der Wert für Spalte Version in Tabelle SM_Customers_Modules ist DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSM_Customers_Modules.VersionColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string Change_Accepted {
+                get {
+                    try {
+                        return ((string)(this[this.tableSM_Customers_Modules.Change_AcceptedColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Der Wert für Spalte Change_Accepted in Tabelle SM_Customers_Modules ist DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSM_Customers_Modules.Change_AcceptedColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string Created {
+                get {
+                    try {
+                        return ((string)(this[this.tableSM_Customers_Modules.CreatedColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Der Wert für Spalte Created in Tabelle SM_Customers_Modules ist DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSM_Customers_Modules.CreatedColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string Modified {
+                get {
+                    try {
+                        return ((string)(this[this.tableSM_Customers_Modules.ModifiedColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Der Wert für Spalte Modified in Tabelle SM_Customers_Modules ist DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSM_Customers_Modules.ModifiedColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string Deleted {
+                get {
+                    try {
+                        return ((string)(this[this.tableSM_Customers_Modules.DeletedColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Der Wert für Spalte Deleted in Tabelle SM_Customers_Modules ist DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSM_Customers_Modules.DeletedColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public SM_CustomersRow SM_CustomersRow {
+                get {
+                    return ((SM_CustomersRow)(this.GetParentRow(this.Table.ParentRelations["SM_Customer_SM_Customer_Modules"])));
+                }
+                set {
+                    this.SetParentRow(value, this.Table.ParentRelations["SM_Customer_SM_Customer_Modules"]);
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public SM_Modules_VersionRow SM_Modules_VersionRowParent {
+                get {
+                    return ((SM_Modules_VersionRow)(this.GetParentRow(this.Table.ParentRelations["SM_Modules_Version_SM_Customer_Modules"])));
+                }
+                set {
+                    this.SetParentRow(value, this.Table.ParentRelations["SM_Modules_Version_SM_Customer_Modules"]);
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsModule_IDNull() {
+                return this.IsNull(this.tableSM_Customers_Modules.Module_IDColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetModule_IDNull() {
+                this[this.tableSM_Customers_Modules.Module_IDColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsVersionNull() {
+                return this.IsNull(this.tableSM_Customers_Modules.VersionColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetVersionNull() {
+                this[this.tableSM_Customers_Modules.VersionColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsChange_AcceptedNull() {
+                return this.IsNull(this.tableSM_Customers_Modules.Change_AcceptedColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetChange_AcceptedNull() {
+                this[this.tableSM_Customers_Modules.Change_AcceptedColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsCreatedNull() {
+                return this.IsNull(this.tableSM_Customers_Modules.CreatedColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetCreatedNull() {
+                this[this.tableSM_Customers_Modules.CreatedColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsModifiedNull() {
+                return this.IsNull(this.tableSM_Customers_Modules.ModifiedColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetModifiedNull() {
+                this[this.tableSM_Customers_Modules.ModifiedColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsDeletedNull() {
+                return this.IsNull(this.tableSM_Customers_Modules.DeletedColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetDeletedNull() {
+                this[this.tableSM_Customers_Modules.DeletedColumn] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
@@ -1721,6 +2887,74 @@ namespace SM.Database {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public SM_Modules_ConfigRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+        public class SM_CustomersRowChangeEvent : global::System.EventArgs {
+            
+            private SM_CustomersRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public SM_CustomersRowChangeEvent(SM_CustomersRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public SM_CustomersRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+        public class SM_Customers_ModulesRowChangeEvent : global::System.EventArgs {
+            
+            private SM_Customers_ModulesRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public SM_Customers_ModulesRowChangeEvent(SM_Customers_ModulesRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public SM_Customers_ModulesRow Row {
                 get {
                     return this.eventRow;
                 }

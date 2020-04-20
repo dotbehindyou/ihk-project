@@ -28,17 +28,42 @@
               <xs:element name="Version" msprop:Generator_ColumnVarNameInTable="columnVersion" msprop:Generator_ColumnPropNameInRow="Version" msprop:Generator_ColumnPropNameInTable="VersionColumn" msprop:Generator_UserColumnName="Version" type="xs:string" />
               <xs:element name="Token" msprop:Generator_ColumnVarNameInTable="columnToken" msprop:Generator_ColumnPropNameInRow="Token" msprop:Generator_ColumnPropNameInTable="TokenColumn" msprop:Generator_UserColumnName="Token" type="xs:string" minOccurs="0" />
               <xs:element name="Created" msprop:Generator_ColumnVarNameInTable="columnCreated" msprop:Generator_ColumnPropNameInRow="Created" msprop:Generator_ColumnPropNameInTable="CreatedColumn" msprop:Generator_UserColumnName="Created" type="xs:string" minOccurs="0" />
+              <xs:element name="Config_ID" msprop:Generator_ColumnVarNameInTable="columnConfig_ID" msprop:Generator_ColumnPropNameInRow="Config_ID" msprop:Generator_ColumnPropNameInTable="Config_IDColumn" msprop:Generator_UserColumnName="Config_ID" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
         <xs:element name="SM_Modules_Config" msprop:Generator_TableClassName="SM_Modules_ConfigDataTable" msprop:Generator_TableVarName="tableSM_Modules_Config" msprop:Generator_TablePropName="SM_Modules_Config" msprop:Generator_RowDeletingName="SM_Modules_ConfigRowDeleting" msprop:Generator_RowChangingName="SM_Modules_ConfigRowChanging" msprop:Generator_RowEvHandlerName="SM_Modules_ConfigRowChangeEventHandler" msprop:Generator_RowDeletedName="SM_Modules_ConfigRowDeleted" msprop:Generator_UserTableName="SM_Modules_Config" msprop:Generator_RowChangedName="SM_Modules_ConfigRowChanged" msprop:Generator_RowEvArgName="SM_Modules_ConfigRowChangeEvent" msprop:Generator_RowClassName="SM_Modules_ConfigRow">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="Module_ID" msprop:Generator_ColumnVarNameInTable="columnModule_ID" msprop:Generator_ColumnPropNameInRow="Module_ID" msprop:Generator_ColumnPropNameInTable="Module_IDColumn" msprop:Generator_UserColumnName="Module_ID" type="xs:string" minOccurs="0" />
-              <xs:element name="Version" msprop:Generator_ColumnVarNameInTable="columnVersion" msprop:Generator_ColumnPropNameInRow="Version" msprop:Generator_ColumnPropNameInTable="VersionColumn" msprop:Generator_UserColumnName="Version" type="xs:string" minOccurs="0" />
+              <xs:element name="ID" msprop:Generator_ColumnVarNameInTable="columnID" msprop:Generator_ColumnPropNameInRow="ID" msprop:Generator_ColumnPropNameInTable="IDColumn" msprop:Generator_UserColumnName="ID" type="xs:string" minOccurs="0" />
               <xs:element name="Data" msprop:Generator_ColumnVarNameInTable="columnData" msprop:Generator_ColumnPropNameInRow="Data" msprop:Generator_ColumnPropNameInTable="DataColumn" msprop:Generator_UserColumnName="Data" type="xs:string" minOccurs="0" />
               <xs:element name="FileName" msprop:Generator_ColumnVarNameInTable="columnFileName" msprop:Generator_ColumnPropNameInRow="FileName" msprop:Generator_ColumnPropNameInTable="FileNameColumn" msprop:Generator_UserColumnName="FileName" type="xs:string" minOccurs="0" />
               <xs:element name="Format" msprop:Generator_ColumnVarNameInTable="columnFormat" msprop:Generator_ColumnPropNameInRow="Format" msprop:Generator_ColumnPropNameInTable="FormatColumn" msprop:Generator_UserColumnName="Format" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="SM_Customers" msprop:Generator_TableClassName="SM_CustomersDataTable" msprop:Generator_TableVarName="tableSM_Customers" msprop:Generator_TablePropName="SM_Customers" msprop:Generator_RowDeletingName="SM_CustomersRowDeleting" msprop:Generator_RowChangingName="SM_CustomersRowChanging" msprop:Generator_RowEvHandlerName="SM_CustomersRowChangeEventHandler" msprop:Generator_RowDeletedName="SM_CustomersRowDeleted" msprop:Generator_UserTableName="SM_Customers" msprop:Generator_RowChangedName="SM_CustomersRowChanged" msprop:Generator_RowEvArgName="SM_CustomersRowChangeEvent" msprop:Generator_RowClassName="SM_CustomersRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ID" msprop:Generator_ColumnVarNameInTable="columnID" msprop:Generator_ColumnPropNameInRow="ID" msprop:Generator_ColumnPropNameInTable="IDColumn" msprop:Generator_UserColumnName="ID" type="xs:string" />
+              <xs:element name="Kdnr" msprop:Generator_ColumnVarNameInTable="columnKdnr" msprop:Generator_ColumnPropNameInRow="Kdnr" msprop:Generator_ColumnPropNameInTable="KdnrColumn" msprop:Generator_UserColumnName="Kdnr" type="xs:string" minOccurs="0" />
+              <xs:element name="Auth_Token" msprop:Generator_ColumnVarNameInTable="columnAuth_Token" msprop:Generator_ColumnPropNameInRow="Auth_Token" msprop:Generator_ColumnPropNameInTable="Auth_TokenColumn" msprop:Generator_UserColumnName="Auth_Token" type="xs:string" minOccurs="0" />
+              <xs:element name="Created" msprop:Generator_ColumnVarNameInTable="columnCreated" msprop:Generator_ColumnPropNameInRow="Created" msprop:Generator_ColumnPropNameInTable="CreatedColumn" msprop:Generator_UserColumnName="Created" type="xs:string" minOccurs="0" />
+              <xs:element name="Modified" msprop:Generator_ColumnVarNameInTable="columnModified" msprop:Generator_ColumnPropNameInRow="Modified" msprop:Generator_ColumnPropNameInTable="ModifiedColumn" msprop:Generator_UserColumnName="Modified" type="xs:string" minOccurs="0" />
+              <xs:element name="Deleted" msprop:Generator_ColumnVarNameInTable="columnDeleted" msprop:Generator_ColumnPropNameInRow="Deleted" msprop:Generator_ColumnPropNameInTable="DeletedColumn" msprop:Generator_UserColumnName="Deleted" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="SM_Customers_Modules" msprop:Generator_TableClassName="SM_Customers_ModulesDataTable" msprop:Generator_TableVarName="tableSM_Customers_Modules" msprop:Generator_TablePropName="SM_Customers_Modules" msprop:Generator_RowDeletingName="SM_Customers_ModulesRowDeleting" msprop:Generator_RowChangingName="SM_Customers_ModulesRowChanging" msprop:Generator_RowEvHandlerName="SM_Customers_ModulesRowChangeEventHandler" msprop:Generator_RowDeletedName="SM_Customers_ModulesRowDeleted" msprop:Generator_UserTableName="SM_Customers_Modules" msprop:Generator_RowChangedName="SM_Customers_ModulesRowChanged" msprop:Generator_RowEvArgName="SM_Customers_ModulesRowChangeEvent" msprop:Generator_RowClassName="SM_Customers_ModulesRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Customer_ID" msprop:Generator_ColumnVarNameInTable="columnCustomer_ID" msprop:Generator_ColumnPropNameInRow="Customer_ID" msprop:Generator_ColumnPropNameInTable="Customer_IDColumn" msprop:Generator_UserColumnName="Customer_ID" type="xs:string" />
+              <xs:element name="Module_ID" msprop:Generator_ColumnVarNameInTable="columnModule_ID" msprop:Generator_ColumnPropNameInRow="Module_ID" msprop:Generator_ColumnPropNameInTable="Module_IDColumn" msprop:Generator_UserColumnName="Module_ID" type="xs:string" minOccurs="0" />
+              <xs:element name="Version" msprop:Generator_ColumnVarNameInTable="columnVersion" msprop:Generator_ColumnPropNameInRow="Version" msprop:Generator_ColumnPropNameInTable="VersionColumn" msprop:Generator_UserColumnName="Version" type="xs:string" minOccurs="0" />
+              <xs:element name="Change_Accepted" msprop:Generator_ColumnVarNameInTable="columnChange_Accepted" msprop:Generator_ColumnPropNameInRow="Change_Accepted" msprop:Generator_ColumnPropNameInTable="Change_AcceptedColumn" msprop:Generator_UserColumnName="Change_Accepted" type="xs:string" minOccurs="0" />
+              <xs:element name="Created" msprop:Generator_ColumnVarNameInTable="columnCreated" msprop:Generator_ColumnPropNameInRow="Created" msprop:Generator_ColumnPropNameInTable="CreatedColumn" msprop:Generator_UserColumnName="Created" type="xs:string" minOccurs="0" />
+              <xs:element name="Modified" msprop:Generator_ColumnVarNameInTable="columnModified" msprop:Generator_ColumnPropNameInRow="Modified" msprop:Generator_ColumnPropNameInTable="ModifiedColumn" msprop:Generator_UserColumnName="Modified" type="xs:string" minOccurs="0" />
+              <xs:element name="Deleted" msprop:Generator_ColumnVarNameInTable="columnDeleted" msprop:Generator_ColumnPropNameInRow="Deleted" msprop:Generator_ColumnPropNameInTable="DeletedColumn" msprop:Generator_UserColumnName="Deleted" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
@@ -53,16 +78,34 @@
       <xs:field xpath="mstns:Module_ID" />
       <xs:field xpath="mstns:Version" />
     </xs:unique>
-    <xs:unique name="SM_Modules_ConfigKey1">
+    <xs:unique name="SM_Modules_Config_Constraint1" msdata:ConstraintName="Constraint1">
       <xs:selector xpath=".//mstns:SM_Modules_Config" />
+      <xs:field xpath="mstns:ID" />
+    </xs:unique>
+    <xs:unique name="SM_CustomerKey1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:SM_Customers" />
+      <xs:field xpath="mstns:ID" />
+    </xs:unique>
+    <xs:unique name="SM_CustomerKey2">
+      <xs:selector xpath=".//mstns:SM_Customers" />
+      <xs:field xpath="mstns:Kdnr" />
+    </xs:unique>
+    <xs:unique name="SM_Customer_ModulesKey1">
+      <xs:selector xpath=".//mstns:SM_Customers_Modules" />
       <xs:field xpath="mstns:Module_ID" />
       <xs:field xpath="mstns:Version" />
+    </xs:unique>
+    <xs:unique name="SM_Customer_ModulesKey2" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:SM_Customers_Modules" />
+      <xs:field xpath="mstns:Customer_ID" />
     </xs:unique>
   </xs:element>
   <xs:annotation>
     <xs:appinfo>
       <msdata:Relationship name="Modules_Modules_Version" msdata:parent="SM_Modules" msdata:child="SM_Modules_Version" msdata:parentkey="ID" msdata:childkey="Module_ID" msprop:Generator_UserChildTable="SM_Modules_Version" msprop:Generator_ChildPropName="GetSM_Modules_VersionRows" msprop:Generator_UserRelationName="Modules_Modules_Version" msprop:Generator_ParentPropName="SM_ModulesRow" msprop:Generator_RelationVarName="relationModules_Modules_Version" msprop:Generator_UserParentTable="SM_Modules" />
-      <msdata:Relationship name="SM_Modules_Version_SM_Modules_Config" msdata:parent="SM_Modules_Version" msdata:child="SM_Modules_Config" msdata:parentkey="Module_ID Version" msdata:childkey="Module_ID Version" msprop:Generator_UserChildTable="SM_Modules_Config" msprop:Generator_ChildPropName="GetSM_Modules_ConfigRows" msprop:Generator_UserRelationName="SM_Modules_Version_SM_Modules_Config" msprop:Generator_ParentPropName="SM_Modules_VersionRowParent" msprop:Generator_RelationVarName="relationSM_Modules_Version_SM_Modules_Config" msprop:Generator_UserParentTable="SM_Modules_Version" />
+      <msdata:Relationship name="SM_Modules_Config_SM_Modules_Version" msdata:parent="SM_Modules_Config" msdata:child="SM_Modules_Version" msdata:parentkey="ID" msdata:childkey="Config_ID" msprop:Generator_UserChildTable="SM_Modules_Version" msprop:Generator_ChildPropName="GetSM_Modules_VersionRows" msprop:Generator_UserRelationName="SM_Modules_Config_SM_Modules_Version" msprop:Generator_RelationVarName="relationSM_Modules_Config_SM_Modules_Version" msprop:Generator_UserParentTable="SM_Modules_Config" msprop:Generator_ParentPropName="SM_Modules_ConfigRow" />
+      <msdata:Relationship name="SM_Customer_SM_Customer_Modules" msdata:parent="SM_Customers" msdata:child="SM_Customers_Modules" msdata:parentkey="ID" msdata:childkey="Customer_ID" msprop:Generator_UserChildTable="SM_Customers_Modules" msprop:Generator_ChildPropName="GetSM_Customers_ModulesRows" msprop:Generator_UserRelationName="SM_Customer_SM_Customer_Modules" msprop:Generator_ParentPropName="SM_CustomersRow" msprop:Generator_RelationVarName="relationSM_Customer_SM_Customer_Modules" msprop:Generator_UserParentTable="SM_Customers" />
+      <msdata:Relationship name="SM_Modules_Version_SM_Customer_Modules" msdata:parent="SM_Modules_Version" msdata:child="SM_Customers_Modules" msdata:parentkey="Module_ID Version" msdata:childkey="Module_ID Version" msprop:Generator_UserChildTable="SM_Customers_Modules" msprop:Generator_ChildPropName="GetSM_Customers_ModulesRows" msprop:Generator_UserRelationName="SM_Modules_Version_SM_Customer_Modules" msprop:Generator_ParentPropName="SM_Modules_VersionRowParent" msprop:Generator_RelationVarName="relationSM_Modules_Version_SM_Customer_Modules" msprop:Generator_UserParentTable="SM_Modules_Version" />
     </xs:appinfo>
   </xs:annotation>
 </xs:schema>
