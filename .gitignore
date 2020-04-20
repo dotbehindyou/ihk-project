@@ -5,3 +5,9 @@ bin
 /src/Service/SM.Service/bin
 /src/SM.API/obj
 /src/SM.Service/obj
+/docs/concept.toc
+/docs/_minted-concept
+/docs/concept.aux
+/docs/concept.dvi
+/docs/concept.log
+/docs/concept.synctex.gz
