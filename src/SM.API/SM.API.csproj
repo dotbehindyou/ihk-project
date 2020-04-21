@@ -4,5 +4,15 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SM.Database\SM.Database.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Weiss.Data">
+      <HintPath>..\..\lib\Weiss.Data.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 
 </Project>

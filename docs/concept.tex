@@ -28,12 +28,16 @@
 
 \begin{document}
 \maketitle
-\tableofcontents
+\tableofcontentsFrankfurt!13
+
 \newpage
 
-\section{SM.Database}
+%###########################################################################################
+%###########################################################################################
 
-\subsection{Module}
+\section{Datenbank}
+
+\subsection{Modul-Tabellen}
 
 Die Module sind in einer Datenbank-Tabelle hinterlegt. 
 Die einzelnen Versionen sind in einer extra Tabelle hinterlegt.
@@ -75,7 +79,7 @@ Hier wird die Konfigurationsdatei für jede Version gespeichert.
   \item \textbf{Format} der Format der Konfigurationsdatei, ob es eine JSON oder XML, etc. Format hat.
 \end{itemize}
 
-\subsection{Customer}
+\subsection{Kunden-Tabellen}
 
 Hier wird definiert welcher Kunde hat zugriff auf welche Module.
 Und auch wird der Authentifizierungstoken hinterlegt, womit sich der Dienst bei der API authentifizieren kann.
@@ -90,8 +94,11 @@ TODO
 \subsubsection{SM\_Customers\_Modules}
 TODO
 
+\newpage
+%###########################################################################################
+%###########################################################################################
 
-\section{SM.API}
+\section{API}
 \label{sec:sm.api}
 
 \subsection{Informationsabruf}
@@ -143,20 +150,21 @@ Der Pfad kann deshalb Dynamisch hergestellt werden, aus den Daten der Tabellen.
 
 \subsection{Informationsänderung}
 
-
-
 \newpage
+%###########################################################################################
+%###########################################################################################
 
-\section{SM.Service}
+\section{Dienst}
 
 \subsection{Ablauf}
 
-Es wird eine Verbindung zur REST-API (siehe \textit{\nameref{sec:sm.api}}) hergestellt. Die Informationen werden als JSON-Format übergeben.
-Die Daten werden serialisiert in Objekte, damit die Verarbeitung vereinfacht wird.
+Die Daten werden von der API abgerufen (siehe \textit{\nameref {sec:sm.api}}). Die Daten werden serialisiert in Objekte, um die Verarbeitung zu vereinfachen. 
 
 \newpage
+%###########################################################################################
+%###########################################################################################
 
-\section{SM.UI}
+\section{Oberfläche}
 
 \subsection{Oberfläche}
 
