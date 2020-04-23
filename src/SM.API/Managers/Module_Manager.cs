@@ -5,22 +5,26 @@ using SM.Models;
 using SM.Models.Table;
 using System.Data.Odbc;
 using System.Security.Cryptography;
+using System.IO;
 
 namespace SM.API.Managers
 {
     public class Module_Manager : Base_Manager
     {
-        public Module Create (String name)
+        public Module Create (String moduleName)
         {
             Module module = new Module();
             module.Module_ID = Guid.NewGuid();
-            module.Name = name;
+            module.Name = moduleName;
 
             Mapper.ExecuteQuery("INSERT INTO SM_Modules (Module_ID, Name) VALUES (?,?)",
                 new OdbcParameter("module_id", module.Module_ID),
                 new OdbcParameter("name", module.Name));
 
-            // TODO Module Ordner erstellen
+            DirectoryInfo inf = new DirectoryInfo(module.Module_ID.ToString());
+
+            if (!inf.Exists)
+                inf.Create();
 
             return module;
         }
@@ -54,11 +58,13 @@ namespace SM.API.Managers
                 new OdbcParameter("module_id", module_id));
         }
 
-        public Module AddVersion(Guid module_id, String version, Byte[] file, DateTime releaseDate)
+        public Module AddVersion(Guid module_id, String version, Byte[] zipFile, DateTime releaseDate)
         {
             Module module = new Module();
             module.Module_ID = module_id;
             module.Version = version;
+
+            File.WriteAllBytes(Path.Combine(module.Module_ID.ToString(), version + ".zip"), zipFile);
 
             Mapper.ExecuteQuery("INSERT INTO SM_Modules_Version (Version, Module_ID, Validation_Token, Config_ID, Release_Date) " +
                 "VALUES (?, ?, ?, ?, ?)",
@@ -67,18 +73,18 @@ namespace SM.API.Managers
                 new OdbcParameter("Validation_Token", module.Validation_Token),
                 new OdbcParameter("Release_Date", releaseDate));
 
-            // TODO Versions Datei speichern
-
             return module;
         }
 
-        public void UpdateVersion(Guid module_id, String version, Byte[] file)
+        public void UpdateVersion(Guid module_id, String version, Byte[] zipFile)
         {
             Byte[] validation_token;
             using(SHA512Managed man = new SHA512Managed())
             {
-                validation_token = man.ComputeHash(file);
+                validation_token = man.ComputeHash(zipFile);
             }
+
+            File.WriteAllBytes(Path.Combine(module_id.ToString(), version + ".zip"), zipFile);
 
             Mapper.ExecuteQuery("UPDATE SM_Modules_Version SET ValidationToken = ?, Config_ID = ?, Modified = now(), Release_Date = ? where Version = ? and Module_ID = ?",
                 new OdbcParameter("ValidationToken", validation_token));
@@ -139,5 +145,6 @@ namespace SM.API.Managers
             Mapper.ExecuteQuery("UPDATE SM_Modules_Config SET Deleted = now() where Config_ID = ?",
                 new OdbcParameter("Config_ID", configId));
         }
+
     }
 }

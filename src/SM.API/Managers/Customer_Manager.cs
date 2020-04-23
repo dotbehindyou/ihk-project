@@ -79,40 +79,19 @@ namespace SM.API.Managers
 
         public Change GetChange(Guid change_id)
         {
-            Change change = new Change();
-            change.Change_ID = change_id;
-
-            SM_Customers_Change smChange = Mapper.GetSingle<SM_Customers_Change>("SELECT * FROM SM_Customers_Change Where Change_ID = ?",
+            Change change = Mapper.GetSingle<Change>("SELECT * FROM SM_Customers_Change Where Change_ID = ?",
                 new OdbcParameter("Change_ID", change_id));
 
-            change.Customer_ID = smChange.Customer_ID;
-            change.Changed = smChange.Changed;
-            change.IsFailed = smChange.IsFailed;
-            change.IsSuccess = smChange.IsSuccess;
-            change.IsWarning = smChange.IsWarning;
-            change.LogMessage = smChange.LogMessage;
-
-            List<SM_Customers_Change_Items> smChangeItems = Mapper.GetMany<SM_Customers_Change_Items>("SELECT * FROM SM_Customers_Change_Items where Change_ID = ?",
+            change.Items = Mapper.GetMany<ChangeItem>("SELECT * FROM SM_Customers_Change_Items where Change_ID = ?",
                 new OdbcParameter("change_id", change_id));
 
-            change.Items = new List<ChangeItem>();
-
-            foreach(SM_Customers_Change_Items changeItem in smChangeItems)
-            {
-                ChangeItem item = new ChangeItem();
-
-                item.Change_ID = change_id;
-                item.Module_ID = changeItem.Module_ID;
-                item.Version = changeItem.Version;
-
-                item.IsFailed = changeItem.IsFailed;
-                item.IsSuccess = changeItem.IsSuccess;
-                item.IsWarning = changeItem.IsWarning;
-
-                change.Items.Add(item);
-            }
-
             return change;
+        }
+
+        public List<Change> GetCustomerChanges(Guid customerId, Boolean selectDone = false)
+        {
+            return Mapper.GetMany<Change>($"SELECT * FROM SM_Customers_Change where Customer_ID = ? and (IsActive = 1 {(selectDone ? "or Changed is not null" : "")})",
+                new OdbcParameter("customer_id", customerId));
         }
 
         public void RemoveChange(Guid change_id)
