@@ -9,6 +9,7 @@ namespace SM.Models
         public Guid Module_ID { get; set; }
         public String Name { get; set; }
         public String Version { get; set; }
+        public Byte[] Validation_Token { get; set; }
         public ConfigFile Config { get; set; }
         public String GetFullName()
         {
