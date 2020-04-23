@@ -8,7 +8,7 @@ using SM.Models;
 
 namespace SM.API.Managers
 {
-    public class Customer_Manager : Base_Manager
+    public class CustomerManager : BaseManager
     {
         public Customer Create(Int32 kdnr)
         {

@@ -9,7 +9,7 @@ using System.IO;
 
 namespace SM.API.Managers
 {
-    public class Module_Manager : Base_Manager
+    public class ModuleManager : BaseManager
     {
         public Module Create (String moduleName)
         {
