@@ -6,6 +6,6 @@
 	"Created" TIMESTAMP NOT NULL DEFAULT "now"(),
 	"Deleted" TIMESTAMP NULL,
 	"IsActive" BIT NOT NULL COMPUTE( case when "Deleted" is null then 1 else 0 end ),
-	"ReleaseDate" DATE NOT NULL,
+	"Release_Date" DATE NOT NULL,
 	PRIMARY KEY ( "Version" ASC, "Module_ID" ASC )
 ) IN "system";

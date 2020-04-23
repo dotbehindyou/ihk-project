@@ -13,5 +13,6 @@ namespace SM.Models.Table
         public DateTime Created { get; set; }
         public DateTime Deleted { get; set; }
         public Boolean IsActive { get; set; }
+        public DateTime Release_Date { get; set; }
     }
 }
