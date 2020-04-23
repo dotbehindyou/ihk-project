@@ -5,7 +5,7 @@ using Weiss.Data.Mapper;
 
 namespace SM.API.Managers
 {
-    public class Base_Manager
+    public class BaseManager
     {
         private static ObjectDataMapper _mapper = ObjectDataMapper.Init(Config.ConnectionString);
 
