@@ -7,12 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SM.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]/[Action]")]
     [ApiController]
     public class ModuleController : ControllerBase
     {
         // GET: api/Module
-        [HttpGet]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };

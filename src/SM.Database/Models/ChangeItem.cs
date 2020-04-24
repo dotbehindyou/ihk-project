@@ -4,6 +4,14 @@ using System.Text;
 
 namespace SM.Models
 {
+    public enum ChangeItemOperation
+    {
+        INSTALL,
+        REMOVE,
+        UPDATE,
+        CONFIG
+    }
+
     public class ChangeItem
     {
         public Guid Change_ID { get; set; }
@@ -13,5 +21,6 @@ namespace SM.Models
         public Boolean? IsFailed { get; set; }
         public Boolean? IsWarning { get; set; }
         public DateTime? Changed { get; set; }
+        public ChangeItemOperation Operation { get; set; }
     }
 }

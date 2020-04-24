@@ -6,7 +6,7 @@ namespace SM.API
 {
     public class Config
     {
-        public static String ConnectionString { get; set; }
-        public static String Werk { get; set; }
+        public String ConnectionString { get; set; }
+        public String Werk { get; set; }
     }
 }

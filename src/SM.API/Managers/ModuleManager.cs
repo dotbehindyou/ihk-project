@@ -11,6 +11,10 @@ namespace SM.API.Managers
 {
     public class ModuleManager : BaseManager
     {
+        public ModuleManager(string connectionString) : base(connectionString)
+        {
+        }
+
         public Module Create (String moduleName)
         {
             Module module = new Module();
