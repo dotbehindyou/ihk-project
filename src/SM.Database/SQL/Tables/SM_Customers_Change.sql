@@ -6,7 +6,7 @@
 	"IsFailed" BIT NULL,
 	"IsWarning" BIT NULL,
 	"LogMessage" VARCHAR(32767) NULL,
-	"Created" TIMESTAMP NULL,
+	"Created" TIMESTAMP NOT NULL DEFAULT "now"(),
 	"Deleted" TIMESTAMP NULL,
 	"IsActive" BIT NOT NULL COMPUTE( case when "Deleted" is null and "Changed" is null then 1 else 0 end ),
 	PRIMARY KEY ( "Change_ID" ASC )

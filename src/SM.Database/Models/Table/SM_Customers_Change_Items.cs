@@ -13,5 +13,6 @@ namespace SM.Models.Table
         public Boolean IsFailed { get; set; }
         public Boolean IsWarning { get; set; }
         public DateTime Changed { get; set; }
+        public ChangeItemOperation Operation { get; set; }
     }
 }
