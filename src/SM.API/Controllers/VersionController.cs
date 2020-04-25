@@ -12,7 +12,7 @@ using SM.Models;
 
 namespace SM.API.Controllers
 {
-    [Route("api/v1/{module_id:Guid}/[controller]")]
+    [Route("api/v1/{module_id}/[controller]")]
     [ApiController]
     public class VersionController : BaseController
     {
@@ -34,7 +34,7 @@ namespace SM.API.Controllers
         }
 
         // GET: api/Version/5
-        [HttpGet("{version}", Name = "Get")]
+        [HttpGet("{version}", Name = "Version")]
         public ModuleVersion Get(Guid module_id, String version)
         {
             return mm.GetVersion(module_id, version);

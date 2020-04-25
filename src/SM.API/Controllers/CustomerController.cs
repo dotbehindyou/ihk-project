@@ -55,9 +55,9 @@ namespace SM.API.Controllers
         }
 
         [HttpPost]
-        public void AddChange(Customer customer, [FromBody] IDictionary<Module, ChangeItemOperation> change)
+        public void AddChange(Guid customer_id, [FromBody] IDictionary<Module, ChangeItemOperation> change)
         {
-            cm.AddChange(customer.Customer_ID, change);
+            cm.AddChange(customer_id, change);
         }
 
         [HttpGet("{id}")]
@@ -71,35 +71,35 @@ namespace SM.API.Controllers
         #region ServiceAccess
 
         // [AllowAnonymous]
-        [HttpGet("{auth_token}")]
-        public List<Change> Changes(Byte[] auth_token)
+        [HttpGet("{auth_token_64}")]
+        public List<Change> Changes(String auth_token_64)
         {
-            Guid customer_id = cm.GetCustomerId(auth_token);
+            Guid customer_id = cm.GetCustomerId(this.GetAuthToken(auth_token_64));
             return cm.GetCustomerChanges(customer_id);
         }
 
         // [AllowAnonymous]
-        [HttpPut("{auth_token}")]
-        public void Change(Byte[] auth_token, [FromBody] Change change)
+        [HttpPut("{auth_token_64}")]
+        public void Change(String auth_token_64, [FromBody] Change change)
         {
-            Guid customer_id = cm.GetCustomerId(auth_token);
+            Guid customer_id = cm.GetCustomerId(this.GetAuthToken(auth_token_64));
             change.Customer_ID = customer_id;
 
             cm.SetChange(change);
         }
 
-        [HttpPut("{auth_token}")]
-        public void ModuleStatus(Byte[] auth_token, Guid module_id, ModuleStatus status)
+        [HttpPut("{auth_token_64}")]
+        public void ModuleStatus(String auth_token_64, Guid module_id, ModuleStatus status)
         {
-            Guid customer_id = cm.GetCustomerId(auth_token);
+            Guid customer_id = cm.GetCustomerId(this.GetAuthToken(auth_token_64));
 
             cm.SetModuleStatus(customer_id, module_id, status);
         }
 
-        [HttpDelete("{auth_token}")]
-        public void ModuleRemoved(Byte[] auth_token, Guid module_id)
+        [HttpDelete("{auth_token_64}")]
+        public void ModuleRemoved(String auth_token_64, Guid module_id)
         {
-            Guid customer_id = cm.GetCustomerId(auth_token);
+            Guid customer_id = cm.GetCustomerId(this.GetAuthToken(auth_token_64));
 
             cm.RemovedModuleFromCustomer(customer_id, module_id);
         }

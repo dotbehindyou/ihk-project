@@ -29,7 +29,7 @@ namespace SM.API.Controllers
         }
 
         // GET: api/Module/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}", Name = "Module")]
         public Module Get(Guid module_id)
         {
             return mm.Get(module_id);
@@ -46,6 +46,7 @@ namespace SM.API.Controllers
         [HttpPut("{id}")]
         public void Put(Guid id, [FromBody] Module value)
         {
+
         }
 
         [HttpPut("{id}")]

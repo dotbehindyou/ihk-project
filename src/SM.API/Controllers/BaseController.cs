@@ -32,5 +32,10 @@ namespace SM.API.Controllers
 
             return response;
         }
+
+        public Byte[] GetAuthToken(String auth_token_64)
+        {
+            return Convert.FromBase64String(auth_token_64);
+        }
     }
 }
