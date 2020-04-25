@@ -13,7 +13,7 @@ class Module extends React.Component {
     }
 
     componentDidMount() {
-        fetch('https://localhost:44376/api/v1/Module')
+        fetch('https://localhost:44376/api/v1/Module') // TODO Addresse über Config auslesen lassen
             .then(res => res.json())
             .then((result) => this.setState({
                 isLoaded: true,
