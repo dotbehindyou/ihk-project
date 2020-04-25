@@ -6,10 +6,10 @@ namespace SM.Models
 {
     public enum ChangeItemOperation
     {
-        INSTALL,
-        REMOVE,
-        UPDATE,
-        CONFIG
+        Install,
+        Remove,
+        Update,
+        Config
     }
 
     public class ChangeItem

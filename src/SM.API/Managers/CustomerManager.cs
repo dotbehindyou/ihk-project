@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace SM.API.Managers
 {
-    [Authorize]
     public class CustomerManager : BaseManager
     {
         private readonly String _werk;
@@ -82,7 +81,7 @@ namespace SM.API.Managers
 
             foreach(var mod in modules)
             {
-                change.Items.Add(this.AddChangeItem(change.Change_ID, mod.Key, mod.Value));
+                change.Items.Add(this.AddChangeItem(customer_id, change.Change_ID, mod.Key, mod.Value));
             }
 
             Mapper.ExecuteQuery("INSERT INTO SM_Customers_Change (Change_ID, Customer_ID) VALUES (?,?)",
@@ -115,7 +114,7 @@ namespace SM.API.Managers
                 new OdbcParameter("Change_id", change_id));
         }
 
-        protected ChangeItem AddChangeItem(Guid change_id, Module module, ChangeItemOperation operation)
+        protected ChangeItem AddChangeItem(Guid customer_id, Guid change_id, Module module, ChangeItemOperation operation)
         {
             ChangeItem item = new ChangeItem();
             item.Change_ID = change_id;
@@ -126,6 +125,11 @@ namespace SM.API.Managers
                 new OdbcParameter("change_id", change_id),
                 new OdbcParameter("module_id", module.Module_ID),
                 new OdbcParameter("version", module.Version));
+
+            if(operation == ChangeItemOperation.Install)
+            {
+                this.AddModuleToCustomer(customer_id, module);
+            }
 
             return item;
         }
@@ -141,11 +145,6 @@ namespace SM.API.Managers
                 new OdbcParameter("isWarning", change.IsWarning ?? false),
                 new OdbcParameter("logMessage", change.LogMessage),
                 new OdbcParameter("customerId", change.Customer_ID));
-
-            if (change.IsSuccess)
-            {
-                Mapper.ExecuteScalar<>
-            }
         }
 
         protected void SetChangeItem(ChangeItem item)
@@ -159,7 +158,31 @@ namespace SM.API.Managers
                 new OdbcParameter("Version", item.Version));
         }
 
-        public void AddModule
+        public void AddModuleToCustomer(Guid customer_id, Module module)
+        {
+            Mapper.ExecuteQuery("INSERT INTO SM_Customers_Modules (Customer_ID, Module_ID, Version, Status, Config) VALUES (?,?,?,?,?)",
+                new OdbcParameter("Customer_ID", customer_id),
+                new OdbcParameter("Module_ID", module.Module_ID),
+                new OdbcParameter("Version", module.Version),
+                new OdbcParameter("Status", ModuleStatus.Idle),
+                new OdbcParameter("Config", module.Config.Data));
+        }
+
+        public void SetModuleStatus(Guid customer_id, Guid module_id, ModuleStatus status)
+        {
+            Mapper.ExecuteQuery("UPDATE SM_Customers_Modules SET Status = ? where Customer_ID = ? and Module_ID = ?",
+                new OdbcParameter("Status", status),
+                new OdbcParameter("Customer_ID", customer_id),
+                new OdbcParameter("Module_ID", module_id));
+        }
+
+        public void RemovedModuleFromCustomer(Guid customer_id, Guid module_id)
+        {
+            Mapper.ExecuteQuery("Update SM_Customers_Modules SET Status = ?, Deleted = now() where Customer_ID = ? and Module_ID = ?",
+                new OdbcParameter("Status", ModuleStatus.Uninstalled),
+                new OdbcParameter("Customer_ID", customer_id),
+                new OdbcParameter("Module_ID", module_id));
+        }
 
         public Byte[] GenerateAuthToken()
         {

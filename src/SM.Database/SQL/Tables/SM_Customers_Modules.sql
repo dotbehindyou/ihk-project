@@ -8,6 +8,6 @@
 	"IsActive" BIT NOT NULL COMPUTE( case when "Deleted" is null then 1 else 0 end ),
 	"Status" VARCHAR(25) NULL,
 	"Config" "text" NOT NULL,
-	PRIMARY KEY ( "Customer_ID" ASC, "Module_ID" ASC, "Version" ASC )
+	PRIMARY KEY ( "Customer_ID" ASC, "Module_ID" ASC )
 ) IN "system";
 COMMENT ON COLUMN "admin"."SM_Customers_Modules"."Status" IS 'Installing, Idle, Running, Stop, Failed, etc.';

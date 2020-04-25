@@ -25,6 +25,7 @@ namespace SM.API.Controllers
         }
 
         #region Verwaltung
+
         // GET: api/Customer
         [HttpGet]
         public IEnumerable<Customer> Get()
@@ -52,24 +53,26 @@ namespace SM.API.Controllers
         {
             cm.Remove(id);
         }
-        #endregion
 
+        [HttpPost]
+        public void AddChange(Customer customer, IDictionary<Module, ChangeItemOperation> change)
+        {
+            cm.AddChange(customer.Customer_ID, change);
+        }
 
         [HttpGet("{id}")]
-        public List<Change> GetChanges(Guid id)
+        public List<Change> Changes(Guid id)
         {
             return cm.GetCustomerChanges(id, true);
         }
 
-        [HttpPost]
-        public void AddChange(Customer customer)
-        {
-            customer.
-        }
+        #endregion
+
+        #region ServiceAbruf
 
         // [AllowAnonymous]
         [HttpGet("{auth_token}")]
-        public List<Change> GetChanges(Byte[] auth_token)
+        public List<Change> Changes(Byte[] auth_token)
         {
             Guid customer_id = cm.GetCustomerId(auth_token);
             return cm.GetCustomerChanges(customer_id);
@@ -77,12 +80,30 @@ namespace SM.API.Controllers
 
         // [AllowAnonymous]
         [HttpPut("{auth_token}")]
-        public void SetChange(Byte[] auth_token, Change change)
+        public void Change(Byte[] auth_token, Change change)
         {
             Guid customer_id = cm.GetCustomerId(auth_token);
             change.Customer_ID = customer_id;
 
             cm.SetChange(change);
         }
+
+        [HttpPut("{auth_token}")]
+        public void ModuleStatus(Byte[] auth_token, Guid module_id, ModuleStatus status)
+        {
+            Guid customer_id = cm.GetCustomerId(auth_token);
+
+            cm.SetModuleStatus(customer_id, module_id, status);
+        }
+
+        [HttpDelete("{auth_token}")]
+        public void ModuleRemoved(Byte[] auth_token, Guid module_id)
+        {
+            Guid customer_id = cm.GetCustomerId(auth_token);
+
+            cm.RemovedModuleFromCustomer(customer_id, module_id);
+        }
+
+        #endregion
     }
 }
