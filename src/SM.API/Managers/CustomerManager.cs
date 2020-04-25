@@ -53,17 +53,24 @@ namespace SM.API.Managers
 
         public List<Customer> GetAll()
         {
-            return Mapper.GetMany<Customer>("select SM_Customers.Customer_ID, SM_Customers.Kdnr, KDSTM.KDNAMI as Name, SM_Customers.Auth_Token from SM_Customers " +
-                "left join KDSTM on KDKDNR = SM_Customers.Kdnr and KDWERK = ? and KDKZDK = 'D' and KDSTAT <> 'L' where IsActive = 1",
-                new OdbcParameter("werk", _werk));
+            List<Customer> result = new List<Customer>();
+            foreach (var cus in Mapper.GetMany<SM_Customers>("select SM_Customers.Customer_ID, SM_Customers.Kdnr, KDSTM.KDNAMI as Name, SM_Customers.Auth_Token from SM_Customers " +
+                    "left join KDSTM on KDKDNR = SM_Customers.Kdnr and KDWERK = ? and KDKZDK = 'D' and KDSTAT <> 'L' where IsActive = 1",
+                    new OdbcParameter("werk", _werk)))
+            {
+                result.Add(new Customer(cus));
+            }
+            return result;
         }
 
         public Customer Get(Guid id)
         {
-            return Mapper.GetSingle<Customer>("select SM_Customers.Customer_ID, SM_Customers.Kdnr, KDSTM.KDNAMI as Name, SM_Customers.Auth_Token from SM_Customers " +
+            SM_Customers c = Mapper.GetSingle<SM_Customers>("select SM_Customers.Customer_ID, SM_Customers.Kdnr, KDSTM.KDNAMI as Name, SM_Customers.Auth_Token from SM_Customers " +
                 "left join KDSTM on KDKDNR = SM_Customers.Kdnr and KDWERK = ? and KDKZDK = 'D' where SM_Customers.Customer_ID = ?",
                 new OdbcParameter("werk", _werk),
                 new OdbcParameter("Customer_ID", id));
+
+            return new Customer(c);
         }
 
         public Guid GetCustomerId(Byte[] auth_token)

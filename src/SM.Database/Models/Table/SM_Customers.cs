@@ -14,5 +14,7 @@ namespace SM.Models.Table
         public DateTime Modified { get; set; }
         public DateTime Deleted { get; set; }
         public Boolean IsActive { get; set; }
+
+        public String Name { get; set; }
     }
 }

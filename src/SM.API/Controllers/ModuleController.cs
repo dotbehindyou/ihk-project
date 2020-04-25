@@ -10,7 +10,7 @@ using SM.Models;
 
 namespace SM.API.Controllers
 {
-    [Route("api/v1/[controller]/[Action]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class ModuleController : BaseController
     {
@@ -23,6 +23,7 @@ namespace SM.API.Controllers
         }
 
         // GET: api/Module
+        [HttpGet]
         public IEnumerable<Module> Get()
         {
             return mm.GetAll();
@@ -30,9 +31,9 @@ namespace SM.API.Controllers
 
         // GET: api/Module/5
         [HttpGet("{id}", Name = "Module")]
-        public Module Get(Guid module_id)
+        public Module Get(Guid id)
         {
-            return mm.Get(module_id);
+            return mm.Get(id);
         }
 
         // Create: api/Module
