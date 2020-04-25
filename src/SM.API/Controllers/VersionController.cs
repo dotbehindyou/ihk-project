@@ -76,9 +76,10 @@ namespace SM.API.Controllers
 
         #region ServiceAccess
 
-        [HttpGet("{auth_token}")]
-        public HttpResponseMessage Download(Guid module_id, Byte[] auth_token)
+        [HttpGet("dl", Name = "Download")]
+        public HttpResponseMessage Download(Guid module_id, [FromHeader] String auth_token)
         {
+            Byte[] auth_tokensd = this.GetAuthToken(auth_token);
             // TODO Download Version of Module
             Stream st = default(Stream);
             return FileResult("lol", "lol", st);

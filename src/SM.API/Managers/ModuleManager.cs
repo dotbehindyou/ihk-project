@@ -59,8 +59,8 @@ namespace SM.API.Managers
         public Module Get(Guid module_id)
         {
             return Mapper.GetSingle<Module>("select SM_Modules.Module_ID, Name, Version from SM_Modules " +
-                "left join (select ROW_NUMBER() OVER (order by Release_Date desc) as rn, Version, Module_ID from SM_Modules_Version where Module_ID = ? and IsActive = 1) as Versions on SM_Modules.Module_ID = Versions.Module_ID and rn = 1" +
-                "where Module_ID = ?",
+                "left join (select ROW_NUMBER() OVER (order by Release_Date desc) as rn, Version, SM_Modules_Version.Module_ID from SM_Modules_Version where Module_ID = ? and IsActive = 1) as Versions on SM_Modules.Module_ID = Versions.Module_ID and rn = 1" +
+                "where SM_Modules.Module_ID = ?",
                 new OdbcParameter("module_id", module_id),
                 new OdbcParameter("module_id", module_id));
         }
@@ -71,7 +71,7 @@ namespace SM.API.Managers
 
         public IEnumerable<ModuleVersion> GetModuleVersions(Guid module_id)
         {
-            return Mapper.GetMany<ModuleVersion>("SELECT Version, Module_ID, Validation_Token as ValidationToken, ReleaseDate FROM SM_Modules_Version where Module_ID = ?",
+            return Mapper.GetMany<ModuleVersion>("SELECT Version, Module_ID, Validation_Token as ValidationToken, Release_Date as ReleaseDate FROM SM_Modules_Version where Module_ID = ?",
                 new OdbcParameter("module_id", module_id));
         }
 
@@ -81,7 +81,7 @@ namespace SM.API.Managers
                 "t_conf.FileName as ConfigFileName, t_conf.Format as ConfigFormat, t_conf.Data as ConfigData " +
                 "FROM SM_Modules_Version  as t_ver " +
                 "left join SM_Modules_Config as t_conf on t_conf.Config_ID = t_ver.Config_ID " +
-                "left join SM_Modules as t_mod on t_mod.Module_ID = t_ver.Module_ID",
+                "left join SM_Modules as t_mod on t_mod.Module_ID = t_ver.Module_ID where t_ver.Module_ID = ? and t_ver.Version = ?",
                 new OdbcParameter("Module", module_id),
                 new OdbcParameter("Version", version));
 

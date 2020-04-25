@@ -34,7 +34,7 @@ namespace SM.API.Controllers
         }
 
         // GET: api/Customer/5
-        [HttpGet("{id}", Name = "Select")]
+        [HttpGet("{id}", Name = "Customer")]
         public Customer Get(Guid id)
         {
             return cm.Get(id);
@@ -71,35 +71,35 @@ namespace SM.API.Controllers
         #region ServiceAccess
 
         // [AllowAnonymous]
-        [HttpGet("{auth_token_64}")]
-        public List<Change> Changes(String auth_token_64)
+        [HttpGet("sa")]
+        public List<Change> Changes([FromHeader] String auth_token)
         {
-            Guid customer_id = cm.GetCustomerId(this.GetAuthToken(auth_token_64));
+            Guid customer_id = cm.GetCustomerId(this.GetAuthToken(auth_token));
             return cm.GetCustomerChanges(customer_id);
         }
 
         // [AllowAnonymous]
-        [HttpPut("{auth_token_64}")]
-        public void Change(String auth_token_64, [FromBody] Change change)
+        [HttpPut("sa")]
+        public void Change([FromHeader] String auth_token, [FromBody] Change change)
         {
-            Guid customer_id = cm.GetCustomerId(this.GetAuthToken(auth_token_64));
+            Guid customer_id = cm.GetCustomerId(this.GetAuthToken(auth_token));
             change.Customer_ID = customer_id;
 
             cm.SetChange(change);
         }
 
-        [HttpPut("{auth_token_64}")]
-        public void ModuleStatus(String auth_token_64, Guid module_id, ModuleStatus status)
+        [HttpPut("sa/{module_id}")]
+        public void ModuleStatus([FromHeader] String auth_token, Guid module_id, ModuleStatus status)
         {
-            Guid customer_id = cm.GetCustomerId(this.GetAuthToken(auth_token_64));
+            Guid customer_id = cm.GetCustomerId(this.GetAuthToken(auth_token));
 
             cm.SetModuleStatus(customer_id, module_id, status);
         }
 
-        [HttpDelete("{auth_token_64}")]
-        public void ModuleRemoved(String auth_token_64, Guid module_id)
+        [HttpDelete("sa/{module_id}")]
+        public void ModuleRemoved([FromHeader] String auth_token, Guid module_id)
         {
-            Guid customer_id = cm.GetCustomerId(this.GetAuthToken(auth_token_64));
+            Guid customer_id = cm.GetCustomerId(this.GetAuthToken(auth_token));
 
             cm.RemovedModuleFromCustomer(customer_id, module_id);
         }
