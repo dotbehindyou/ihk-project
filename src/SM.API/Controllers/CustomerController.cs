@@ -55,7 +55,7 @@ namespace SM.API.Controllers
         }
 
         [HttpPost]
-        public void AddChange(Customer customer, IDictionary<Module, ChangeItemOperation> change)
+        public void AddChange(Customer customer, [FromBody] IDictionary<Module, ChangeItemOperation> change)
         {
             cm.AddChange(customer.Customer_ID, change);
         }
@@ -68,7 +68,7 @@ namespace SM.API.Controllers
 
         #endregion
 
-        #region ServiceAbruf
+        #region ServiceAccess
 
         // [AllowAnonymous]
         [HttpGet("{auth_token}")]
@@ -80,7 +80,7 @@ namespace SM.API.Controllers
 
         // [AllowAnonymous]
         [HttpPut("{auth_token}")]
-        public void Change(Byte[] auth_token, Change change)
+        public void Change(Byte[] auth_token, [FromBody] Change change)
         {
             Guid customer_id = cm.GetCustomerId(auth_token);
             change.Customer_ID = customer_id;

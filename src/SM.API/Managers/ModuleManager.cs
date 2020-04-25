@@ -6,6 +6,7 @@ using SM.Models.Table;
 using System.Data.Odbc;
 using System.Security.Cryptography;
 using System.IO;
+using SM.Models.Procedure;
 
 namespace SM.API.Managers
 {
@@ -14,6 +15,8 @@ namespace SM.API.Managers
         public ModuleManager(string connectionString) : base(connectionString)
         {
         }
+
+        #region Module
 
         public Module Create (String moduleName)
         {
@@ -62,28 +65,65 @@ namespace SM.API.Managers
                 new OdbcParameter("module_id", module_id));
         }
 
-        public Module AddVersion(Guid module_id, String version, Byte[] zipFile, DateTime releaseDate)
-        {
-            Module module = new Module();
-            module.Module_ID = module_id;
-            module.Version = version;
+        #endregion
 
-            File.WriteAllBytes(Path.Combine(module.Module_ID.ToString(), version + ".zip"), zipFile);
+        #region Version
+
+        public IEnumerable<ModuleVersion> GetModuleVersions(Guid module_id)
+        {
+            return Mapper.GetMany<ModuleVersion>("SELECT Version, Module_ID, Validation_Token as ValidationToken, ReleaseDate FROM SM_Modules_Version where Module_ID = ?",
+                new OdbcParameter("module_id", module_id));
+        }
+
+        public ModuleVersion GetVersion(Guid module_id, String version)
+        {
+            var proc = Mapper.GetSingle<Modules_Version_Config>("SELECT t_ver.Version, t_ver.Module_ID, t_mod.Name as ModuleName, Validation_Token as ValidationToken, t_ver.Release_Date as ReleaseDate, " +
+                "t_conf.FileName as ConfigFileName, t_conf.Format as ConfigFormat, t_conf.Data as ConfigData " +
+                "FROM SM_Modules_Version  as t_ver " +
+                "left join SM_Modules_Config as t_conf on t_conf.Config_ID = t_ver.Config_ID " +
+                "left join SM_Modules as t_mod on t_mod.Module_ID = t_ver.Module_ID",
+                new OdbcParameter("Module", module_id),
+                new OdbcParameter("Version", version));
+
+            return new ModuleVersion
+            {
+                Version = proc.Version,
+                Module_ID = proc.Module_ID,
+                ModuleName = proc.ModuleName,
+                ReleaseDate = proc.Release_Date,
+                ValidationToken = proc.Validation_Token,
+                Config = new ConfigFile
+                {
+                    Config_ID = proc.Config_ID,
+                    Data = proc.ConfigData,
+                    FileName = proc.ConfigFileName,
+                    Format = proc.ConfigFormat,
+                }
+            };
+        }
+
+        public ModuleVersion AddVersion(Guid module_id, String version, Byte[] zipFile, DateTime releaseDate)
+        {
+            ModuleVersion ver = new ModuleVersion();
+            ver.Module_ID = module_id;
+            ver.Version = version;
+
+            File.WriteAllBytes(Path.Combine(ver.Module_ID.ToString(), version + ".zip"), zipFile);
 
             Mapper.ExecuteQuery("INSERT INTO SM_Modules_Version (Version, Module_ID, Validation_Token, Config_ID, Release_Date) " +
                 "VALUES (?, ?, ?, ?, ?)",
                 new OdbcParameter("Version", version),
                 new OdbcParameter("Module_ID", module_id),
-                new OdbcParameter("Validation_Token", module.Validation_Token),
+                new OdbcParameter("Validation_Token", ver.ValidationToken),
                 new OdbcParameter("Release_Date", releaseDate));
 
-            return module;
+            return ver;
         }
 
         public void UpdateVersion(Guid module_id, String version, Byte[] zipFile)
         {
             Byte[] validation_token;
-            using(SHA512Managed man = new SHA512Managed())
+            using (SHA512Managed man = new SHA512Managed())
             {
                 validation_token = man.ComputeHash(zipFile);
             }
@@ -116,6 +156,10 @@ namespace SM.API.Managers
                 new OdbcParameter("Version", version),
                 new OdbcParameter("Module_ID", module_id));
         }
+
+        #endregion
+
+        #region Config
 
         public ConfigFile CreateConfig(Guid module_id, String configName, String format, String configData)
         {
@@ -150,5 +194,6 @@ namespace SM.API.Managers
                 new OdbcParameter("Config_ID", configId));
         }
 
+        #endregion
     }
 }

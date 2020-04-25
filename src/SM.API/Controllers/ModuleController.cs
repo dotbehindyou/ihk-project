@@ -4,36 +4,54 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using SM.API.Managers;
+using SM.Models;
 
 namespace SM.API.Controllers
 {
     [Route("api/v1/[controller]/[Action]")]
     [ApiController]
-    public class ModuleController : ControllerBase
+    public class ModuleController : BaseController
     {
-        // GET: api/Module
-        public IEnumerable<string> Get()
+        private ModuleManager mm;
+
+        public ModuleController(IOptions<Config> appSettings)
+            : base(appSettings)
         {
-            return new string[] { "value1", "value2" };
+            mm = new ModuleManager(Config.ConnectionString);
+        }
+
+        // GET: api/Module
+        public IEnumerable<Module> Get()
+        {
+            return mm.GetAll();
         }
 
         // GET: api/Module/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public Module Get(Guid module_id)
         {
-            return "value";
+            return mm.Get(module_id);
         }
 
-        // POST: api/Module
+        // Create: api/Module
         [HttpPost]
-        public void Post([FromBody] string value)
+        public Module Post([FromBody] Module value)
+        {
+            return mm.Create(value.Name);
+        }
+
+        // Set: api/Module/5
+        [HttpPut("{id}")]
+        public void Put(Guid id, [FromBody] Module value)
         {
         }
 
-        // PUT: api/Module/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Version(Guid id, [FromBody] Version version)
         {
+
         }
 
         // DELETE: api/ApiWithActions/5
