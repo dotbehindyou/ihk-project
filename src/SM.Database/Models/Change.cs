@@ -8,7 +8,7 @@ namespace SM.Models
     public class Change
     {
         public Guid Change_ID { get; set; }
-        public Guid Customer_ID { get; set; }
+        public Int32 Kdnr { get; set; }
         public Boolean IsDone { get => Changed != null; }
         public DateTime? Changed { get; set; }
         public Boolean? IsSuccess { get => IsFailed == null && IsWarning == null ? null : (Boolean?)(!(IsFailed ?? false) ||!(IsWarning ?? false)); }

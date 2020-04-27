@@ -7,7 +7,6 @@ namespace SM.Models.Table
 {
     public class SM_Customers
     {
-        public Guid Customer_ID { get; set; }
         public Int32 Kdnr { get; set; }
         public Byte[] Auth_Token { get; set; }
         public DateTime Created { get; set; }
