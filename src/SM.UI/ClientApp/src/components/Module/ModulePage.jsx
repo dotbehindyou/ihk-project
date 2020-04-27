@@ -14,6 +14,7 @@ class ModulePage extends React.Component {
         }
 
         this.openEditor = this.openEditor.bind(this);
+        this.closeEditor = this.closeEditor.bind(this);
     }
 
     openEditor(model) {
@@ -22,12 +23,19 @@ class ModulePage extends React.Component {
         });
     }
 
+    closeEditor() {
+        this.setState({
+            select: null
+        });
+        console.log("lo");
+    }
+
     render() {
         var renderdItem = null;
         if (this.state.select == null)
             renderdItem = <ModuleList onEdit={this.openEditor} />;
         else
-            renderdItem = <Module model={this.state.select} />;
+            renderdItem = <Module onClose={this.closeEditor} model={this.state.select} />;
 
         return <div> {renderdItem} </div>;
     }
