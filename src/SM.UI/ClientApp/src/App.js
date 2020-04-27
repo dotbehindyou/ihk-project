@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router';
 import { Layout } from './components/Layout';
-import Module from './components/Module';
+import ModulePage from './components/Module/ModulePage';
 
 import './custom.css'
 
@@ -11,7 +11,7 @@ export default class App extends Component {
   render () {
     return (
       <Layout>
-        <Route exact path='/' component={Module} />
+            <Route exact path='/' component={ModulePage} />
       </Layout>
     );
   }

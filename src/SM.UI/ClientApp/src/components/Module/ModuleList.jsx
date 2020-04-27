@@ -1,13 +1,15 @@
 ﻿import React from 'react';
 
+import ModuleListItem from './ModuleListItem';
 
-
-class Module extends React.Component {
+class ModuleList extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = {
             error: null,
             isLoaded: false,
+            onEdit: props.onEdit,
             items: []
         }
     }
@@ -22,9 +24,12 @@ class Module extends React.Component {
     }
 
     render() {
-        return <div> {this.state.items.map((x) => <p>{x.module_ID}</p>)} </div>;
+        return <table>
+            <tbody>
+                {this.state.items.map((x) => <ModuleListItem key={x.module_ID} model={x} onEdit={this.props.onEdit}/>)}
+            </tbody>
+        </table>;
     }
 }
 
-
-export default Module;
+export default ModuleList;
