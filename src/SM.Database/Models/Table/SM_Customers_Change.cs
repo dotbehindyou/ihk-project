@@ -7,7 +7,7 @@ namespace SM.Models.Table
     public class SM_Customers_Change
     {
         public Guid Change_ID { get; set; }
-        public Guid Customer_ID { get; set; }
+        public Int32 Kdnr { get; set; }
         public DateTime Changed { get; set; }
         public Boolean IsSuccess { get; set; }
         public Boolean IsFailed { get; set; }
