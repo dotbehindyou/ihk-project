@@ -12,3 +12,9 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+.modal-content {
+    box-shadow: 0 0 3px 3px rgba(255,255,255,0.2);
+    background-color: black;
+    color: #fff;
+}

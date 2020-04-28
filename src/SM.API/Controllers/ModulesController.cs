@@ -12,11 +12,11 @@ namespace SM.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class ModuleController : BaseController
+    public class ModulesController : BaseController
     {
         private ModuleManager mm;
 
-        public ModuleController(IOptions<Config> appSettings)
+        public ModulesController(IOptions<Config> appSettings)
             : base(appSettings)
         {
             mm = new ModuleManager(Config.ConnectionString);

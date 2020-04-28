@@ -6,13 +6,14 @@ export class Layout extends Component {
   static displayName = Layout.name;
 
   render () {
-    return (
-      <div>
-        <NavMenu />
-        <Container>
-          {this.props.children}
-        </Container>
-      </div>
+      return (
+          <div style={{ background: '#000', color: '#fff', height: '100vh' }}>
+              <NavMenu />
+              <p />
+            <Container>
+              {this.props.children}
+            </Container>
+        </div>
     );
   }
 }

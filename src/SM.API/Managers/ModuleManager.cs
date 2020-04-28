@@ -71,7 +71,10 @@ namespace SM.API.Managers
 
         public IEnumerable<ModuleVersion> GetModuleVersions(Guid module_id)
         {
-            return Mapper.GetMany<ModuleVersion>("SELECT Version, Module_ID, Validation_Token as ValidationToken, Release_Date as ReleaseDate FROM SM_Modules_Version where Module_ID = ?",
+            return Mapper.GetMany<ModuleVersion>("SELECT SM_Modules_Version.Version, SM_Modules_Version.Module_ID, SM_Modules_Version.Validation_Token as ValidationToken, SM_Modules_Version.Release_Date as ReleaseDate, SM_Modules.Name as ModuleName, SM_Modules_Version.Config_ID as \"ConfigFile.Config_ID\" " +
+                    "FROM SM_Modules_Version " +
+                    "left join SM_Modules on SM_Modules.Module_ID = SM_Modules_Version.Module_ID " +
+                    "where SM_Modules_Version.Module_ID = ?",
                 new OdbcParameter("module_id", module_id));
         }
 
