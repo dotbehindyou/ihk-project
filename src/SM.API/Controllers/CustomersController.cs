@@ -14,11 +14,11 @@ namespace SM.API.Controllers
     //[Authorize]
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class CustomerController : BaseController
+    public class CustomersController : BaseController
     {
         private CustomerManager cm;
 
-        public CustomerController(IOptions<Config> appSettings)
+        public CustomersController(IOptions<Config> appSettings)
             : base(appSettings)
         {
             cm = new CustomerManager(Config.ConnectionString, Config.Werk);
@@ -55,7 +55,7 @@ namespace SM.API.Controllers
         }
 
         [HttpPost]
-        public void AddChange(Int32 id, [FromBody] IDictionary<Module, ChangeItemOperation> change)
+        public void Changes(Int32 id, [FromBody] IDictionary<Module, ChangeItemOperation> change)
         {
             cm.AddChange(id, change);
         }
@@ -80,7 +80,7 @@ namespace SM.API.Controllers
 
         // [AllowAnonymous]
         [HttpPut("sa/changes/{change_id}")]
-        public void Change([FromHeader] String auth_token, [FromBody] Change change) // TODO Change ID
+        public void Changes([FromHeader] String auth_token, [FromBody] Change change) // TODO Change ID
         {
             Int32 kdnr = cm.GetCustomerKdnr(this.GetAuthToken(auth_token));
             change.Kdnr = kdnr;
