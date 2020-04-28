@@ -1,4 +1,5 @@
 ﻿import React from 'react';
+import moment from 'moment';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
@@ -20,7 +21,7 @@ class VersionListItem extends React.Component {
 
     openEdit() {
         if (this.props.onEdit !== undefined) {
-            this.props.onEdit(this.props.model);
+            this.props.onEdit(this.state.model);
         }
     }
 
@@ -28,8 +29,8 @@ class VersionListItem extends React.Component {
         var model = this.state.model;
         return <tr>
             <td>{model.version}</td>
-            <td><small>({model.releaseDate})</small></td>
-            <td><Button size="sm" color="success" onClick={this.openEdit}><FontAwesomeIcon icon={faEdit} /></Button></td>
+            <td><small>({moment(model.releaseDate).format('DD.MM.YYYY')})</small></td>
+            <td><Button outline size="sm" color="success" onClick={this.openEdit}><FontAwesomeIcon icon={faEdit} /></Button></td>
         </tr>;
     }
 }

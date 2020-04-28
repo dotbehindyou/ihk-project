@@ -3,6 +3,8 @@ import { Route } from 'react-router';
 import { Layout } from './components/Layout';
 import ModulePage from './components/Module/ModulePage';
 
+import 'moment/locale/de.js';
+import 'rc-datepicker/lib/style.css';
 import './custom.css'
 
 export default class App extends Component {
@@ -10,9 +12,9 @@ export default class App extends Component {
 
   render () {
     return (
-      <Layout>
+        <Layout>
             <Route exact path='/' component={ModulePage} />
-      </Layout>
+        </Layout>
     );
   }
 }

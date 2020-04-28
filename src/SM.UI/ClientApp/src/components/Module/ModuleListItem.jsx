@@ -29,7 +29,7 @@ class ModuleListItem extends React.Component {
         return <tr>
             <td>{model.name}</td>
             <td><small>({model.version})</small></td>
-            <td><Button size="sm" color="success" onClick={this.openEdit}><FontAwesomeIcon icon={faEdit} /></Button></td>
+            <td><Button outline size="sm" color="success" onClick={this.openEdit}><FontAwesomeIcon icon={faEdit} /></Button></td>
         </tr>;
     }
 }

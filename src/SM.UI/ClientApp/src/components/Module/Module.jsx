@@ -31,10 +31,10 @@ class Module extends React.Component {
         return <div>
             <Row>
                 <Col>
-                    <h2>{model.name} <small>{model.version}</small></h2>
+                    <h2>{model.name} <small>({model.version})</small></h2>
                 </Col>
                 <Col style={{ textAlign: 'right' }}>
-                    <Button color="danger" size="sm" onClick={this.close}><FontAwesomeIcon icon={faWindowClose} /></Button>
+                    <Button outline color="danger" size="sm" onClick={this.close}><FontAwesomeIcon icon={faWindowClose} /></Button>
                 </Col>
             </Row>
             <hr />
@@ -44,13 +44,13 @@ class Module extends React.Component {
                     <Input type="name" name="name" id="name" placeholder="Name vom Modul" defaultValue={model.name} />
                 </FormGroup>
                 <ButtonGroup size="sm">
-                    <Button color="danger" type="button">Abbrechen</Button>
-                    <Button color="primary" type="submit">Speichern</Button>
+                    <Button outline color="danger" type="button">Abbrechen</Button>
+                    <Button outline color="primary" type="submit">Speichern</Button>
                 </ButtonGroup>
             </Form>
             <hr />
             <h4>Versionen: </h4>
-            <VersionList module={model.module_ID} />
+            <VersionList moduleId={model.module_ID} />
         </div>;
         // TODO - Render Version list
         // TODO - Edit
