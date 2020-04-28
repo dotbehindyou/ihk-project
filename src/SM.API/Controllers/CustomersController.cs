@@ -14,11 +14,11 @@ namespace SM.API.Controllers
     //[Authorize]
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class CustomerController : BaseController
+    public class CustomersController : BaseController
     {
         private CustomerManager cm;
 
-        public CustomerController(IOptions<Config> appSettings)
+        public CustomersController(IOptions<Config> appSettings)
             : base(appSettings)
         {
             cm = new CustomerManager(Config.ConnectionString, Config.Werk);
@@ -33,35 +33,35 @@ namespace SM.API.Controllers
             return cm.GetAll();
         }
 
-        // GET: api/Customer/5
+        // GET: api/Customer/{Int32}
         [HttpGet("{id}", Name = "Customer")]
-        public Customer Get(Guid id)
+        public Customer Get(Int32 id)
         {
             return cm.Get(id);
         }
 
-        // PUT: api/Customer/5
+        // PUT: api/Customer/{Int32}
         [HttpPut("{kdnr}")]
-        public void Put(Int32 kdnr)
+        public void Put(Int32 id)
         {
-            cm.Create(kdnr);
+            cm.Create(id);
         }
 
-        // DELETE: api/ApiWithActions/5
+        // DELETE: api/ApiWithActions/{Int32}
         [HttpDelete("{id}")]
-        public void Delete(Guid id)
+        public void Delete(Int32 id)
         {
             cm.Remove(id);
         }
 
         [HttpPost]
-        public void AddChange(Guid customer_id, [FromBody] IDictionary<Module, ChangeItemOperation> change)
+        public void Changes(Int32 id, [FromBody] IDictionary<Module, ChangeItemOperation> change)
         {
-            cm.AddChange(customer_id, change);
+            cm.AddChange(id, change);
         }
 
         [HttpGet("{id}")]
-        public List<Change> Changes(Guid id)
+        public List<Change> Changes(Int32 id)
         {
             return cm.GetCustomerChanges(id, true);
         }
@@ -71,37 +71,37 @@ namespace SM.API.Controllers
         #region ServiceAccess
 
         // [AllowAnonymous]
-        [HttpGet("sa")]
+        [HttpGet("sa/changes")]
         public List<Change> Changes([FromHeader] String auth_token)
         {
-            Guid customer_id = cm.GetCustomerId(this.GetAuthToken(auth_token));
-            return cm.GetCustomerChanges(customer_id);
+            Int32 kdnr = cm.GetCustomerKdnr(this.GetAuthToken(auth_token));
+            return cm.GetCustomerChanges(kdnr);
         }
 
         // [AllowAnonymous]
-        [HttpPut("sa")]
-        public void Change([FromHeader] String auth_token, [FromBody] Change change)
+        [HttpPut("sa/changes/{change_id}")]
+        public void Changes([FromHeader] String auth_token, [FromBody] Change change) // TODO Change ID
         {
-            Guid customer_id = cm.GetCustomerId(this.GetAuthToken(auth_token));
-            change.Customer_ID = customer_id;
+            Int32 kdnr = cm.GetCustomerKdnr(this.GetAuthToken(auth_token));
+            change.Kdnr = kdnr;
 
             cm.SetChange(change);
         }
 
-        [HttpPut("sa/{module_id}")]
+        [HttpPut("sa/modules/{module_id}")]
         public void ModuleStatus([FromHeader] String auth_token, Guid module_id, ModuleStatus status)
         {
-            Guid customer_id = cm.GetCustomerId(this.GetAuthToken(auth_token));
+            Int32 kdnr = cm.GetCustomerKdnr(this.GetAuthToken(auth_token));
 
-            cm.SetModuleStatus(customer_id, module_id, status);
+            cm.SetModuleStatus(kdnr, module_id, status);
         }
 
-        [HttpDelete("sa/{module_id}")]
+        [HttpDelete("sa/modules/{module_id}")]
         public void ModuleRemoved([FromHeader] String auth_token, Guid module_id)
         {
-            Guid customer_id = cm.GetCustomerId(this.GetAuthToken(auth_token));
+            Int32 kdnr = cm.GetCustomerKdnr(this.GetAuthToken(auth_token));
 
-            cm.RemovedModuleFromCustomer(customer_id, module_id);
+            cm.RemovedModuleFromCustomer(kdnr, module_id);
         }
 
         #endregion

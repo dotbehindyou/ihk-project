@@ -30,21 +30,17 @@ namespace SM.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder => {
+                        builder.WithOrigins("*"); // TODO CORS über Config auslesen, wird für UI benötigt, Service ist egal
+                    });
+            });
+
             services.AddControllers();
 
             services.Configure<Config>(Configuration.GetSection("Config"));
-
-            services.AddAuthentication(x =>
-            {
-                x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-                .AddJwtBearer(options =>
-                {
-                    options.Authority = "https://{yourOktaDomain}/oauth2/default";
-                    options.Audience = "api://default";
-                    options.RequireHttpsMetadata = false;
-                });
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,6 +52,8 @@ namespace SM.API
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors();
 
             app.UseRouting();
 

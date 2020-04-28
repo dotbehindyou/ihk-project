@@ -6,7 +6,7 @@ namespace SM.Models.Table
 {
     public class SM_Customers_Modules
     {
-        public Guid Customer_ID { get; set; }
+        public Int32 Kdnr { get; set; }
         public Guid Module_ID { get; set; }
         public String Version { get; set; }
         public DateTime Created { get; set; }
