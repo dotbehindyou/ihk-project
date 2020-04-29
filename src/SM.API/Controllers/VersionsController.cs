@@ -44,18 +44,27 @@ namespace SM.API.Controllers
         [HttpPost]
         public ModuleVersion Post(Guid module_id, [FromBody] ModuleVersion version)
         {
+            return mm.AddVersion(module_id, version.Version, version.Config, version.ReleaseDate);
+        }
+
+        [HttpPut("{version}/file")]
+        public Boolean UploadFile(Guid module_id, String version)
+        {
+            var httpRequest = HttpContext.Request;
+            if (httpRequest.Form.Files.Count > 0)
+            {
+                var file = httpRequest.Form.Files[0];
+                mm.UpdateVersionFiles(module_id, version, file);
+            }
             // TODO File
-            return mm.AddVersion(module_id, version.Version, version.Config, version.File, version.ReleaseDate);
+
+            return false;
         }
 
         // PUT: api/Version/5
         [HttpPut("{version}")]
         public ModuleVersion Put(Guid module_id, String version, [FromBody] ModuleVersion versionForm)
         {
-            // TODO File
-            if(versionForm.File != null)
-                mm.UpdateVersion(module_id, versionForm.Version, versionForm.File);
-
             if (versionForm.Config != null)
             {
                 if (versionForm.Config.Config_ID == Guid.Empty)
@@ -83,13 +92,12 @@ namespace SM.API.Controllers
 
         #region ServiceAccess
 
-        [HttpGet("dl", Name = "Download")]
-        public HttpResponseMessage Download(Guid module_id, [FromHeader] String auth_token)
+        [HttpGet("dl/{version}", Name = "Download")]
+        public FileStreamResult Download(Guid module_id, String version, [FromHeader] String auth_token)
         {
             Byte[] auth_tokensd = this.GetAuthToken(auth_token);
-            // TODO Download Version of Module
-            Stream st = default(Stream);
-            return FileResult("lol", "lol", st);
+            // TODO Auth_token Validieren und prüfen ob berechtigt ist auf Dateien zuzugreifen
+            return File(mm.GetVersionFile(module_id, version), "application/zip", "ModulName.zip");
         }
 
         #endregion
