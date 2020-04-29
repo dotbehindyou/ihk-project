@@ -36,7 +36,7 @@ namespace SM.API.Managers
             return module;
         }
 
-        public void Update (SM_Modules module)
+        public void Update (Module module)
         {
             Mapper.ExecuteQuery("UPDATE SM_Modules SET Modified = now(), Name = ? where Module_ID = ?;",
                 new OdbcParameter("name", module.Name),
@@ -80,11 +80,10 @@ namespace SM.API.Managers
 
         public ModuleVersion GetVersion(Guid module_id, String version)
         {
-            var proc = Mapper.GetSingle<Modules_Version_Config>("SELECT t_ver.Version, t_ver.Module_ID, t_mod.Name as ModuleName, Validation_Token as ValidationToken, t_ver.Release_Date as ReleaseDate, " +
-                "t_conf.FileName as ConfigFileName, t_conf.Format as ConfigFormat, t_conf.Data as ConfigData " +
-                "FROM SM_Modules_Version  as t_ver " +
-                "left join SM_Modules_Config as t_conf on t_conf.Config_ID = t_ver.Config_ID " +
-                "left join SM_Modules as t_mod on t_mod.Module_ID = t_ver.Module_ID where t_ver.Module_ID = ? and t_ver.Version = ?",
+            var proc = Mapper.GetSingle<Modules_Version_Config>("SELECT t_ver.Version, t_ver.Module_ID, t_mod.Name as ModuleName, Validation_Token as Validation_Token, t_ver.Release_Date as Release_Date, t_conf.Config_ID as Config_ID, t_conf.FileName as ConfigFileName, t_conf.Format as ConfigFormat, t_conf.Data as  ConfigData " +
+                    "FROM SM_Modules_Version  as t_ver " +
+                    "left join SM_Modules_Config as t_conf on t_conf.Config_ID = t_ver.Config_ID " +
+                    "left join SM_Modules as t_mod on t_mod.Module_ID = t_ver.Module_ID where t_ver.Module_ID = ? and t_ver.Version = ? ",
                 new OdbcParameter("Module", module_id),
                 new OdbcParameter("Version", version));
 
@@ -105,20 +104,28 @@ namespace SM.API.Managers
             };
         }
 
-        public ModuleVersion AddVersion(Guid module_id, String version, Byte[] zipFile, DateTime releaseDate)
+        public ModuleVersion AddVersion(Guid module_id, String version, ConfigFile configFile, Byte[] versionFile, DateTime releaseDate)
         {
             ModuleVersion ver = new ModuleVersion();
             ver.Module_ID = module_id;
             ver.Version = version;
+            ver.ReleaseDate = releaseDate;
+            ver.Version = version;
+            ver.Module_ID = module_id;
 
-            File.WriteAllBytes(Path.Combine(ver.Module_ID.ToString(), version + ".zip"), zipFile);
+            if(versionFile != null)
+                File.WriteAllBytes(Path.Combine(ver.Module_ID.ToString(), version + ".zip"), versionFile);
+
+            ver.Config = this.CreateConfig(module_id, configFile.FileName, configFile.Format, configFile.Data);
 
             Mapper.ExecuteQuery("INSERT INTO SM_Modules_Version (Version, Module_ID, Validation_Token, Config_ID, Release_Date) " +
                 "VALUES (?, ?, ?, ?, ?)",
-                new OdbcParameter("Version", version),
-                new OdbcParameter("Module_ID", module_id),
-                new OdbcParameter("Validation_Token", ver.ValidationToken),
-                new OdbcParameter("Release_Date", releaseDate));
+                new OdbcParameter("Version", ver.Version),
+                new OdbcParameter("Module_ID", ver.Module_ID),
+                new OdbcParameter("Validation_Token", ver.ValidationToken ?? (Object)DBNull.Value),
+                new OdbcParameter("Config_ID", ver.Config.Config_ID),
+                new OdbcParameter("Release_Date", ver.ReleaseDate));
+
 
             return ver;
         }
@@ -147,7 +154,7 @@ namespace SM.API.Managers
 
         public void SetConfig(Guid module_id, String version, Guid config_id)
         {
-            Mapper.ExecuteQuery("UPDATE SM_Modules_Version SET Config_ID = ?, Modified = now() where Version = ? and Module_ID",
+            Mapper.ExecuteQuery("UPDATE SM_Modules_Version SET Config_ID = ? where Version = ? and Module_ID = ?",
                 new OdbcParameter("config_id", config_id),
                 new OdbcParameter("version", version),
                 new OdbcParameter("module_id", module_id));
@@ -170,13 +177,14 @@ namespace SM.API.Managers
             configFile.Config_ID = Guid.NewGuid();
             configFile.Data = configData;
             configFile.Format = format;
+            configFile.FileName = configName;
 
             Mapper.ExecuteQuery("INSERT INTO SM_Modules_Config (Config_ID, Module_ID, FileName, Format, Data) " +
                 "VALUES (?,?,?,?,?)",
                 new OdbcParameter("Config_ID", configFile.Config_ID),
                 new OdbcParameter("Module_ID", module_id),
-                new OdbcParameter("FileName", configFile),
-                new OdbcParameter("Format", configFile.Format),
+                new OdbcParameter("FileName", configFile.FileName),
+                new OdbcParameter("Format", configFile.Format ?? ""),
                 new OdbcParameter("Data", configFile.Data));
 
             return configFile;

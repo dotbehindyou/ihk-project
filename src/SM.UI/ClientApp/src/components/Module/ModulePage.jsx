@@ -2,7 +2,6 @@
 import ModuleList from './ModuleList';
 import Module from './Module';
 
-var debug_model = { "module_ID": "1ec96940-0eb2-4a42-9be1-5268df8afd80", "name": "Test", "version": "1.0", "validation_Token": null, "config": null, "status": 0 };
 
 class ModulePage extends React.Component {
     constructor(props) {
@@ -12,7 +11,7 @@ class ModulePage extends React.Component {
             error: null,
             isLoaded: false,
             items: [],
-            select: debug_model
+            select: null
         }
 
         this.openEditor = this.openEditor.bind(this);
@@ -29,7 +28,6 @@ class ModulePage extends React.Component {
         this.setState({
             select: null
         });
-        console.log("lo");
     }
 
     render() {

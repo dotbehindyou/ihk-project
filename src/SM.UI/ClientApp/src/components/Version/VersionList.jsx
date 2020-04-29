@@ -6,8 +6,6 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import VersionEditorModal from './VersionEditorModal';
 
-var debug_item = { "module_ID": "1ec96940-0eb2-4a42-9be1-5268df8afd80", "moduleName": null, "version": "3.0", "config": null, "releaseDate": "2020-04-19T00:00:00", "validationToken": "", "file": null };
-
 class VersionList extends React.Component {
     constructor(props) {
         super(props);
@@ -16,44 +14,62 @@ class VersionList extends React.Component {
             error: null,
             isLoaded: false,
             onEdit: props.onEdit,
-            moduleId: props.moduleId,
+            module: props.module,
             items: [],
-            editor: { // TODO DEBUG!!! Beim Releas ändern!!
-                isOpen: true,
-                item: debug_item
+            editor: {
+                isOpen: false,
+                item: {}
             }
         }
 
         this.toggleEditor = this.toggleEditor.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
+    }
+
+    load() {
+        fetch('https://localhost:44376/api/v1/' + this.state.module.module_ID + '/versions') // TODO Addresse über Config auslesen lassen
+            .then(res => res.json())
+            .then((result) => this.setState({
+                isLoaded: true,
+                items: result
+            }))
+            .catch((ex) => this.setState({ error: ex, items: [] }));
     }
 
     componentDidMount() {
         if (!this.state.isLoaded) {
-            fetch('https://localhost:44376/api/v1/' + this.state.moduleId + '/versions') // TODO Addresse über Config auslesen lassen
-                .then(res => res.json())
-                .then((result) => this.setState({
-                    isLoaded: true,
-                    items: result
-                }))
-                .catch((ex) => this.setState({ error: ex, items: [] }));
+            this.load();
         }
     }
 
-    toggleEditor(editItem) {
+    toggleEditor(editItem, close) {
+        if (close !== true) {
+            close = this.state.editor.isOpen;
+        }
+
         this.setState({
             editor: {
-                isOpen: !this.state.editor.isOpen,
-                item: editItem || { }
+                isOpen: !close,
+                item: editItem || { moduleId: this.state.module.module_ID, moduleName: this.state.module.name }
             }
         })
+    }
+
+    handleDelete(item) {
+        console.log(item);
     }
 
     render() {
         var comp;
         if (this.state.isLoaded) {
-            comp = this.state.items.map((x) => <VersionListItem key={x.version} model={x} onEdit={this.toggleEditor} />);
+            comp = this.state.items.map((x) => <VersionListItem key={x.version} model={x} onEdit={this.toggleEditor} onDelete={this.handleDelete} />);
         } else {
             comp = <tr><td>{this.state.error}</td></tr>;
+        }
+        var edit;
+        if (this.state.editor.isOpen) {
+            edit = <VersionEditorModal moduleId={this.state.module.module_ID} moduleName={this.state.module.name} isOpen={this.state.editor.isOpen} onClose={() => { this.toggleEditor(null, true); }} version={this.state.editor.item.version} />
+
         }
         return (
             <div>
@@ -67,7 +83,7 @@ class VersionList extends React.Component {
                         </tr>
                     </tfoot>
                 </table>
-                <VersionEditorModal isOpen={this.state.editor.isOpen} onToggle={this.toggleEditor} model={this.state.editor.item} />
+                { edit }
             </div>);
     }
 }

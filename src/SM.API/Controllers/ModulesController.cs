@@ -36,7 +36,7 @@ namespace SM.API.Controllers
             return mm.Get(id);
         }
 
-        // Create: api/Module
+        // Create: api/Modules
         [HttpPost]
         public Module Post([FromBody] Module value)
         {
@@ -47,19 +47,14 @@ namespace SM.API.Controllers
         [HttpPut("{id}")]
         public void Put(Guid id, [FromBody] Module value)
         {
-
-        }
-
-        [HttpPut("{id}")]
-        public void Version(Guid id, [FromBody] Version version)
-        {
-
+            mm.Update(value);
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
+            mm.Remove(id);
         }
     }
 }
