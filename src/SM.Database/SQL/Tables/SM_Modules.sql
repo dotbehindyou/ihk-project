@@ -4,5 +4,6 @@
 	"Created" TIMESTAMP NOT NULL DEFAULT "now"(),
 	"Deleted" TIMESTAMP NULL,
 	"IsActive" BIT NOT NULL COMPUTE( case when "Deleted" is null then 1 else 0 end ),
+	"Modified" TIMESTAMP NULL,
 	PRIMARY KEY ( "Module_ID" ASC )
 ) IN "system";

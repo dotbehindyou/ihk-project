@@ -7,5 +7,6 @@
 	"Deleted" TIMESTAMP NULL,
 	"IsActive" BIT NOT NULL COMPUTE( case when "Deleted" is null then 1 else 0 end ),
 	"Release_Date" DATE NOT NULL,
+	"Modified" TIMESTAMP NULL,
 	PRIMARY KEY ( "Version" ASC, "Module_ID" ASC )
 ) IN "system";
