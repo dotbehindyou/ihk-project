@@ -50,7 +50,7 @@ class Module extends React.Component {
             </Form>
             <hr />
             <h4>Versionen: </h4>
-            <VersionList moduleId={model.module_ID} />
+            <VersionList module={model} />
         </div>;
         // TODO - Render Version list
         // TODO - Edit

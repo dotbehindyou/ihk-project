@@ -80,11 +80,10 @@ namespace SM.API.Managers
 
         public ModuleVersion GetVersion(Guid module_id, String version)
         {
-            var proc = Mapper.GetSingle<Modules_Version_Config>("SELECT t_ver.Version, t_ver.Module_ID, t_mod.Name as ModuleName, Validation_Token as ValidationToken, t_ver.Release_Date as ReleaseDate, " +
-                "t_conf.FileName as ConfigFileName, t_conf.Format as ConfigFormat, t_conf.Data as ConfigData " +
-                "FROM SM_Modules_Version  as t_ver " +
-                "left join SM_Modules_Config as t_conf on t_conf.Config_ID = t_ver.Config_ID " +
-                "left join SM_Modules as t_mod on t_mod.Module_ID = t_ver.Module_ID where t_ver.Module_ID = ? and t_ver.Version = ?",
+            var proc = Mapper.GetSingle<Modules_Version_Config>("SELECT t_ver.Version, t_ver.Module_ID, t_mod.Name as ModuleName, Validation_Token as Validation_Token, t_ver.Release_Date as Release_Date, t_conf.FileName as ConfigFileName, t_conf.Format as ConfigFormat, t_conf.Data as  ConfigData " +
+                    "FROM SM_Modules_Version  as t_ver " +
+                    "left join SM_Modules_Config as t_conf on t_conf.Config_ID = t_ver.Config_ID " +
+                    "left join SM_Modules as t_mod on t_mod.Module_ID = t_ver.Module_ID where t_ver.Module_ID = ? and t_ver.Version = ? ",
                 new OdbcParameter("Module", module_id),
                 new OdbcParameter("Version", version));
 

@@ -16,7 +16,7 @@ class VersionList extends React.Component {
             error: null,
             isLoaded: false,
             onEdit: props.onEdit,
-            moduleId: props.moduleId,
+            module: props.module,
             items: [],
             editor: { // TODO DEBUG!!! Beim Releas ändern!!
                 isOpen: true,
@@ -27,23 +27,31 @@ class VersionList extends React.Component {
         this.toggleEditor = this.toggleEditor.bind(this);
     }
 
+    load() {
+        fetch('https://localhost:44376/api/v1/' + this.state.module.module_ID + '/versions') // TODO Addresse über Config auslesen lassen
+            .then(res => res.json())
+            .then((result) => this.setState({
+                isLoaded: true,
+                items: result
+            }))
+            .catch((ex) => this.setState({ error: ex, items: [] }));
+    }
+
     componentDidMount() {
         if (!this.state.isLoaded) {
-            fetch('https://localhost:44376/api/v1/' + this.state.moduleId + '/versions') // TODO Addresse über Config auslesen lassen
-                .then(res => res.json())
-                .then((result) => this.setState({
-                    isLoaded: true,
-                    items: result
-                }))
-                .catch((ex) => this.setState({ error: ex, items: [] }));
+            this.load();
         }
     }
 
-    toggleEditor(editItem) {
+    toggleEditor(editItem, close) {
+        if (close !== true) {
+            close = this.state.editor.isOpen;
+        }
+
         this.setState({
             editor: {
-                isOpen: !this.state.editor.isOpen,
-                item: editItem || { }
+                isOpen: !close,
+                item: editItem || { moduleId: this.state.module.module_ID, moduleName: this.state.module.name }
             }
         })
     }
@@ -54,6 +62,10 @@ class VersionList extends React.Component {
             comp = this.state.items.map((x) => <VersionListItem key={x.version} model={x} onEdit={this.toggleEditor} />);
         } else {
             comp = <tr><td>{this.state.error}</td></tr>;
+        }
+        var edit;
+        if (this.state.editor.isOpen) {
+            edit = <VersionEditorModal moduleId={this.state.module.module_ID} moduleName={this.state.module.name} isOpen={this.state.editor.isOpen} onClose={() => { this.toggleEditor(null, true); }} version={this.state.editor.item.version} />
         }
         return (
             <div>
@@ -67,7 +79,7 @@ class VersionList extends React.Component {
                         </tr>
                     </tfoot>
                 </table>
-                <VersionEditorModal isOpen={this.state.editor.isOpen} onToggle={this.toggleEditor} model={this.state.editor.item} />
+                { edit }
             </div>);
     }
 }
