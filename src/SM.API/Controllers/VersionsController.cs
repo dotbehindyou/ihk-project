@@ -45,24 +45,31 @@ namespace SM.API.Controllers
         public ModuleVersion Post(Guid module_id, [FromBody] ModuleVersion version)
         {
             // TODO File
-            return mm.AddVersion(module_id, version.Version, version.File, version.ReleaseDate);
+            return mm.AddVersion(module_id, version.Version, version.Config, version.File, version.ReleaseDate);
         }
 
         // PUT: api/Version/5
-        [HttpPut("{id}")]
-        public void Put(Guid module_id, [FromBody] ModuleVersion version)
+        [HttpPut("{version}")]
+        public ModuleVersion Put(Guid module_id, String version, [FromBody] ModuleVersion versionForm)
         {
             // TODO File
-            if(version.File != null)
-                mm.UpdateVersion(module_id, version.Version, version.File);
+            if(versionForm.File != null)
+                mm.UpdateVersion(module_id, versionForm.Version, versionForm.File);
 
-            if (version.Config != null)
+            if (versionForm.Config != null)
             {
-                if (version.Config.Data == null && version.Config.Config_ID != Guid.Empty)
-                    mm.SetConfig(module_id, version.Version, version.Config.Config_ID);
+                if (versionForm.Config.Config_ID == Guid.Empty)
+                {
+                    versionForm.Config = mm.CreateConfig(module_id, versionForm.Config.FileName, versionForm.Config.Format, versionForm.Config.Data);
+                    mm.SetConfig(module_id, version, versionForm.Config.Config_ID);
+                }
+                else if (versionForm.Config.Data == null && versionForm.Config.Config_ID != Guid.Empty)
+                    mm.SetConfig(module_id, versionForm.Version, versionForm.Config.Config_ID);
                 else
-                    mm.UpdateConfig(version.Config);
+                    mm.UpdateConfig(versionForm.Config);
             }
+
+            return versionForm;
         }
 
         // DELETE: api/ApiWithActions/5

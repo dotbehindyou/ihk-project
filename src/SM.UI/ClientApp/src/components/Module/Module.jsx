@@ -52,8 +52,6 @@ class Module extends React.Component {
             <h4>Versionen: </h4>
             <VersionList module={model} />
         </div>;
-        // TODO - Render Version list
-        // TODO - Edit
     }
 }
 

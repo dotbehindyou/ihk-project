@@ -5,7 +5,7 @@ import { DatePickerInput } from 'rc-datepicker';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, ButtonGroup, Col, Row } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
-import { ConfigEditor } from '../Config/ConfigEditor';
+import ConfigEditor from '../Config/ConfigEditor';
 
 class VersionEditorModal extends React.Component {
     constructor(props) {
@@ -14,8 +14,11 @@ class VersionEditorModal extends React.Component {
         this.state = {
             moduleId: props.moduleId || null,
             version: props.version,
-            model: {},
+            model: {
+                config: {}
+            },
             isLoaded: false,
+            isSaving: false,
             isNew: props.version === undefined
         };
 
@@ -49,17 +52,45 @@ class VersionEditorModal extends React.Component {
     }
 
     save() {
-        // TODO Speichern über API
-        // Objekt zurückgeben für die Liste
-    }
-
-    onReleaseDateChange = (jsDate, dateString) => {
-        // ...
+        this.setState({ isSaving: true });
+        fetch('https://localhost:44376/api/v1/' + this.state.moduleId + '/versions/' + (this.state.isNew ? '' : this.state.version),
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                method: this.state.isNew ? 'POST' : 'PUT',
+                cache: 'no-cache',
+                body: JSON.stringify(this.state.model)
+            })
+            .then(res => res.json())
+            .then((result) => {
+                this.setState({
+                    model: { ...result },
+                    isNew: false
+                });
+            }) // TODO Neues Element an die VersionsListe hinzufügen
+            .catch((ex) => {
+                console.warn(ex);
+            })
+            .finally(() => {
+                this.setState({ isSaving: false });
+            });
     }
 
     handleChange(event) {
-        console.log(event.target);
-        //this.setState({ value: event.target.value });
+        var model = this.state.model
+        if (event.target === undefined)
+            return;
+        if (event.target.name.includes("config")) {
+            console.log(model);
+            var s = event.target.name.split('.');
+            model.config[s[1]] = event.target.value;
+        } else {
+            model = this.state.model;
+            model[event.target.name] = event.target.value;
+        }
+        this.setState({ model: { ...model } });
+        console.log(this.state);
     }
 
     handleSubmit(event) {
@@ -75,7 +106,7 @@ class VersionEditorModal extends React.Component {
             verIn = <Col>
                 <FormGroup > {/* Versions Nr. soll nach dem erstellen, nicht mehr änderbar sein! */}
                     <Label for="version">Version: </Label>
-                    <Input type="text" name="version" id="version" placeholder="Version" defaultValue={model.version} />
+                    <Input type="text" name="version" id="version" placeholder="Version" value={model.version} onChange={this.handleChange} />
                 </FormGroup>
             </Col>
         }
@@ -93,7 +124,8 @@ class VersionEditorModal extends React.Component {
                                 <FormGroup >
                                     <Label for="releaseDate">Veröffentlich: </Label>
                                     <DatePickerInput
-                                        onChange={this.onReleaseDateChange}
+                                        name="releaseDate"
+                                        onChange={(data) => { this.handleChange({ target: { name: 'releaseDate', value: data }}); }}
                                         value={model.releaseDate}
                                         className='my-custom-datepicker-component' />
                                 </FormGroup>
@@ -102,16 +134,28 @@ class VersionEditorModal extends React.Component {
                         <hr />
                         <Row form>
                             <Col>
+                                <h4>Versionsdatei (ZIP):</h4>
+                                <small>In der Versionsdatei darf die Konfigdatei NICHT hinterlegt sein!</small>
+                            </Col>
+                        </Row>
+                        <Row form>
+                            <Col>
+                                <Input type="file" /> {/* TODO Dateiupload */}
+                            </Col>
+                        </Row>
+                        <hr />
+                        <Row form>
+                            <Col>
                                 <h4>Konfigurationsdatei (Muster):</h4>
                             </Col>
                         </Row>
-                        <ConfigEditor />
+                        <ConfigEditor onChange={this.handleChange} config={model.config || {}}/>
                     </Form>
                 </ModalBody>
                 <ModalFooter>
                     <ButtonGroup size="sm">
                         <Button onClick={this.close} outline color="danger" type="button">Abbrechen</Button>
-                        <Button onClick={this.close} outline color="primary" type="submit">Speichern</Button>
+                        <Button disabled={this.state.isSaving} onClick={this.save} outline color="primary" type="submit">Speichern</Button>
                     </ButtonGroup>
                 </ModalFooter>
             </Modal>

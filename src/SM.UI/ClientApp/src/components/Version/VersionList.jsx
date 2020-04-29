@@ -6,8 +6,6 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import VersionEditorModal from './VersionEditorModal';
 
-var debug_item = { "module_ID": "1ec96940-0eb2-4a42-9be1-5268df8afd80", "moduleName": null, "version": "3.0", "config": null, "releaseDate": "2020-04-19T00:00:00", "validationToken": "", "file": null };
-
 class VersionList extends React.Component {
     constructor(props) {
         super(props);
@@ -18,9 +16,9 @@ class VersionList extends React.Component {
             onEdit: props.onEdit,
             module: props.module,
             items: [],
-            editor: { // TODO DEBUG!!! Beim Releas ändern!!
-                isOpen: true,
-                item: debug_item
+            editor: {
+                isOpen: false,
+                item: {}
             }
         }
 

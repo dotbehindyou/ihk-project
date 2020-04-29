@@ -1,7 +1,7 @@
 ﻿CREATE TABLE "admin"."SM_Modules_Version" (
 	"Version" VARCHAR(16) NOT NULL,
 	"Module_ID" UNIQUEIDENTIFIER NOT NULL,
-	"Validation_Token" BINARY(64) NOT NULL,
+	"Validation_Token" BINARY(64) NULL,
 	"Config_ID" UNIQUEIDENTIFIER NOT NULL,
 	"Created" TIMESTAMP NOT NULL DEFAULT "now"(),
 	"Deleted" TIMESTAMP NULL,

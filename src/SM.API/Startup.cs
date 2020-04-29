@@ -35,6 +35,8 @@ namespace SM.API
                 options.AddDefaultPolicy(
                     builder => {
                         builder.WithOrigins("*"); // TODO CORS über Config auslesen, wird für UI benötigt, Service ist egal
+                        builder.AllowAnyMethod();
+                        builder.AllowAnyHeader();
                     });
             });
 

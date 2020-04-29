@@ -1,8 +1,8 @@
 ﻿CREATE TABLE "admin"."SM_Modules_Config" (
 	"Config_ID" UNIQUEIDENTIFIER NOT NULL DEFAULT "newid"(),
-	"Module_ID" UNIQUEIDENTIFIER NOT NULL UNIQUE,
+	"Module_ID" UNIQUEIDENTIFIER NOT NULL,
 	"FileName" VARCHAR(50) NOT NULL,
-	"Format" VARCHAR(1) NOT NULL,
+	"Format" VARCHAR(10) NOT NULL,
 	"Data" "text" NULL,
 	"Created" TIMESTAMP NOT NULL DEFAULT "now"(),
 	"Modified" TIMESTAMP NULL,

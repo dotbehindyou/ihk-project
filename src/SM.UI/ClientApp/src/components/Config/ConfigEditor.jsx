@@ -6,34 +6,59 @@ import Editor from 'react-simple-code-editor';
 import { highlight, languages } from 'prismjs';
 
 import 'prismjs/components/prism-json';
+import 'prismjs/components/prism-ini';
+
 import 'prismjs/components/prism-css';
 import 'prismjs/themes/prism-dark.css';
 
 class ConfigEditor extends React.Component {
 
-    /*constructor(props) {
+    constructor(props) {
         super(props);
-    }*/
+
+        this.state = {
+            config: {
+                fileName: '',
+                data: '',
+                format: ''
+            }
+        }
+
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        if (props.config === undefined)
+            return {};
+        return {
+            config: props.config || {}
+        }
+    }
+
+    handleChange(event) {
+        this.props.onChange(event);
+    }
 
     render() {
-        var config = this.props.config || { };
-        var highLang = config.format != undefined ? languages[config.format] : null;
+        var config = this.state.config;
+        var highLang = languages[config.format];
 
         return (<>
             <Row form>
                 <Col sm={8}>
                     <FormGroup >
-                        <Label for="configName">Dateiname der Konfig: </Label>
-                        <Input type="text" name="configName" id="configName" placeholder="Konfigurationsdatei Name" defaultValue={config.fileName} />
+                        <Label for="config.fileName">Dateiname der Konfig: </Label>
+                        <Input type="text" name="config.fileName" id="config.fileName" placeholder="Konfigurationsdatei Name" value={config.fileName || ''} onChange={this.handleChange} />
                     </FormGroup>
                 </Col>
                 <Col sm={4}>
                     <FormGroup >
-                        <Label for="configName">Konfig Format: </Label>
-                        <Input type="select" name="configFormat" id="configFormat" value={config.format || ''} onChange={this.handleChange}>
-                            <option value="">Anderes (kein Highlighter)</option>
+                        <Label for="config.format">Konfig Format: </Label>
+                        <Input type="select" name="config.format" id="config.format" value={config.format || ''} onChange={this.handleChange}>
+                            <option value={null}>Anderes (kein Highlighter)</option>
                             <option value="json">JSON</option>
                             <option value="xml">XML</option>
+                            <option value="ini">INI</option>
                         </Input>
                     </FormGroup>
                 </Col>
@@ -41,16 +66,13 @@ class ConfigEditor extends React.Component {
             <Row form>
                 <Col>
                     <FormGroup>
-                        <Label for="configData">Konfig (Inhalt): </Label>
-                        <Editor
+                        <Label for="config.data">Konfig (Inhalt): </Label>
+                        <Editor name="config.data"
                             className="form-control"
-                            onValueChange={code => this.setState(prevState => {
-                                let model = { ...prevState.model };
-                                model.config = { ...model.config, data: code };
-                                return { model };
-                            })}
+                            onChange={this.handleChange}
+                            onValueChange={code=> code}
                             value={config.data || ''}
-                            highlight={code => highLang === null ? code : highlight(code || '', highLang)}
+                            highlight={code => highLang === undefined ? code : highlight(code || '', highLang)}
                             padding={12}
                             style={{
                                 height: 'auto',
