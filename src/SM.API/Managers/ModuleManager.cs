@@ -36,7 +36,7 @@ namespace SM.API.Managers
             return module;
         }
 
-        public void Update (SM_Modules module)
+        public void Update (Module module)
         {
             Mapper.ExecuteQuery("UPDATE SM_Modules SET Modified = now(), Name = ? where Module_ID = ?;",
                 new OdbcParameter("name", module.Name),
@@ -109,6 +109,9 @@ namespace SM.API.Managers
             ModuleVersion ver = new ModuleVersion();
             ver.Module_ID = module_id;
             ver.Version = version;
+            ver.ReleaseDate = releaseDate;
+            ver.Version = version;
+            ver.Module_ID = module_id;
 
             if(versionFile != null)
                 File.WriteAllBytes(Path.Combine(ver.Module_ID.ToString(), version + ".zip"), versionFile);
@@ -117,11 +120,11 @@ namespace SM.API.Managers
 
             Mapper.ExecuteQuery("INSERT INTO SM_Modules_Version (Version, Module_ID, Validation_Token, Config_ID, Release_Date) " +
                 "VALUES (?, ?, ?, ?, ?)",
-                new OdbcParameter("Version", version),
-                new OdbcParameter("Module_ID", module_id),
+                new OdbcParameter("Version", ver.Version),
+                new OdbcParameter("Module_ID", ver.Module_ID),
                 new OdbcParameter("Validation_Token", ver.ValidationToken ?? (Object)DBNull.Value),
                 new OdbcParameter("Config_ID", ver.Config.Config_ID),
-                new OdbcParameter("Release_Date", releaseDate));
+                new OdbcParameter("Release_Date", ver.ReleaseDate));
 
 
             return ver;
@@ -181,7 +184,7 @@ namespace SM.API.Managers
                 new OdbcParameter("Config_ID", configFile.Config_ID),
                 new OdbcParameter("Module_ID", module_id),
                 new OdbcParameter("FileName", configFile.FileName),
-                new OdbcParameter("Format", configFile.Format),
+                new OdbcParameter("Format", configFile.Format ?? ""),
                 new OdbcParameter("Data", configFile.Data));
 
             return configFile;
