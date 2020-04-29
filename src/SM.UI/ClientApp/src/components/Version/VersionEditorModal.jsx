@@ -15,8 +15,9 @@ class VersionEditorModal extends React.Component {
             moduleId: props.moduleId || null,
             version: props.version,
             model: {
-                config: {}
+                config: {},
             },
+            file: null,
             isLoaded: false,
             isSaving: false,
             isNew: props.version === undefined
@@ -25,6 +26,7 @@ class VersionEditorModal extends React.Component {
         this.close = this.close.bind(this);
         this.save = this.save.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.selectVersionFile = this.selectVersionFile.bind(this);
     }
 
     componentDidMount() {
@@ -53,21 +55,27 @@ class VersionEditorModal extends React.Component {
 
     save() {
         this.setState({ isSaving: true });
+
         fetch('https://localhost:44376/api/v1/' + this.state.moduleId + '/versions/' + (this.state.isNew ? '' : this.state.version),
             {
                 headers: {
-                    "Content-Type": "application/json",
+                    "Content-Type": "application/json"
                 },
                 method: this.state.isNew ? 'POST' : 'PUT',
                 cache: 'no-cache',
                 body: JSON.stringify(this.state.model)
             })
             .then(res => res.json())
-            .then((result) => {
+            .then(async (result) => {
                 this.setState({
                     model: { ...result },
                     isNew: false
                 });
+
+                if (this.state.file !== null) {
+                    if (await this.uploadFile() === false)
+                        throw "Upload Fehlgeschlagen!";
+                }
             }) // TODO Neues Element an die VersionsListe hinzufügen
             .catch((ex) => {
                 console.warn(ex);
@@ -75,6 +83,41 @@ class VersionEditorModal extends React.Component {
             .finally(() => {
                 this.setState({ isSaving: false });
             });
+    }
+
+    async uploadFile() {
+        if (this.state.isNew)
+            return false;
+            //throw "Es existiert noch keine Version zum Uploaden!";
+
+        this.setState({ isUploading: true });
+
+        var formData = new FormData();
+        formData.append('versionFile', this.state.file);
+
+        return await fetch('https://localhost:44376/api/v1/' + this.state.moduleId + '/versions/' + this.state.version + '/file',
+            {
+                method: this.state.isNew ? 'POST' : 'PUT',
+                cache: 'no-cache',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(async (result) => {
+                return result;
+            }) // TODO Neues Element an die VersionsListe hinzufügen
+            .catch((ex) => {
+                console.warn(ex);
+            })
+            .finally(() => {
+                this.setState({ isUploading: false });
+            });
+
+    }
+
+    selectVersionFile(event) {
+        this.setState({
+            file: event.target.files[0]
+        });
     }
 
     handleChange(event) {
@@ -138,7 +181,7 @@ class VersionEditorModal extends React.Component {
                         </Row>
                         <Row form>
                             <Col>
-                                <Input type="file" /> {/* TODO Dateiupload */}
+                                <Input type="file" name="file" id="file" onChange={this.selectVersionFile} /> {/* TODO Dateiupload */}
                             </Col>
                         </Row>
                         <hr />

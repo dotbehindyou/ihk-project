@@ -1,7 +1,7 @@
 ﻿import React from 'react';
 
 import VersionListItem from './VersionListItem';
-import { Button } from 'reactstrap';
+import { Button, Table } from 'reactstrap';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import VersionEditorModal from './VersionEditorModal';
@@ -73,16 +73,23 @@ class VersionList extends React.Component {
         }
         return (
             <div>
-                <table>
+                <Table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Versions Nr.</th>
+                            <th>Release Datum</th>
+                        </tr>
+                    </thead>
                     <tbody>
                         {comp}
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td><Button size="sm" outline onClick={() => this.toggleEditor(null) }>Version hinzufügen <FontAwesomeIcon icon={faPlus} /></Button></td>
+                            <td colSpan={3}><Button size="sm" outline onClick={() => this.toggleEditor(null) }>Version hinzufügen <FontAwesomeIcon icon={faPlus} /></Button></td>
                         </tr>
                     </tfoot>
-                </table>
+                </Table>
                 { edit }
             </div>);
     }
