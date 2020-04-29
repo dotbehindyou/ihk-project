@@ -23,6 +23,7 @@ class VersionList extends React.Component {
         }
 
         this.toggleEditor = this.toggleEditor.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
     load() {
@@ -54,16 +55,21 @@ class VersionList extends React.Component {
         })
     }
 
+    handleDelete(item) {
+        console.log(item);
+    }
+
     render() {
         var comp;
         if (this.state.isLoaded) {
-            comp = this.state.items.map((x) => <VersionListItem key={x.version} model={x} onEdit={this.toggleEditor} />);
+            comp = this.state.items.map((x) => <VersionListItem key={x.version} model={x} onEdit={this.toggleEditor} onDelete={this.handleDelete} />);
         } else {
             comp = <tr><td>{this.state.error}</td></tr>;
         }
         var edit;
         if (this.state.editor.isOpen) {
             edit = <VersionEditorModal moduleId={this.state.module.module_ID} moduleName={this.state.module.name} isOpen={this.state.editor.isOpen} onClose={() => { this.toggleEditor(null, true); }} version={this.state.editor.item.version} />
+
         }
         return (
             <div>

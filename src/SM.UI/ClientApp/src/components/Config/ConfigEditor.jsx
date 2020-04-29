@@ -55,7 +55,7 @@ class ConfigEditor extends React.Component {
                     <FormGroup >
                         <Label for="config.format">Konfig Format: </Label>
                         <Input type="select" name="config.format" id="config.format" value={config.format || ''} onChange={this.handleChange}>
-                            <option value={null}>Anderes (kein Highlighter)</option>
+                            <option value="">Anderes (kein Highlighter)</option>
                             <option value="json">JSON</option>
                             <option value="xml">XML</option>
                             <option value="ini">INI</option>

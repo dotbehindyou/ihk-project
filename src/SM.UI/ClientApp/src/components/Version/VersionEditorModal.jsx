@@ -82,11 +82,9 @@ class VersionEditorModal extends React.Component {
         if (event.target === undefined)
             return;
         if (event.target.name.includes("config")) {
-            console.log(model);
             var s = event.target.name.split('.');
             model.config[s[1]] = event.target.value;
         } else {
-            model = this.state.model;
             model[event.target.name] = event.target.value;
         }
         this.setState({ model: { ...model } });
