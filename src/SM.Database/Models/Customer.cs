@@ -24,5 +24,6 @@ namespace SM.Models
         public Int32 Kdnr { get; set; }
         public String Name { get; set; }
         public Byte[] Auth_Token { get; set; }
+        public Boolean IsRegisterd { get; set; }
     }
 }

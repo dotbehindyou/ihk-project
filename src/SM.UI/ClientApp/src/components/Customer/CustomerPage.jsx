@@ -1,10 +1,11 @@
 ﻿import React from 'react';
+import CustomerList from './CustomerList';
 
 
 class CustomerPage extends React.Component {
 
     render() {
-        return <h2>Customer</h2>;
+        return <div><CustomerList /></div>;
     }
 }
 
