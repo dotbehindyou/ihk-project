@@ -18,7 +18,8 @@ namespace SM.Models
         {
             this.Kdnr = customers.Kdnr;
             this.Name = customers.Name;
-            Auth_Token = customers.Auth_Token;
+            this.Auth_Token = customers.Auth_Token;
+            this.IsRegisterd = customers.IsRegisterd;
         }
 
         public Int32 Kdnr { get; set; }
