@@ -73,8 +73,8 @@ class VersionEditorModal extends React.Component {
                 });
 
                 if (this.state.file !== null) {
-                    if (await this.uploadFile() === false)
-                        throw "Upload Fehlgeschlagen!";
+                    await this.uploadFile();
+
                 }
             }) // TODO Neues Element an die VersionsListe hinzufügen
             .catch((ex) => {
