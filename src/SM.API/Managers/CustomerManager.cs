@@ -62,7 +62,7 @@ namespace SM.API.Managers
                 parms.Add(new OdbcParameter("Kdnr", search.Kdnr.ToString()));
 
             List<Customer> result = new List<Customer>();
-            foreach (var cus in Mapper.GetMany<SM_Customers>("select top 1000 KDKDnr as Kdnr, KDSTM.KDNAMI as Name, SM_Customers.Auth_Token, case when SM_Customers.Kdnr is null then 0 else 1 end as IsRegisterd from KDSTM " +
+            foreach (var cus in Mapper.GetMany<SM_Customers>("select top 1000 KDKDnr as Kdnr, KDSTM.KDNAMI as Name, SM_Customers.Auth_Token, cast(case when SM_Customers.Kdnr is null then 0 else 1 end as bit) as IsRegisterd from KDSTM " +
                         "left outer join SM_Customers on KDKDNR = SM_Customers.Kdnr and IsActive = 1 where KDWERK = ? and KDKZDK = 'D' and KDSTAT <> 'L' " +
                         $"{ (String.IsNullOrEmpty(search.Name) ? "" : "and Name like '%'+?+'%'") } { (search.Kdnr == null ? "" : "and KDKDNR " + (search.KdnrCondition == SearchCondition.Same ? "= ?"  : "like '%'+?+'%'"))} " +
                         "order by IsRegisterd desc", parms.ToArray()))
