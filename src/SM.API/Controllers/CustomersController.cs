@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using SM.API.Managers;
 using SM.Models;
-using SM.Models;
 
 namespace SM.API.Controllers
 {

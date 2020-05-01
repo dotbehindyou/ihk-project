@@ -50,11 +50,19 @@ namespace SM.API.Managers
                 new OdbcParameter("module_id", module_id));
         }
 
-        public List<Module> GetAll()
+        public List<Module> GetMany()
         {
             return Mapper.GetMany<Module>("select SM_Modules.Module_ID, Name, Version from SM_Modules " +
                 "left join (select ROW_NUMBER() OVER (partition by Module_ID order by Release_Date desc) as rn, Version, Module_ID from SM_Modules_Version where IsActive = 1) as Versions on SM_Modules.Module_ID = Versions.Module_ID and rn = 1 " +
                 "where IsActive = 1");
+        }
+
+        public List<Module> GetModulesFromCustomer(Int32 kdnr)
+        {
+            return Mapper.GetMany<Module>("select mod.Module_ID, mod.Name, cus.Version from SM_Customers_Modules as cus " +
+                "left join SM_Modules as mod on cus.Module_ID = mod.Module_ID and mod.IsActive = 1" +
+                "where cus.Kdnr = ? and cus.IsActive = 1",
+                new OdbcParameter("kdnr", kdnr));
         }
 
         public Module Get(Guid module_id)
