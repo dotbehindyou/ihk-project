@@ -1,7 +1,7 @@
 ﻿import React from 'react';
 import { Button } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 
 class CustomerListItem extends React.Component {
@@ -9,15 +9,19 @@ class CustomerListItem extends React.Component {
         super(props);
 
         this.state = {
-            item: props.model
+            kdnr: null,
+            name: null,
+            isRegisterd: false,
+            ...props.model
         };
     }
 
     render() {
         return <tr>
-            <td><Button size="sm" outline color="primary"><FontAwesomeIcon icon={faEdit} /></Button></td>
-            <td>{this.state.item.kdnr}</td>
-            <td>{this.state.item.name}</td>
+            <td><Button onClick={() => { this.props.onEdit(this.state) }} size="sm" outline color={this.state.isRegisterd ? "primary" : "success"}><FontAwesomeIcon icon={(this.state.isRegisterd ? faEdit : faPlus)} /></Button></td>
+            <td>{this.state.kdnr}</td>
+            <td>{this.state.name}</td>
+            <td>{(this.state.isRegisterd ? "Ja" : "Nein")}</td>
         </tr>;
     }
 }

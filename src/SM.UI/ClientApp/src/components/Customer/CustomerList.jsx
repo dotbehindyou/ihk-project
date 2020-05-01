@@ -16,10 +16,6 @@ class CustomerList extends React.Component {
                 kdnrCondition:  'same',
                 name: ''
             },
-            editor: {
-                isOpen: false,
-                item: null
-            },
             page: 0,
             pageCount: 20
         }
@@ -69,7 +65,7 @@ class CustomerList extends React.Component {
         var pageLast = (this.state.page + 1) * this.state.pageCount;
         for (var i = pageFirst; i < this.state.items.length && i < pageLast; ++i) {
             var x = this.state.items[i];
-            listCom.push( < CustomerListItem key={x.kdnr} model={x} /> );
+            listCom.push(<CustomerListItem onEdit={this.props.onEdit} key={x.kdnr} model={x} /> );
         }
 
         var maxPage = this.getMaxPage();
@@ -106,9 +102,10 @@ class CustomerList extends React.Component {
                     <Table bordered={true} size="sm">
                         <thead>
                             <tr>
-                                <th>#</th>
-                                <th>Kunden Nr.</th>
-                                <th>Name</th>
+                                <th style={{ width: '40px' }}>#</th>
+                                <th style={{ width: '100px' }}>Kunden Nr.</th>
+                                <th style={{ width: 'auto' }}>Name</th>
+                                <th style={{ width: '40px' }}>Initialisiert?</th>
                             </tr>
                         </thead>
                         <tbody>
