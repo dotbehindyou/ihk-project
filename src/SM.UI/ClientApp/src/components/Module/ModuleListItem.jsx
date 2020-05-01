@@ -26,13 +26,15 @@ class ModuleListItem extends React.Component {
 
     render() {
         var model = this.state.model;
+        var btn;
+        if (this.props.onEdit != null) {
+            btn = <ButtonGroup>
+                <Button outline size="sm" color="success" onClick={this.openEdit}><FontAwesomeIcon icon={faEdit} /></Button>
+                <Button size="sm" color="danger" outline onClick={() => this.props.onDelete(this.state.model)}><FontAwesomeIcon icon={faTrash} /></Button>
+            </ButtonGroup>
+        }
         return <tr>
-            <td>
-                <ButtonGroup>
-                    <Button outline size="sm" color="success" onClick={this.openEdit}><FontAwesomeIcon icon={faEdit} /></Button>
-                    <Button size="sm" color="danger" outline onClick={() => this.props.onDelete(this.state.model)}><FontAwesomeIcon icon={faTrash} /></Button>
-                </ButtonGroup>
-            </td>
+            <td>{btn}</td>
             <td>{model.name}</td>
             <td><small>({model.version})</small></td>
         </tr>;

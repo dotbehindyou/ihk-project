@@ -18,7 +18,7 @@ class ModuleList extends React.Component {
     }
 
     componentDidMount() {
-        fetch('https://localhost:44376/api/v1/Modules') // TODO Addresse über Config auslesen lassen
+        fetch(this.props.url) // TODO Addresse über Config auslesen lassen
             .then(res => res.json())
             .then((result) => this.setState({
                 isLoaded: true,
@@ -31,12 +31,12 @@ class ModuleList extends React.Component {
     }
 
     render() {
-        return <Table>
+        return <Table size="sm">
             <thead>
                 <tr>
                     <th>#</th>
                     <th>Name des Moduls</th>
-                    <th>aktuelle Version</th>
+                    <th>Version</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,7 +44,7 @@ class ModuleList extends React.Component {
             </tbody>
             <tfoot>
                 <tr>
-                    <td colSpan={3}><Button size="sm" outline onClick={() => this.props.onEdit({})}>Modul hinzufügen <FontAwesomeIcon icon={faPlus} /></Button></td>
+                    { (this.props.onEdit != null ? <td colSpan={3}><Button size="sm" outline onClick={() => this.props.onEdit({})}>Modul hinzufügen <FontAwesomeIcon icon={faPlus} /></Button></td> : null) }
                 </tr>
             </tfoot>
         </Table>;
