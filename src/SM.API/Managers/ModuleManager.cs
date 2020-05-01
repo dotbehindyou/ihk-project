@@ -7,6 +7,7 @@ using System.Data.Odbc;
 using System.Security.Cryptography;
 using System.IO;
 using SM.Models.Procedure;
+using Microsoft.AspNetCore.Http;
 
 namespace SM.API.Managers
 {
@@ -49,11 +50,19 @@ namespace SM.API.Managers
                 new OdbcParameter("module_id", module_id));
         }
 
-        public List<Module> GetAll()
+        public List<Module> GetMany()
         {
             return Mapper.GetMany<Module>("select SM_Modules.Module_ID, Name, Version from SM_Modules " +
                 "left join (select ROW_NUMBER() OVER (partition by Module_ID order by Release_Date desc) as rn, Version, Module_ID from SM_Modules_Version where IsActive = 1) as Versions on SM_Modules.Module_ID = Versions.Module_ID and rn = 1 " +
                 "where IsActive = 1");
+        }
+
+        public List<Module> GetModulesFromCustomer(Int32 kdnr)
+        {
+            return Mapper.GetMany<Module>("select mod.Module_ID, mod.Name, cus.Version from SM_Customers_Modules as cus " +
+                "left join SM_Modules as mod on cus.Module_ID = mod.Module_ID and mod.IsActive = 1" +
+                "where cus.Kdnr = ? and cus.IsActive = 1",
+                new OdbcParameter("kdnr", kdnr));
         }
 
         public Module Get(Guid module_id)
@@ -104,7 +113,7 @@ namespace SM.API.Managers
             };
         }
 
-        public ModuleVersion AddVersion(Guid module_id, String version, ConfigFile configFile, Byte[] versionFile, DateTime releaseDate)
+        public ModuleVersion AddVersion(Guid module_id, String version, ConfigFile configFile, DateTime releaseDate)
         {
             ModuleVersion ver = new ModuleVersion();
             ver.Module_ID = module_id;
@@ -113,8 +122,8 @@ namespace SM.API.Managers
             ver.Version = version;
             ver.Module_ID = module_id;
 
-            if(versionFile != null)
-                File.WriteAllBytes(Path.Combine(ver.Module_ID.ToString(), version + ".zip"), versionFile);
+            //if(versionFile != null)
+            //    File.WriteAllBytes(Path.Combine(ver.Module_ID.ToString(), version + ".zip"), versionFile);
 
             ver.Config = this.CreateConfig(module_id, configFile.FileName, configFile.Format, configFile.Data);
 
@@ -130,18 +139,38 @@ namespace SM.API.Managers
             return ver;
         }
 
-        public void UpdateVersion(Guid module_id, String version, Byte[] zipFile)
+        public void UpdateVersionFiles(Guid module_id, String version, IFormFile file)
         {
-            Byte[] validation_token;
-            using (SHA512Managed man = new SHA512Managed())
+            Byte[] buffer;
+            using (MemoryStream ms = new MemoryStream())
             {
-                validation_token = man.ComputeHash(zipFile);
+                file.CopyTo(ms);
+                buffer = ms.ToArray();
+            }
+            Byte[] validation_token;
+
+            using (SHA512Managed man = new SHA512Managed()) {
+                validation_token = man.ComputeHash(buffer);
             }
 
-            File.WriteAllBytes(Path.Combine(module_id.ToString(), version + ".zip"), zipFile);
+            DirectoryInfo di = new DirectoryInfo("storage/" + module_id.ToString());
+            if (!di.Exists)
+                di.Create();
 
-            Mapper.ExecuteQuery("UPDATE SM_Modules_Version SET ValidationToken = ?, Config_ID = ?, Modified = now(), Release_Date = ? where Version = ? and Module_ID = ?",
-                new OdbcParameter("ValidationToken", validation_token));
+            File.WriteAllBytes(Path.Combine(di.FullName, version + ".zip"), buffer);
+
+            buffer = null;
+
+            Mapper.ExecuteQuery("UPDATE SM_Modules_Version SET Validation_Token = ?, Modified = now() where Version = ? and Module_ID = ?",
+                new OdbcParameter("ValidationToken", validation_token),
+                new OdbcParameter("version", version),
+                new OdbcParameter("module_id", module_id));
+        }
+
+        public FileStream GetVersionFile(Guid module_id, String version)
+        {
+            var path = Path.Combine("storage", module_id.ToString(), version + ".zip");
+            return File.OpenRead(path);
         }
 
         public void SetReleaseDate(Guid module_id, String version, DateTime releaseDate)

@@ -26,7 +26,14 @@ namespace SM.API.Controllers
         [HttpGet]
         public IEnumerable<Module> Get()
         {
-            return mm.GetAll();
+            return mm.GetMany();
+        }
+
+        // GET: api/Module/Customer
+        [HttpGet("Customer/{kdnr}")]
+        public IEnumerable<Module> GetModulesFromCustomer(Int32 kdnr)
+        {
+            return mm.GetModulesFromCustomer(kdnr);
         }
 
         // GET: api/Module/5

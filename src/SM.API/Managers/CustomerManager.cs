@@ -6,6 +6,7 @@ using System.Data.Odbc;
 using System.Security.Cryptography;
 using SM.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Data.Common;
 
 namespace SM.API.Managers
 {
@@ -48,12 +49,23 @@ namespace SM.API.Managers
                 new OdbcParameter("kdnr", kdnr));
         }
 
-        public List<Customer> GetAll()
+        public List<Customer> GetMany(Search search = null)
         {
+            if (search == null)
+                search = new Search();
+
+            var parms = new List<DbParameter>();
+            parms.Add(new OdbcParameter("werk", _werk));
+            if(!String.IsNullOrEmpty(search.Name))
+                parms.Add(new OdbcParameter("Name", search.Name));
+            if(search.Kdnr != null)
+                parms.Add(new OdbcParameter("Kdnr", search.Kdnr.ToString()));
+
             List<Customer> result = new List<Customer>();
-            foreach (var cus in Mapper.GetMany<SM_Customers>("select SM_Customers.Kdnr, KDSTM.KDNAMI as Name, SM_Customers.Auth_Token from SM_Customers " +
-                    "left join KDSTM on KDKDNR = SM_Customers.Kdnr and KDWERK = ? and KDKZDK = 'D' and KDSTAT <> 'L' where IsActive = 1",
-                    new OdbcParameter("werk", _werk)))
+            foreach (var cus in Mapper.GetMany<SM_Customers>("select top 1000 KDKDnr as Kdnr, KDSTM.KDNAMI as Name, SM_Customers.Auth_Token, cast(case when SM_Customers.Kdnr is null then 0 else 1 end as bit) as IsRegisterd from KDSTM " +
+                        "left outer join SM_Customers on KDKDNR = SM_Customers.Kdnr and IsActive = 1 where KDWERK = ? and KDKZDK = 'D' and KDSTAT <> 'L' " +
+                        $"{ (String.IsNullOrEmpty(search.Name) ? "" : "and Name like '%'+?+'%'") } { (search.Kdnr == null ? "" : "and KDKDNR " + (search.KdnrCondition == SearchCondition.Same ? "= ?"  : "like '%'+?+'%'"))} " +
+                        "order by IsRegisterd desc", parms.ToArray()))
             {
                 result.Add(new Customer(cus));
             }

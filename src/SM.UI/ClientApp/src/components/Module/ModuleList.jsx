@@ -2,8 +2,8 @@
 
 import ModuleListItem from './ModuleListItem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { Button } from 'reactstrap';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { Button, Table } from 'reactstrap';
 
 class ModuleList extends React.Component {
     constructor(props) {
@@ -18,7 +18,7 @@ class ModuleList extends React.Component {
     }
 
     componentDidMount() {
-        fetch('https://localhost:44376/api/v1/Modules') // TODO Addresse über Config auslesen lassen
+        fetch(this.props.url) // TODO Addresse über Config auslesen lassen
             .then(res => res.json())
             .then((result) => this.setState({
                 isLoaded: true,
@@ -31,16 +31,23 @@ class ModuleList extends React.Component {
     }
 
     render() {
-        return <table>
+        return <Table size="sm">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name des Moduls</th>
+                    <th>Version</th>
+                </tr>
+            </thead>
             <tbody>
                 {this.state.items.map((x) => <ModuleListItem key={x.module_ID} model={x} onEdit={this.props.onEdit} onDelete={this.handleDelete} />)}
             </tbody>
             <tfoot>
                 <tr>
-                    <td><Button size="sm" outline onClick={() => this.props.onEdit({})}>Modul hinzufügen <FontAwesomeIcon icon={faPlus} /></Button></td>
+                    { (this.props.onEdit != null ? <td colSpan={3}><Button size="sm" outline onClick={() => this.props.onEdit({})}>Modul hinzufügen <FontAwesomeIcon icon={faPlus} /></Button></td> : null) }
                 </tr>
             </tfoot>
-        </table>;
+        </Table>;
     }
 }
 

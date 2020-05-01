@@ -30,7 +30,14 @@ namespace SM.API.Controllers
         [HttpGet]
         public IEnumerable<Customer> Get()
         {
-            return cm.GetAll();
+            return cm.GetMany();
+        }
+
+        // GET: api/Customer
+        [HttpGet("Search")]
+        public IEnumerable<Customer> Search([FromQuery] Search search)
+        {
+            return cm.GetMany(search);
         }
 
         // GET: api/Customer/{Int32}

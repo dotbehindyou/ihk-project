@@ -33,11 +33,15 @@ class ModulePage extends React.Component {
     render() {
         var renderdItem = null;
         if (this.state.select == null)
-            renderdItem = <ModuleList onEdit={this.openEditor} />;
+            renderdItem = <ModuleList url="https://localhost:44376/api/v1/Modules" onEdit={this.openEditor} />;
         else
             renderdItem = <Module onClose={this.closeEditor} model={this.state.select} />;
 
-        return <div> {renderdItem} </div>;
+        return <div>
+            <h4>Modulenverwaltung</h4>
+            <hr />
+            {renderdItem}
+        </div>;
     }
 }
 
