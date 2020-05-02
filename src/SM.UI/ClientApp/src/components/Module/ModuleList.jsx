@@ -14,23 +14,36 @@ class ModuleList extends React.Component {
             isLoaded: false,
             onEdit: props.onEdit,
             items: []
-        }
+        };
     }
 
     componentDidMount() {
         fetch(this.props.url) // TODO Addresse über Config auslesen lassen
             .then(res => res.json())
-            .then((result) => this.setState({
-                isLoaded: true,
-                items: result
-            }));
+            .then((result) => {
+                this.setState({
+                    isLoaded: true,
+                    items: result
+                });
+            })
+            .catch((ex) => console.log(ex));
     }
+
+//    componentWillUnmount() {
+//    }
 
     handleDelete(item) {
         console.log(item);
     }
 
     render() {
+        var rows = this.state.items.map((x) => <ModuleListItem key={x.module_ID} model={x} editIcon={this.props.editIcon} onEdit={this.props.onEdit} onDelete={this.handleDelete} />);
+
+        var edit;
+        if (this.props.onEdit != null) {
+            edit = <td colSpan={3}><Button size="sm" outline onClick={() => this.props.onEdit({})}>Modul hinzufügen <FontAwesomeIcon icon={faPlus} /></Button></td>;
+        }
+
         return <Table size="sm">
             <thead>
                 <tr>
@@ -40,11 +53,11 @@ class ModuleList extends React.Component {
                 </tr>
             </thead>
             <tbody>
-                {this.state.items.map((x) => <ModuleListItem key={x.module_ID} model={x} onEdit={this.props.onEdit} onDelete={this.handleDelete} />)}
+                {rows}
             </tbody>
             <tfoot>
                 <tr>
-                    { (this.props.onEdit != null ? <td colSpan={3}><Button size="sm" outline onClick={() => this.props.onEdit({})}>Modul hinzufügen <FontAwesomeIcon icon={faPlus} /></Button></td> : null) }
+                    { edit }
                 </tr>
             </tfoot>
         </Table>;

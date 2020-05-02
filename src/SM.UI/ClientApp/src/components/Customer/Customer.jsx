@@ -1,10 +1,10 @@
 ﻿import React from 'react';
 
-import { Button, Form, Label, Input, Row, Col, InputGroup, InputGroupAddon, Tooltip } from 'reactstrap';
+import { Button, Label, Input, Row, Col, InputGroup, InputGroupAddon, Tooltip } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWindowClose, faCopy } from '@fortawesome/free-solid-svg-icons';
-import VersionList from '../Version/VersionList';
 import ModuleList from '../Module/ModuleList';
+import CustomerSelectModule from './CustomerSelectModule';
 
 class Customer extends React.Component {
     constructor(props) {
@@ -12,7 +12,8 @@ class Customer extends React.Component {
 
         this.state = {
             _s: {
-                copyTipOpen: false
+                copyTipOpen: false,
+                isModuleOpen: true
             },
             name: '',
             kdnr: -1,
@@ -20,20 +21,16 @@ class Customer extends React.Component {
             ...props.model,
         }
 
-        this.handleChange = this.handleChange.bind(this);
         this.close = this.close.bind(this);
         this.copyAuthToken = this.copyAuthToken.bind(this);
         this.openCopyTip = this.openCopyTip.bind(this);
+        this.handleChangeModule = this.handleChangeModule.bind(this);
 
         this.authTokenField = null;
     }
 
     componentDidMount() {
         this.authTokenField = document.getElementById('auth_token');
-    }
-
-    handleChange(e) {
-
     }
 
     close(e) {
@@ -55,6 +52,10 @@ class Customer extends React.Component {
         setTimeout(() => {
             this.setState((prevState) => { return { _s: { ...prevState._s, copyTipOpen: false } } });
         }, 2000);
+    }
+
+    handleChangeModule(item) {
+        this.setState((prevState) => { return { _s: { ...prevState._s, isModuleOpen: true } } });
     }
 
     render() {
@@ -87,9 +88,10 @@ class Customer extends React.Component {
                 <Col sm={8}>
                     <hr />
                     <h4>Installierte Module:</h4>
-                    <ModuleList url={"https://localhost:44376/api/v1/Modules/Customer/" + this.state.kdnr} />
+                    <ModuleList url={"https://localhost:44376/api/v1/Modules/Customer/" + this.state.kdnr} onEdit={this.handleChangeModule} />
                 </Col>
             </Row>
+            <CustomerSelectModule isOpen={this.state._s.isModuleOpen} />
         </div>;
     }
 }
