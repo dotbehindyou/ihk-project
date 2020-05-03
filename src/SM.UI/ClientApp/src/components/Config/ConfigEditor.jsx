@@ -44,25 +44,30 @@ class ConfigEditor extends React.Component {
         var highLang = languages[config.format];
 
         return (<>
-            <Row form>
-                <Col sm={8}>
-                    <FormGroup >
-                        <Label for="config.fileName">Dateiname der Konfig: </Label>
-                        <Input type="text" name="config.fileName" id="config.fileName" placeholder="Konfigurationsdatei Name" value={config.fileName || ''} onChange={this.handleChange} />
-                    </FormGroup>
-                </Col>
-                <Col sm={4}>
-                    <FormGroup >
-                        <Label for="config.format">Konfig Format: </Label>
-                        <Input type="select" name="config.format" id="config.format" value={config.format || ''} onChange={this.handleChange}>
-                            <option value="">Anderes (kein Highlighter)</option>
-                            <option value="json">JSON</option>
-                            <option value="xml">XML</option>
-                            <option value="ini">INI</option>
-                        </Input>
-                    </FormGroup>
-                </Col>
-            </Row>
+            {
+                this.props.isSelect ?
+                    null : (
+                        <Row form>
+                            <Col sm={8}>
+                                <FormGroup >
+                                    <Label for="config.fileName">Dateiname der Konfig: </Label>
+                                    <Input type="text" name="config.fileName" id="config.fileName" placeholder="Konfigurationsdatei Name" value={config.fileName || ''} onChange={this.handleChange} />
+                                </FormGroup>
+                            </Col>
+                            <Col sm={4}>
+                                <FormGroup >
+                                    <Label for="config.format">Konfig Format: </Label>
+                                    <Input type="select" name="config.format" id="config.format" value={config.format || ''} onChange={this.handleChange}>
+                                        <option value="">Anderes (kein Highlighter)</option>
+                                        <option value="json">JSON</option>
+                                        <option value="xml">XML</option>
+                                        <option value="ini">INI</option>
+                                    </Input>
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                        )
+            }
             <Row form>
                 <Col>
                     <FormGroup>
