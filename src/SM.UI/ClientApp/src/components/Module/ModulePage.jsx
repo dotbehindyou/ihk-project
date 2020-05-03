@@ -16,6 +16,7 @@ class ModulePage extends React.Component {
 
         this.openEditor = this.openEditor.bind(this);
         this.closeEditor = this.closeEditor.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
     openEditor(model) {
@@ -30,10 +31,16 @@ class ModulePage extends React.Component {
         });
     }
 
+    handleDelete(item) {
+        console.log(item);
+    }
+
     render() {
         var renderdItem = null;
         if (this.state.select == null)
-            renderdItem = <ModuleList url="https://localhost:44376/api/v1/Modules" onEdit={this.openEditor} />;
+            renderdItem = <ModuleList url="https://localhost:44376/api/v1/Modules"
+                onEdit={this.openEditor}
+                onDelete={this.handleDelete} />;
         else
             renderdItem = <Module onClose={this.closeEditor} model={this.state.select} />;
 
