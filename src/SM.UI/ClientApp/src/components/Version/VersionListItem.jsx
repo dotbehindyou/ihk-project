@@ -15,6 +15,7 @@ class VersionListItem extends React.Component {
         };
 
         this.openEdit = this.openEdit.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
     // componentDidMount() {     }
@@ -25,13 +26,18 @@ class VersionListItem extends React.Component {
         }
     }
 
+    handleDelete(e) {
+        if (this.props.onDelete !== undefined)
+            this.props.onDelete(this.state.model);
+    }
+
     render() {
         var model = this.state.model;
         return <tr>
             <td>
                 <ButtonGroup>
-                    <Button outline size="sm" color="success" onClick={this.openEdit}><FontAwesomeIcon icon={faEdit} /></Button>
-                    <Button size="sm" color="danger" outline onClick={() => this.props.onDelete(this.state.model)}><FontAwesomeIcon icon={faTrash} /></Button>
+                    <Button outline size="sm" color="success" onClick={this.openEdit}><FontAwesomeIcon icon={this.props.editIcon || faEdit} /></Button>
+                    {this.props.isSelect ? null : <Button size="sm" color="danger" outline onClick={this.handleDelete}><FontAwesomeIcon icon={faTrash} /></Button>}
                 </ButtonGroup>
             </td>
             <td>{model.version}</td>

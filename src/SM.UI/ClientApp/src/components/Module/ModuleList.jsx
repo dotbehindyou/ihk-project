@@ -15,6 +15,8 @@ class ModuleList extends React.Component {
             onEdit: props.onEdit,
             items: []
         };
+
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
     componentDidMount() {
@@ -33,15 +35,16 @@ class ModuleList extends React.Component {
 //    }
 
     handleDelete(item) {
-        console.log(item);
+        if (this.props.onDelete !== undefined)
+            this.props.onDelete(this.item);
     }
 
     render() {
-        var rows = this.state.items.map((x) => <ModuleListItem key={x.module_ID} model={x} editIcon={this.props.editIcon} onEdit={this.props.onEdit} onDelete={this.handleDelete} />);
+        var rows = this.state.items.map((x) => <ModuleListItem key={x.module_ID} showStatus={true} onChangeVersion={this.props.onChangeVersion} model={x} isSelect={this.props.isSelect} editIcon={this.props.editIcon} onEdit={this.props.onEdit} onDelete={this.handleDelete} />);
 
         var edit;
-        if (this.props.onEdit != null) {
-            edit = <td colSpan={3}><Button size="sm" outline onClick={() => this.props.onEdit({})}>Modul hinzufügen <FontAwesomeIcon icon={faPlus} /></Button></td>;
+        if (this.props.onEdit != null && this.props.isSelect !== true) {
+            edit = <td colSpan={this.props.showStatus ? 4 : 3}><Button size="sm" outline onClick={() => this.props.onEdit({})}>Modul hinzufügen <FontAwesomeIcon icon={faPlus} /></Button></td>;
         }
 
         return <Table size="sm">
@@ -50,6 +53,7 @@ class ModuleList extends React.Component {
                     <th>#</th>
                     <th>Name des Moduls</th>
                     <th>Version</th>
+                    {this.props.showStatus ? <th>Status</th> : null}
                 </tr>
             </thead>
             <tbody>
