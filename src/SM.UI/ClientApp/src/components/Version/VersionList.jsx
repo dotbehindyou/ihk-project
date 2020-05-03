@@ -56,7 +56,7 @@ class VersionList extends React.Component {
 
     handleDelete(item) {
         if (this.props.onDelete !== undefined)
-            this.props.onDelete(this.item);
+            this.props.onDelete(item);
     }
 
     render() {
