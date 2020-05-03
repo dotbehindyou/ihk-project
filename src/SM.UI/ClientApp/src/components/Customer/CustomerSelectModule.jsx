@@ -54,7 +54,7 @@ class CustomerSelectModule extends React.Component {
 
         return <Modal isOpen={this.props.isOpen} size="lg">
             <ModalHeader>
-                {this.props.module ? "Version vom Modul ändern..." : "Modul zum Kunden zuweisen..."}
+                {this.state.module !== null && this.state.module.module_ID != null ? (this.state.select == null ? "Andere Version beim Kunden installieren..." : "Welche Version soll Installiert werden?") : "Modul für Installation beim Kunden auswählen..."}
             </ModalHeader>
             <ModalBody>
                 {list}
