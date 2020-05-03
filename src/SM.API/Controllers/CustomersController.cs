@@ -48,10 +48,10 @@ namespace SM.API.Controllers
         }
 
         // PUT: api/Customer/{Int32}
-        [HttpPut("{kdnr}")]
-        public void Put(Int32 id)
+        [HttpPut("{id}")]
+        public Customer Put(Int32 id)
         {
-            cm.Create(id);
+            return cm.Create(id);
         }
 
         // DELETE: api/ApiWithActions/{Int32}
@@ -61,56 +61,7 @@ namespace SM.API.Controllers
             cm.Remove(id);
         }
 
-        [HttpPost]
-        public void Changes(Int32 id, [FromBody] IDictionary<Module, ChangeItemOperation> change)
-        {
-            cm.AddChange(id, change);
-        }
-
-        [HttpGet("{id}")]
-        public List<Change> Changes(Int32 id)
-        {
-            return cm.GetCustomerChanges(id, true);
-        }
-
         #endregion
 
-        #region ServiceAccess
-
-        // [AllowAnonymous]
-        [HttpGet("sa/changes")]
-        public List<Change> Changes([FromHeader] String auth_token)
-        {
-            Int32 kdnr = cm.GetCustomerKdnr(this.GetAuthToken(auth_token));
-            return cm.GetCustomerChanges(kdnr);
-        }
-
-        // [AllowAnonymous]
-        [HttpPut("sa/changes/{change_id}")]
-        public void Changes([FromHeader] String auth_token, [FromBody] Change change) // TODO Change ID
-        {
-            Int32 kdnr = cm.GetCustomerKdnr(this.GetAuthToken(auth_token));
-            change.Kdnr = kdnr;
-
-            cm.SetChange(change);
-        }
-
-        [HttpPut("sa/modules/{module_id}")]
-        public void ModuleStatus([FromHeader] String auth_token, Guid module_id, ModuleStatus status)
-        {
-            Int32 kdnr = cm.GetCustomerKdnr(this.GetAuthToken(auth_token));
-
-            cm.SetModuleStatus(kdnr, module_id, status);
-        }
-
-        [HttpDelete("sa/modules/{module_id}")]
-        public void ModuleRemoved([FromHeader] String auth_token, Guid module_id)
-        {
-            Int32 kdnr = cm.GetCustomerKdnr(this.GetAuthToken(auth_token));
-
-            cm.RemovedModuleFromCustomer(kdnr, module_id);
-        }
-
-        #endregion
     }
 }

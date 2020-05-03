@@ -63,5 +63,30 @@ namespace SM.API.Controllers
         {
             mm.Remove(id);
         }
+
+        #region CustomerModule
+
+        [HttpPost("Customer/{kdnr}")]
+        public Boolean AddModuleToCustomer(Int32 kdnr, [FromBody] ModuleVersion module)
+        {
+            mm.AddModuleToCustomer(kdnr, module);
+            return true;
+        }
+
+        [HttpPut("Customer/{kdnr}")]
+        public Boolean SetModuleToCustomer(Int32 kdnr, [FromBody] ModuleVersion module)
+        {
+            mm.SetModuleToCustomer(kdnr, module);
+            return true;
+        }
+
+        [HttpDelete("Customer/{kdnr}")]
+        public Boolean RemoveModuleToCustomer(Int32 kdnr, [FromBody] ModuleVersion module)
+        {
+            mm.RemoveModuleFromCustomer(kdnr, module);
+            return true;
+        }
+
+        #endregion
     }
 }

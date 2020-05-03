@@ -40,6 +40,13 @@ namespace SM.API.Controllers
             return mm.GetVersion(module_id, version);
         }
 
+        // GET: api/Version/5
+        [HttpGet("{version}/{kdnr}", Name = "VersionFromKdnr")]
+        public ModuleVersion GetVersionFromCustomer(Guid module_id, String version, Int32 kdnr)
+        {
+            return mm.GetVersionFromCustomer(module_id, version, kdnr);
+        }
+
         // POST: api/Version
         [HttpPost]
         public ModuleVersion Post(Guid module_id, [FromBody] ModuleVersion version)
