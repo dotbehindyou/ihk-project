@@ -14,13 +14,15 @@ class VersionEditorModal extends React.Component {
         this.state = {
             moduleId: props.moduleId || null,
             version: props.version,
+            kdnr: props.kdnr,
             model: {
                 config: {},
             },
             file: null,
             isLoaded: false,
             isSaving: false,
-            isNew: props.version === undefined
+            isNew: props.version === undefined,
+            update: props.changeConfig || props.changeVersion
         };
 
         this.close = this.close.bind(this);
@@ -38,9 +40,13 @@ class VersionEditorModal extends React.Component {
     }
 
     load() {
-        return fetch('https://localhost:44376/api/v1/' + this.state.moduleId + '/versions/' + this.state.version) // TODO Addresse über Config auslesen lassen
+        return fetch('https://localhost:44376/api/v1/' + this.state.moduleId + '/versions/' + this.state.version + (this.props.changeConfig ? '/' + this.props.kdnr : '')) // TODO Addresse über Config auslesen lassen
             .then(res => res.json())
             .then((result) => {
+                if (this.state.update) {
+                    result.status = "UPDATE";
+                }
+
                 this.setState({
                     model: result,
                     isLoaded: true,
@@ -55,40 +61,65 @@ class VersionEditorModal extends React.Component {
 
     save() {
         this.setState({ isSaving: true });
+        if (this.props.kdnr === undefined) { // Komplett neue Version erstellen
+            fetch('https://localhost:44376/api/v1/' + this.state.moduleId + '/versions/' + (this.state.isNew ? '' : this.state.version),
+                {
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    method: this.state.isNew ? 'POST' : 'PUT',
+                    cache: 'no-cache',
+                    body: JSON.stringify(this.state.model)
+                })
+                .then(res => res.json())
+                .then(async (result) => {
+                    this.setState({
+                        model: { ...result },
+                        isNew: false
+                    });
 
-        fetch('https://localhost:44376/api/v1/' + this.state.moduleId + '/versions/' + (this.state.isNew ? '' : this.state.version),
-            {
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                method: this.state.isNew ? 'POST' : 'PUT',
-                cache: 'no-cache',
-                body: JSON.stringify(this.state.model)
-            })
-            .then(res => res.json())
-            .then(async (result) => {
-                this.setState({
-                    model: { ...result },
-                    isNew: false
+                    if (this.state.file !== null) {
+                        await this.uploadFile();
+
+                    }
+                }) // TODO VersionsListe aktualliseren, VersionsList
+                .catch((ex) => {
+                    console.warn(ex);
+                })
+                .finally(() => {
+                    this.setState({ isSaving: false });
                 });
 
-                if (this.state.file !== null) {
-                    await this.uploadFile();
-
-                }
-            }) // TODO Neues Element an die VersionsListe hinzufügen
-            .catch((ex) => {
-                console.warn(ex);
-            })
-            .finally(() => {
-                this.setState({ isSaving: false });
-            });
+        } else {  // Version beim Kunden konfigurieren
+            fetch('https://localhost:44376/api/v1/Modules/Customer/' + this.props.kdnr,
+                {
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    method: this.state.update ? 'PUT' : 'POST',
+                    cache: 'no-cache',
+                    body: JSON.stringify(this.state.model)
+                })
+                .then(res => res.json())
+                .then(async (result) => {
+                    this.setState({
+                        model: { ...result },
+                        isNew: false
+                    });
+                    this.close();
+                })
+                .catch((ex) => {
+                    console.warn(ex);
+                })
+                .finally(() => {
+                    this.setState({ isSaving: false });
+                });
+        }
     }
 
     async uploadFile() {
         if (this.state.isNew)
             return false;
-            //throw "Es existiert noch keine Version zum Uploaden!";
 
         this.setState({ isUploading: true });
 
@@ -104,7 +135,7 @@ class VersionEditorModal extends React.Component {
             .then(res => res.json())
             .then(async (result) => {
                 return result;
-            }) // TODO Neues Element an die VersionsListe hinzufügen
+            })  // TODO VersionsListe aktualliseren, VersionsList
             .catch((ex) => {
                 console.warn(ex);
             })
@@ -131,12 +162,6 @@ class VersionEditorModal extends React.Component {
             model[event.target.name] = event.target.value;
         }
         this.setState({ model: { ...model } });
-        console.log(this.state);
-    }
-
-    handleSubmit(event) {
-        alert('A name was submitted: ' + this.state.value);
-        event.preventDefault();
     }
 
     render() {
@@ -159,44 +184,50 @@ class VersionEditorModal extends React.Component {
                 <ModalHeader toggle={this.props.onToggle} close={closeBtn}>{this.props.moduleName || model.moduleName} <small>{(!this.state.isNew ? "("+model.version+")" : "neue Version hinzufügen")}</small></ModalHeader>
                 <ModalBody>
                     <Form>
+                        {
+                            this.props.kdnr === undefined ?
+                                (<>
+                                <Row form>
+                                    { verIn }
+                                    <Col>
+                                        <FormGroup >
+                                            <Label for="releaseDate">Veröffentlich: </Label>
+                                            <DatePickerInput
+                                                name="releaseDate"
+                                                onChange={(data) => { this.handleChange({ target: { name: 'releaseDate', value: data }}); }}
+                                                value={model.releaseDate}
+                                                className='my-custom-datepicker-component' />
+                                        </FormGroup>
+                                    </Col>
+                                </Row>
+                                <hr />
+                                <Row form>
+                                    <Col>
+                                        <h4>Versionsdatei (ZIP):</h4>
+                                        <small>In der Versionsdatei darf die Konfigdatei NICHT hinterlegt sein!</small>
+                                    </Col>
+                                </Row>
+                                <Row form>
+                                    <Col>
+                                        <Input type="file" name="file" id="file" onChange={this.selectVersionFile} /> {/* TODO Dateiupload */}
+                                    </Col>
+                                </Row>
+                                    <hr />
+                                </>)
+                                : null
+                        }
                         <Row form>
-                            { verIn }
                             <Col>
-                                <FormGroup >
-                                    <Label for="releaseDate">Veröffentlich: </Label>
-                                    <DatePickerInput
-                                        name="releaseDate"
-                                        onChange={(data) => { this.handleChange({ target: { name: 'releaseDate', value: data }}); }}
-                                        value={model.releaseDate}
-                                        className='my-custom-datepicker-component' />
-                                </FormGroup>
+                                <h4>Konfigurationsdatei  {this.props.kdnr === undefined ? "(Muster)" : "(Kunde)"}:</h4>
                             </Col>
                         </Row>
-                        <hr />
-                        <Row form>
-                            <Col>
-                                <h4>Versionsdatei (ZIP):</h4>
-                                <small>In der Versionsdatei darf die Konfigdatei NICHT hinterlegt sein!</small>
-                            </Col>
-                        </Row>
-                        <Row form>
-                            <Col>
-                                <Input type="file" name="file" id="file" onChange={this.selectVersionFile} /> {/* TODO Dateiupload */}
-                            </Col>
-                        </Row>
-                        <hr />
-                        <Row form>
-                            <Col>
-                                <h4>Konfigurationsdatei (Muster):</h4>
-                            </Col>
-                        </Row>
-                        <ConfigEditor onChange={this.handleChange} config={model.config || {}}/>
+                        <ConfigEditor isSelect={this.props.kdnr !== undefined} onChange={this.handleChange} config={model.config || {}}/>
                     </Form>
                 </ModalBody>
                 <ModalFooter>
                     <ButtonGroup size="sm">
                         <Button onClick={this.close} outline color="danger" type="button">Abbrechen</Button>
-                        <Button disabled={this.state.isSaving} onClick={this.save} outline color="primary" type="submit">Speichern</Button>
+                        <Button disabled={this.state.isSaving} onClick={this.save} outline color="primary" type="submit">{(this.props.kdnr !== undefined && !this.props.changeConfig ? (this.props.changeVersion ? "Version ändern" : "Hinzufügen") : "Speichern")}</Button>
                     </ButtonGroup>
                 </ModalFooter>
             </Modal>

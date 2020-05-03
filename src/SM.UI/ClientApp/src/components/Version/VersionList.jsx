@@ -13,7 +13,6 @@ class VersionList extends React.Component {
         this.state = {
             error: null,
             isLoaded: false,
-            onEdit: props.onEdit,
             module: props.module,
             items: [],
             editor: {
@@ -56,24 +55,32 @@ class VersionList extends React.Component {
     }
 
     handleDelete(item) {
-        console.log(item);
+        if (this.props.onDelete !== undefined)
+            this.props.onDelete(this.item);
     }
 
     render() {
         var comp;
         if (this.state.isLoaded) {
-            comp = this.state.items.map((x) => <VersionListItem key={x.version} model={x} onEdit={this.toggleEditor} onDelete={this.handleDelete} />);
+            comp = this.state.items.map((x) => <VersionListItem isSelect={this.props.kdnr !== undefined} editIcon={this.props.editIcon} key={x.version} model={x} onEdit={this.toggleEditor} onDelete={this.handleDelete} />);
         } else {
             comp = <tr><td>{this.state.error}</td></tr>;
         }
         var edit;
         if (this.state.editor.isOpen) {
-            edit = <VersionEditorModal moduleId={this.state.module.module_ID} moduleName={this.state.module.name} isOpen={this.state.editor.isOpen} onClose={() => { this.toggleEditor(null, true); }} version={this.state.editor.item.version} />
+            edit = <VersionEditorModal
+                changeVersion={this.props.update === true}
+                kdnr={this.props.kdnr}
+                moduleId={this.state.module.module_ID}
+                moduleName={this.state.module.name}
+                isOpen={this.state.editor.isOpen}
+                onClose={() => { this.toggleEditor(null, true); }}
+                version={this.state.editor.item.version} />
 
         }
         return (
             <div>
-                <Table>
+                <Table size="sm">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -85,9 +92,13 @@ class VersionList extends React.Component {
                         {comp}
                     </tbody>
                     <tfoot>
-                        <tr>
-                            <td colSpan={3}><Button size="sm" outline onClick={() => this.toggleEditor(null) }>Version hinzufügen <FontAwesomeIcon icon={faPlus} /></Button></td>
-                        </tr>
+                        {
+                            this.props.kdnr === undefined ?
+                                <tr>
+                                    <td colSpan={3}><Button size="sm" outline onClick={() => this.toggleEditor(null) }>Version hinzufügen <FontAwesomeIcon icon={faPlus} /></Button></td>
+                                </tr>
+                                : null
+                        }
                     </tfoot>
                 </Table>
                 { edit }

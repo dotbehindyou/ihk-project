@@ -2,20 +2,14 @@
 import CustomerList from './CustomerList';
 import Customer from './Customer';
 
-const debug = {
-    "kdnr": 787158,
-    "name": "Kasam Imsale",
-    "auth_Token": "X3PuDX+D/1fvtzSpjq8iiDWemq5a2mM4RfTZ+lsLFwsCqzrgubg87TeFMoSr1yKZ0HkgMfd8Ss+3+mzjk7ACAA==",
-    "isRegisterd": true
-};
 
 class CustomerPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             editor: {
-                isOpen: true,
-                item: debug
+                isOpen: false,
+                item: null
             }
         };
 
@@ -34,8 +28,9 @@ class CustomerPage extends React.Component {
     render() {
         var viewComp;
 
-        if (this.state.editor.isOpen)
+        if (this.state.editor.isOpen) {
             viewComp = <Customer onClose={this.handleCloseEdit} model={this.state.editor.item} />
+        }
         else
             viewComp = <CustomerList onEdit={this.handleOpenEdit} />
         return <div>

@@ -59,7 +59,7 @@ namespace SM.API.Managers
 
         public List<Module> GetModulesFromCustomer(Int32 kdnr)
         {
-            return Mapper.GetMany<Module>("select mod.Module_ID, mod.Name, cus.Version from SM_Customers_Modules as cus " +
+            return Mapper.GetMany<Module>("select mod.Module_ID, mod.Name, cus.Version, cus.Status from SM_Customers_Modules as cus " +
                 "left join SM_Modules as mod on cus.Module_ID = mod.Module_ID and mod.IsActive = 1" +
                 "where cus.Kdnr = ? and cus.IsActive = 1",
                 new OdbcParameter("kdnr", kdnr));
@@ -74,6 +74,46 @@ namespace SM.API.Managers
                 new OdbcParameter("module_id", module_id));
         }
 
+        public void AddModuleToCustomer(Int32 kdnr, ModuleVersion version)
+        {
+            Mapper.ExecuteQuery("DELETE FROM SM_Customers_Modules WHERE Kdnr = ? and Module_ID = ?",
+                new OdbcParameter("kdnr", kdnr),
+                new OdbcParameter("Module_ID", version.Module_ID));
+
+            Mapper.ExecuteQuery("INSERT INTO SM_Customers_Modules (Kdnr, Module_ID, Version, Config, Status) VALUES (?,?,?,?,?)",
+                new OdbcParameter("kdnr", kdnr),
+                new OdbcParameter("Module_ID", version.Module_ID),
+                new OdbcParameter("Version", version.Version),
+                new OdbcParameter("Config", version.Config.Data),
+                new OdbcParameter("Status", "INIT"));
+        }
+
+        public void SetModuleToCustomer(Int32 kdnr, ModuleVersion version)
+        {
+            Mapper.ExecuteQuery("UPDATE SM_Customers_Modules SET Modified = now(), Version = ?, Config = ?, Status = ? WHERE Kdnr = ? and Module_ID = ?",
+                new OdbcParameter("Version", version.Version),
+                new OdbcParameter("Config", version.Config.Data),
+                new OdbcParameter("Status", "UPDATE"),
+                new OdbcParameter("Kdnr", kdnr),
+                new OdbcParameter("Module_ID", version.Module_ID));
+        }
+
+        public void RemoveModuleFromCustomer(Int32 kdnr, ModuleVersion version)
+        {
+            Mapper.ExecuteQuery("UPDATE SM_Customers_Modules SET Modified = now(), Status = ? WHERE Kdnr = ? and Module_ID = ?",
+                new OdbcParameter("Status", "REMOVE"),
+                new OdbcParameter("Kdnr", kdnr),
+                new OdbcParameter("Module_ID", version.Module_ID));
+        }
+
+        public void SetModuleStatusFromCustomer(Int32 kdnr, ModuleVersion version)
+        {
+            Mapper.ExecuteQuery($"UPDATE SM_Customers_Modules SET {(version.Status == "REMOVED" ? "Deleted" : "Modified")} = now(), Status = ? WHERE Kdnr = ? and Module_ID = ?",
+                new OdbcParameter("Status", version.Status),
+                new OdbcParameter("Kdnr", kdnr),
+                new OdbcParameter("Module_ID", version.Module_ID));
+        }
+
         #endregion
 
         #region Version
@@ -85,6 +125,35 @@ namespace SM.API.Managers
                     "left join SM_Modules on SM_Modules.Module_ID = SM_Modules_Version.Module_ID " +
                     "where SM_Modules_Version.Module_ID = ?",
                 new OdbcParameter("module_id", module_id));
+        }
+
+        public ModuleVersion GetVersionFromCustomer(Guid module_id, String version, Int32 kdnr)
+        {
+            var proc = Mapper.GetSingle<Modules_Version_Config>("SELECT t_ver.Version, t_ver.Module_ID, t_mod.Name as ModuleName, Validation_Token as Validation_Token, t_ver.Release_Date as Release_Date, t_conf.Config_ID as Config_ID, t_conf.FileName as ConfigFileName, t_conf.Format as ConfigFormat, t_cus_mod.Config as  ConfigData " +
+                    "FROM SM_Customers_Modules as t_cus_mod " +
+                    "left join SM_Modules as t_mod on t_mod.Module_ID = t_cus_mod.Module_ID " +
+                    "left join SM_Modules_Version as t_ver on t_cus_mod.Module_ID = t_ver.Module_ID and t_cus_mod.Version = t_ver.Version " +
+                    "left join SM_Modules_Config as t_conf on t_conf.Config_ID = t_ver.Config_ID " +
+                    "where t_cus_mod.Kdnr = ? and t_cus_mod.Module_ID = ? and t_cus_mod.Version = ?",
+                new OdbcParameter("Kdnr", kdnr),
+                new OdbcParameter("Module", module_id),
+                new OdbcParameter("Version", version));
+
+            return new ModuleVersion
+            {
+                Version = proc.Version,
+                Module_ID = proc.Module_ID,
+                ModuleName = proc.ModuleName,
+                ReleaseDate = proc.Release_Date,
+                ValidationToken = proc.Validation_Token,
+                Config = new ConfigFile
+                {
+                    Config_ID = proc.Config_ID,
+                    Data = proc.ConfigData,
+                    FileName = proc.ConfigFileName,
+                    Format = proc.ConfigFormat,
+                }
+            };
         }
 
         public ModuleVersion GetVersion(Guid module_id, String version)

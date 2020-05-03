@@ -13,5 +13,6 @@ namespace SM.Models
         public DateTime ReleaseDate { get; set; }
         public Byte[] ValidationToken { get; set; }
         public Byte[] File { get; set; }
+        public String Status { get; set; }
     }
 }
