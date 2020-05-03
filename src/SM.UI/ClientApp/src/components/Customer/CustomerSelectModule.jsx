@@ -1,6 +1,6 @@
 ﻿import React from 'react';
 
-import { Button, Label, Input, Row, Col, InputGroup, InputGroupAddon, Tooltip, Modal, ModalHeader, ModalBody, ModalFooter, ButtonGroup } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, ButtonGroup } from 'reactstrap';
 
 import ModuleList from '../Module/ModuleList';
 import VersionList from '../Version/VersionList';
@@ -11,35 +11,58 @@ class CustomerSelectModule extends React.Component {
         super(props);
 
         this.state = {
+            select: null,
             module: null
         }
 
         this.selectModule = this.selectModule.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.handleBack = this.handleBack.bind(this);
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        return {
+            ...state,
+            module: state.select || props.module
+        }
     }
 
     selectModule(item) {
-        this.setState({ module: item });
+        this.setState({ select: item });
+    }
+
+    handleBack(e) {
+        this.resetModule();
+    }
+
+    handleClose(e) {
+        this.props.onClose(e);
+        this.resetModule();
+    }
+
+    resetModule() {
+        this.setState({ select: null });
     }
 
     render() {
-        var list = this.state.module;
-        if (this.state.module === null) {
-            list = <ModuleList url="https://localhost:44376/api/v1/Modules" editIcon={faCheck} onEdit={this.selectModule} />;
+        var list;
+        if (this.state.module == null || this.state.module.module_ID == null) {
+            list = <ModuleList isSelect={true} url="https://localhost:44376/api/v1/Modules" editIcon={faCheck} onEdit={this.selectModule} />;
         } else {
-            list = <div><VersionList module={this.state.module} /> </div>;
+            list = <div><VersionList kdnr={this.props.kdnr} update={this.state.select === null} editIcon={faCheck} module={this.state.module} /> </div>;
         }
 
         return <Modal isOpen={this.props.isOpen} size="lg">
             <ModalHeader>
-                Modul zum Kunden zuweisen...
+                {this.props.module ? "Version vom Modul ändern..." : "Modul zum Kunden zuweisen..."}
             </ModalHeader>
             <ModalBody>
                 {list}
             </ModalBody>
             <ModalFooter>
                 <ButtonGroup size="sm">
-                    <Button onClick={this.props.onClose} outline color="danger" type="button">Abbrechen</Button>
-                    <Button disabled={this.state.isSaving} onClick={this.save} outline color="primary" type="submit">Speichern</Button>
+                    {this.state.select === null ? null : <Button onClick={this.handleBack} outline color="warning" type="button" >Zurück</Button>}
+                    <Button onClick={this.handleClose} outline color="danger" type="button" >Schließen</Button>
                 </ButtonGroup>
             </ModalFooter>
         </Modal>;
