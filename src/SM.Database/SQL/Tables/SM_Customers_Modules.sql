@@ -4,7 +4,7 @@
 	"Version" VARCHAR(16) NOT NULL,
 	"Created" TIMESTAMP NOT NULL DEFAULT "now"(),
 	"Modified" TIMESTAMP NULL,
-	"Deleted" TIMESTAMP NOT NULL,
+	"Deleted" TIMESTAMP NULL,
 	"IsActive" BIT NOT NULL COMPUTE( case when "Deleted" is null then 1 else 0 end ),
 	"Status" VARCHAR(25) NULL,
 	"Config" "text" NOT NULL,
