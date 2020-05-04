@@ -1,20 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Owin;
-using Microsoft.Owin.Security.OAuth;
-using SM.API.Models;
-using Owin;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.IO;
 
 namespace SM.API
 {
@@ -43,6 +32,11 @@ namespace SM.API
             services.AddControllers();
 
             services.Configure<Config>(Configuration.GetSection("Config"));
+
+            services.Configure<IISServerOptions>(options =>
+            { // https://docs.microsoft.com/de-de/aspnet/core/host-and-deploy/iis/?view=aspnetcore-3.1#iis-options
+                // options.AutomaticAuthentication = false;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
