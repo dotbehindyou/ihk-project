@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.Options;
+﻿
 using System;
 using System.Text;
 using Weiss.Data.Mapper;
 
-namespace SM.API.Managers
+namespace SM.Managers
 {
     public class BaseManager : IDisposable
     {

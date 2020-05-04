@@ -50,6 +50,11 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.Data.Odbc" Version="4.7.0" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Weiss.Data">
+      <HintPath>..\..\lib\Weiss.Data.dll</HintPath>
+    </Reference>
+  </ItemGroup>
   <PropertyGroup>
     <SsdtUnitTestVersion>3.1</SsdtUnitTestVersion>
   </PropertyGroup>

@@ -5,10 +5,9 @@ using System.Text;
 using System.Data.Odbc;
 using System.Security.Cryptography;
 using SM.Models;
-using Microsoft.AspNetCore.Authorization;
 using System.Data.Common;
 
-namespace SM.API.Managers
+namespace SM.Managers
 {
     public class CustomerManager : BaseManager
     {

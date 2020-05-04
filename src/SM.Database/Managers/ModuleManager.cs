@@ -7,9 +7,8 @@ using System.Data.Odbc;
 using System.Security.Cryptography;
 using System.IO;
 using SM.Models.Procedure;
-using Microsoft.AspNetCore.Http;
 
-namespace SM.API.Managers
+namespace SM.Managers
 {
     public class ModuleManager : BaseManager
     {
@@ -208,7 +207,7 @@ namespace SM.API.Managers
             return ver;
         }
 
-        public void UpdateVersionFiles(Guid module_id, String version, IFormFile file)
+        public void UpdateVersionFiles(Guid module_id, String version, Stream file)
         {
             Byte[] buffer;
             using (MemoryStream ms = new MemoryStream())
