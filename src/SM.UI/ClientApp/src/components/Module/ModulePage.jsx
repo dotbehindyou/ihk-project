@@ -32,7 +32,7 @@ class ModulePage extends React.Component {
     }
 
     handleDelete(item) {
-        fetch('https://localhost:44376/api/v1/Modules/' + item.module_ID,
+        fetch('/api/Modules/' + item.module_ID,
             {
                 method: 'DELETE'
             })
@@ -46,7 +46,7 @@ class ModulePage extends React.Component {
     render() {
         var renderdItem = null;
         if (this.state.select == null)
-            renderdItem = <ModuleList url="https://localhost:44376/api/v1/Modules"
+            renderdItem = <ModuleList url="/api/Modules"
                 onEdit={this.openEditor}
                 onDelete={this.handleDelete} />;
         else

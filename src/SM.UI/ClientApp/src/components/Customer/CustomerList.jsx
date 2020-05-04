@@ -32,7 +32,7 @@ class CustomerList extends React.Component {
     }
 
     componentDidMount() {
-        fetch('https://localhost:44376/api/v1/Customers/')
+        fetch('/api/Customers/')
             .then(res => res.json())
             .then((result) => {
                 this.setState((prevState) => { return { items: result } });
@@ -43,7 +43,7 @@ class CustomerList extends React.Component {
     }
 
     searchCustomer() {
-        var uri = new URL('https://localhost:44376/api/v1/Customers/Search');
+        var uri = new URL('/api/Customers/Search');
         Object.keys(this.state.search).forEach(key => uri.searchParams.append(key, this.state.search[key]));
         fetch(uri)
             .then(res => res.json())

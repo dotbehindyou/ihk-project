@@ -47,7 +47,7 @@ class CustomerSelectModule extends React.Component {
     render() {
         var list;
         if (this.state.module == null || this.state.module.module_ID == null) {
-            list = <ModuleList isSelect={true} url="https://localhost:44376/api/v1/Modules" editIcon={faCheck} onEdit={this.selectModule} />;
+            list = <ModuleList isSelect={true} url="/api/Modules" editIcon={faCheck} onEdit={this.selectModule} />;
         } else {
             list = <div><VersionList kdnr={this.props.kdnr} update={this.state.select === null} editIcon={faCheck} module={this.state.module} /> </div>;
         }

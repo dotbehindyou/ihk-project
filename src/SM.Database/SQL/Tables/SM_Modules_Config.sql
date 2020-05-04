@@ -2,7 +2,7 @@
 	"Config_ID" UNIQUEIDENTIFIER NOT NULL DEFAULT "newid"(),
 	"Module_ID" UNIQUEIDENTIFIER NOT NULL,
 	"FileName" VARCHAR(50) NOT NULL,
-	"Format" VARCHAR(10) NOT NULL,
+	"Format" VARCHAR(10) NULL,
 	"Data" "text" NULL,
 	"Created" TIMESTAMP NOT NULL DEFAULT "now"(),
 	"Modified" TIMESTAMP NULL,

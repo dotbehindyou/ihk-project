@@ -61,7 +61,7 @@ namespace SM.API.Controllers
             }
             // TODO File
 
-            return false;
+            return true;
         }
 
         // PUT: api/Version/5
