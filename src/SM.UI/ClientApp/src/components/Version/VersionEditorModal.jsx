@@ -81,8 +81,9 @@ class VersionEditorModal extends React.Component {
 
                     if (this.state.file !== null) {
                         await this.uploadFile();
-
                     }
+
+                    this.close();
                 }) // TODO VersionsListe aktualliseren, VersionsList
                 .catch((ex) => {
                     console.warn(ex);
