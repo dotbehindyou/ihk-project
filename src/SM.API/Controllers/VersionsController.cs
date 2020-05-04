@@ -12,7 +12,7 @@ using SM.Models;
 
 namespace SM.API.Controllers
 {
-    [Route("api/v1/{module_id}/[controller]")]
+    [Route("{module_id}/[controller]")]
     [ApiController]
     public class VersionsController : BaseController
     {

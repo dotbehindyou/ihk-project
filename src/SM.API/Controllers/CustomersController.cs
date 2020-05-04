@@ -12,7 +12,7 @@ using SM.Models;
 namespace SM.API.Controllers
 {
     //[Authorize]
-    [Route("api/v1/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class CustomersController : BaseController
     {
