@@ -32,7 +32,15 @@ class ModulePage extends React.Component {
     }
 
     handleDelete(item) {
-        console.log(item);
+        fetch('https://localhost:44376/api/v1/Modules/' + item.module_ID,
+            {
+                method: 'DELETE'
+            })
+            .then((res) => res.json())
+            .then(res => {
+
+            })
+            .catch((ex) => console.log(ex));
     }
 
     render() {

@@ -55,14 +55,26 @@ class VersionList extends React.Component {
     }
 
     handleDelete(item) {
-        if (this.props.onDelete !== undefined)
-            this.props.onDelete(item);
+        if (window.confirm("Wollen Sie die Version " + item.version + " wirklich löschen?")) {
+            if (this.props.onDelete !== undefined)
+                this.props.onDelete(item);
+            this.setState((prevState) => {
+                return {
+                    items: prevState.items.filter(x => x.version !== item.version)
+                };
+            });
+        }
     }
 
     render() {
         var comp;
         if (this.state.isLoaded) {
-            comp = this.state.items.map((x) => <VersionListItem isSelect={this.props.kdnr !== undefined} editIcon={this.props.editIcon} key={x.version} model={x} onEdit={this.toggleEditor} onDelete={this.handleDelete} />);
+            comp = this.state.items.map((x) => <VersionListItem key={x.version}
+                isSelect={this.props.kdnr !== undefined}
+                editIcon={this.props.editIcon}
+                model={x}
+                onEdit={this.toggleEditor}
+                onDelete={this.handleDelete} />);
         } else {
             comp = <tr><td>{this.state.error}</td></tr>;
         }
@@ -101,7 +113,7 @@ class VersionList extends React.Component {
                         }
                     </tfoot>
                 </Table>
-                { edit }
+                {edit}
             </div>);
     }
 }

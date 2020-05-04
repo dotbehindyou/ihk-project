@@ -8,7 +8,7 @@ import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
 class Module extends React.Component {
     constructor(props) {
         super(props);
-        console.log(props.model);
+
         this.state = {
             isSaving: false,
             isNew: props.model.module_ID === undefined,
@@ -18,6 +18,7 @@ class Module extends React.Component {
         this.close = this.close.bind(this);
         this.save = this.save.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
     close() {
@@ -59,6 +60,18 @@ class Module extends React.Component {
             });
     }
 
+    handleDelete(item) {
+        fetch('https://localhost:44376/api/v1/' + item.module_ID + '/versions/' + item.version,
+            {
+                method: 'DELETE'
+            })
+            .then((res) => res.json())
+            .then(res => {
+
+            })
+            .catch((ex) => console.log(ex));
+    }
+
     render() {
         var model = this.state.model;
 
@@ -67,7 +80,8 @@ class Module extends React.Component {
             listCom = (<>
                 <hr />
                 <h4>Versionen: </h4>
-                <VersionList module={model} />
+                <VersionList module={model}
+                    onDelete={this.handleDelete}/>
             </>);
 
         return <div>
