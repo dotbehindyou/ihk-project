@@ -10,7 +10,7 @@ using SM.Models;
 
 namespace SM.API.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ModulesController : BaseController
     {
