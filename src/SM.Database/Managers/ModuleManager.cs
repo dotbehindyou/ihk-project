@@ -291,7 +291,7 @@ namespace SM.Managers
         {
             Mapper.ExecuteQuery("UPDATE SM_Modules_Config SET Modified = now(), FileName = ?, Format = ?, Data = ? where Config_ID = ?",
                 new OdbcParameter("FileName", configFile.FileName),
-                new OdbcParameter("Format", configFile.Format ?? (Object)DBNull.Value),
+                new OdbcParameter("Format", String.IsNullOrEmpty(configFile.Format) ? (Object)DBNull.Value : configFile.Format),
                 new OdbcParameter("Data", configFile.Data),
                 new OdbcParameter("Config_ID", configFile.Config_ID));
         }
