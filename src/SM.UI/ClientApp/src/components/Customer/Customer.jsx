@@ -83,6 +83,18 @@ class Customer extends React.Component {
 
     handleRemoveModule(item) {
         console.log(item);
+        fetch('https://localhost:44376/api/v1/Modules/Customer/' + this.state.kdnr,
+            {
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                method: 'DELETE',
+                body: JSON.stringify(item)
+            })
+            .then((res) => res.json())
+            .then(res => {
+            })
+            .catch((ex) => console.log(ex));
     }
 
     closeModuleModal(e) {
