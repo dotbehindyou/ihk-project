@@ -7,9 +7,8 @@ using System.Data.Odbc;
 using System.Security.Cryptography;
 using System.IO;
 using SM.Models.Procedure;
-using Microsoft.AspNetCore.Http;
 
-namespace SM.API.Managers
+namespace SM.Managers
 {
     public class ModuleManager : BaseManager
     {
@@ -208,7 +207,7 @@ namespace SM.API.Managers
             return ver;
         }
 
-        public void UpdateVersionFiles(Guid module_id, String version, IFormFile file)
+        public void UpdateVersionFiles(Guid module_id, String version, Stream file)
         {
             Byte[] buffer;
             using (MemoryStream ms = new MemoryStream())
@@ -292,7 +291,7 @@ namespace SM.API.Managers
         {
             Mapper.ExecuteQuery("UPDATE SM_Modules_Config SET Modified = now(), FileName = ?, Format = ?, Data = ? where Config_ID = ?",
                 new OdbcParameter("FileName", configFile.FileName),
-                new OdbcParameter("Format", configFile.Format),
+                new OdbcParameter("Format", String.IsNullOrEmpty(configFile.Format) ? (Object)DBNull.Value : configFile.Format),
                 new OdbcParameter("Data", configFile.Data),
                 new OdbcParameter("Config_ID", configFile.Config_ID));
         }

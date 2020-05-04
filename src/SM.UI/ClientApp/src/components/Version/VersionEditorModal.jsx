@@ -40,7 +40,7 @@ class VersionEditorModal extends React.Component {
     }
 
     load() {
-        return fetch('https://localhost:44376/api/v1/' + this.state.moduleId + '/versions/' + this.state.version + (this.props.changeConfig ? '/' + this.props.kdnr : '')) // TODO Addresse über Config auslesen lassen
+        return fetch('/api/' + this.state.moduleId + '/versions/' + this.state.version + (this.props.changeConfig ? '/' + this.props.kdnr : '')) // TODO Addresse über Config auslesen lassen
             .then(res => res.json())
             .then((result) => {
                 if (this.state.update) {
@@ -62,7 +62,7 @@ class VersionEditorModal extends React.Component {
     save() {
         this.setState({ isSaving: true });
         if (this.props.kdnr === undefined) { // Komplett neue Version erstellen
-            fetch('https://localhost:44376/api/v1/' + this.state.moduleId + '/versions/' + (this.state.isNew ? '' : this.state.version),
+            fetch('/api/' + this.state.moduleId + '/versions/' + (this.state.isNew ? '' : this.state.version),
                 {
                     headers: {
                         "Content-Type": "application/json"
@@ -75,13 +75,15 @@ class VersionEditorModal extends React.Component {
                 .then(async (result) => {
                     this.setState({
                         model: { ...result },
+                        version: result.version,
                         isNew: false
                     });
 
                     if (this.state.file !== null) {
                         await this.uploadFile();
-
                     }
+
+                    this.close();
                 }) // TODO VersionsListe aktualliseren, VersionsList
                 .catch((ex) => {
                     console.warn(ex);
@@ -91,7 +93,7 @@ class VersionEditorModal extends React.Component {
                 });
 
         } else {  // Version beim Kunden konfigurieren
-            fetch('https://localhost:44376/api/v1/Modules/Customer/' + this.props.kdnr,
+            fetch('/api/Modules/Customer/' + this.props.kdnr,
                 {
                     headers: {
                         "Content-Type": "application/json"
@@ -126,7 +128,7 @@ class VersionEditorModal extends React.Component {
         var formData = new FormData();
         formData.append('versionFile', this.state.file);
 
-        return await fetch('https://localhost:44376/api/v1/' + this.state.moduleId + '/versions/' + this.state.version + '/file',
+        return await fetch('/api/' + this.state.moduleId + '/versions/' + this.state.version + '/file',
             {
                 method: this.state.isNew ? 'POST' : 'PUT',
                 cache: 'no-cache',

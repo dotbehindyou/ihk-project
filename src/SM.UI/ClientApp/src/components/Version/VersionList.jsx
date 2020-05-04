@@ -26,7 +26,7 @@ class VersionList extends React.Component {
     }
 
     load() {
-        fetch('https://localhost:44376/api/v1/' + this.state.module.module_ID + '/versions') // TODO Addresse über Config auslesen lassen
+        fetch('/api/' + this.state.module.module_ID + '/versions') // TODO Addresse über Config auslesen lassen
             .then(res => res.json())
             .then((result) => this.setState({
                 isLoaded: true,

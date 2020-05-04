@@ -36,7 +36,7 @@ class Module extends React.Component {
 
     save() {
         this.setState({ isSaving: true });
-        fetch('https://localhost:44376/api/v1/Modules/' + (this.state.isNew ? '' : this.state.model.module_ID),
+        fetch('/api/Modules/' + (this.state.isNew ? '' : this.state.model.module_ID),
             {
                 headers: {
                     "Content-Type": "application/json",
@@ -61,7 +61,7 @@ class Module extends React.Component {
     }
 
     handleDelete(item) {
-        fetch('https://localhost:44376/api/v1/' + item.module_ID + '/versions/' + item.version,
+        fetch('/api/' + item.module_ID + '/versions/' + item.version,
             {
                 method: 'DELETE'
             })

@@ -42,7 +42,7 @@ class Customer extends React.Component {
     }
 
     initCustomer() {
-        fetch('https://localhost:44376/api/v1/Customers/' + this.state.kdnr, {
+        fetch('/api/Customers/' + this.state.kdnr, {
                     method: 'PUT'
                 })
             .then((res) => res.json())
@@ -83,7 +83,7 @@ class Customer extends React.Component {
 
     handleRemoveModule(item) {
         console.log(item);
-        fetch('https://localhost:44376/api/v1/Modules/Customer/' + this.state.kdnr,
+        fetch('/api/Modules/Customer/' + this.state.kdnr,
             {
                 headers: {
                     "Content-Type": "application/json"
@@ -158,7 +158,7 @@ class Customer extends React.Component {
                 <Col sm={8}>
                     <hr />
                     <h4>Installierte Module:</h4>
-                    <ModuleList url={"https://localhost:44376/api/v1/Modules/Customer/" + this.state.kdnr}
+                    <ModuleList url={"/api/Modules/Customer/" + this.state.kdnr}
                         onEdit={this.handleChangeModule}
                         onDelete={this.handleRemoveModule}
                         onChangeVersion={this.handleChangeVersion}
