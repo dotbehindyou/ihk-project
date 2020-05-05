@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using SM.Managers;
+using SM.Models;
 
 namespace SM.API.Controllers
 {
@@ -14,19 +15,17 @@ namespace SM.API.Controllers
         public VersionsController(IOptions<Config> appSettings)
             : base(appSettings)
         {
-            mm = new ModuleManager(Config.ConnectionString);
+            mm = new ModuleManager(Config.FileStore, Config.ConnectionString);
         }
 
-        #region ServiceAccess
-
-        [HttpGet("dl/{version}", Name = "Download")]
-        public FileStreamResult Download(Guid module_id, String version, [FromHeader] String auth_token)
+        [HttpGet("dl", Name = "Download")]
+        public FileStreamResult Download([FromHeader] String auth_token, Guid module_id)
         {
-            Byte[] auth_tokensd = this.GetAuthToken(auth_token);
-            // TODO Auth_token Validieren und prüfen ob berechtigt ist auf Dateien zuzugreifen
-            return File(mm.GetVersionFile(module_id, version), "application/zip", "ModulName.zip");
+            Int32 kdnr;
+            Module module = null;
+            using(CustomerManager cm = new CustomerManager(this.Config.ConnectionString, this.Config.Werk))
+                kdnr = cm.GetCustomerKdnr(this.GetAuthToken(auth_token));
+            return File(mm.GetVersionFile(module_id, kdnr, out module), "application/zip", $"{module.Name}.zip");
         }
-
-        #endregion
     }
 }

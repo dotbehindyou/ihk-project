@@ -16,7 +16,7 @@ namespace SM.API.Controllers
         public ModulesController(IOptions<Config> appSettings)
             : base(appSettings)
         {
-            mm = new ModuleManager(Config.ConnectionString);
+            mm = new ModuleManager(Config.FileStore, Config.ConnectionString);
         }
 
         // GET: api/Module
