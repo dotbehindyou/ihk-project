@@ -20,6 +20,9 @@ namespace SM.Service
         {
             if (Environment.UserInteractive)
             {
+                // TODO Auslagern und wiederholt durchlaufen lassen
+                // TODO Statusmeldung zurück gegeben
+                // TODO sich selbst installieren lassen
                 InitConsole();
 
                 ApiController apiC = new ApiController();
