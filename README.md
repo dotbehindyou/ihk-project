@@ -5,8 +5,8 @@
 ## Beschreibung 
 
 ServiceManager ist ein Dienst, der andere Dienste kontrolliert. (SM.Service)
-Die Daten werden über das Internet, über eine REST-API gesendet (SM.API)
-Gesteuert wird dies über eine Web-Anwendung, wo nicht im Internet laufen soll. (SM.UI)
+Die Daten werden Ã¼ber das Internet, Ã¼ber eine REST-API gesendet (SM.API)
+Gesteuert wird dies Ã¼ber eine Web-Anwendung, wo nicht im Internet laufen soll. (SM.UI)
 
 
 ## Projektstruktur
@@ -16,7 +16,7 @@ Gesteuert wird dies über eine Web-Anwendung, wo nicht im Internet laufen soll. (
   - *SM.API/* : REST-API 
   - *SM.UI/*: React Anwendung (mit API)
   - *SM.Service/* : Windows-Dienst 
-  - SM.Database/ : SQL, Models, etc.
+  - *SM.Database/* : SQL, Models, etc.
 
 
 ## Wichtig!
