@@ -32,8 +32,18 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNetZip, Version=1.13.7.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.13.7\lib\net40\DotNetZip.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -48,6 +58,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\ApiController.cs" />
+    <Compile Include="Controller\ModuleController.cs" />
+    <Compile Include="Helper\ServiceHelper.cs" />
+    <Compile Include="Helper\ServiceInstaller.cs" />
+    <Compile Include="Models\Service.cs" />
+    <Compile Include="Models\ServiceAlreadyInstalledException.cs" />
+    <Compile Include="Models\ServiceException.cs" />
+    <Compile Include="Models\ServiceNotInstalledException.cs" />
     <Compile Include="ServiceManager.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -59,6 +77,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="app.manifest" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SM.Database\SM.Database.csproj">
+      <Project>{CFB16FDB-40DF-4B54-91B5-6098E63E50AD}</Project>
+      <Name>SM.Database</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
