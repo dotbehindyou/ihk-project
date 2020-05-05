@@ -15,5 +15,6 @@ namespace SM.Models.Procedure
         public String ConfigData { get; set; }
         public DateTime Release_Date { get; set; }
         public Byte[] Validation_Token { get; set; }
+        public String Status { get; set; }
     }
 }

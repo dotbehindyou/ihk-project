@@ -8,5 +8,6 @@ namespace SM
     {
         public String ConnectionString { get; set; }
         public String Werk { get; set; }
+        public String FileStore { get; set; }
     }
 }
