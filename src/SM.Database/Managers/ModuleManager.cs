@@ -12,8 +12,10 @@ namespace SM.Managers
 {
     public class ModuleManager : BaseManager
     {
-        public ModuleManager(string connectionString) : base(connectionString)
+        readonly String fileStorePath;
+        public ModuleManager(String fileStore, string connectionString) : base(connectionString)
         {
+            fileStorePath = fileStore;
         }
 
         #region Module
@@ -58,10 +60,33 @@ namespace SM.Managers
 
         public List<Module> GetModulesFromCustomer(Int32 kdnr)
         {
-            return Mapper.GetMany<Module>("select mod.Module_ID, mod.Name, cus.Version, cus.Status from SM_Customers_Modules as cus " +
-                "left join SM_Modules as mod on cus.Module_ID = mod.Module_ID and mod.IsActive = 1" +
-                "where cus.Kdnr = ? and cus.IsActive = 1",
-                new OdbcParameter("kdnr", kdnr));
+            List<Module> mods = new List<Module>();
+
+            foreach (var mod in Mapper.GetMany<Modules_Version_Config>("select mod.Module_ID, mod.Name as ModuleName, cus.Version, cus.Status, cof.Config_ID, cof.FileName as ConfigFileName, cof.Data as ConfigData, ver.Release_Date, ver.Validation_Token from SM_Customers_Modules as cus " +
+                        "left join SM_Modules as mod on cus.Module_ID = mod.Module_ID and mod.IsActive = 1 " +
+                        "left join SM_Modules_Version as ver on ver.Module_ID = cus.Module_ID and ver.Version = cus.Version and ver.IsActive = 1 " +
+                        "left join SM_Modules_Config as cof on cof.Module_ID = mod.Module_ID and cof.Config_ID = ver.Config_ID and cof.IsActive = 1 " +
+                        "where cus.Kdnr = ? and cus.IsActive = 1",
+                    new OdbcParameter("Kdnr", kdnr)))
+            {
+                mods.Add(new Module
+                {
+                    Module_ID = mod.Module_ID,
+                    Name = mod.ModuleName,
+                    Status = mod.Status,
+                    Validation_Token = mod.Validation_Token,
+                    Version = mod.Version,
+                    Config = new ConfigFile
+                    {
+                        Config_ID = mod.Config_ID,
+                        Data = mod.ConfigData,
+                        FileName = mod.ConfigFileName,
+                        Format = mod.ConfigFormat
+                    }
+                });
+            }
+
+            return mods;
         }
 
         public Module Get(Guid module_id)
@@ -92,14 +117,14 @@ namespace SM.Managers
             Mapper.ExecuteQuery("UPDATE SM_Customers_Modules SET Modified = now(), Version = ?, Config = ?, Status = ? WHERE Kdnr = ? and Module_ID = ?",
                 new OdbcParameter("Version", version.Version),
                 new OdbcParameter("Config", version.Config.Data),
-                new OdbcParameter("Status", "UPDATE"),
+                new OdbcParameter("Status", version.Status == "INIT" ? "INIT": "UPDATE"),
                 new OdbcParameter("Kdnr", kdnr),
                 new OdbcParameter("Module_ID", version.Module_ID));
         }
 
         public void RemoveModuleFromCustomer(Int32 kdnr, ModuleVersion version)
         {
-            Mapper.ExecuteQuery("UPDATE SM_Customers_Modules SET Modified = now(), Status = ? WHERE Kdnr = ? and Module_ID = ?",
+            Mapper.ExecuteQuery($"UPDATE SM_Customers_Modules SET ${(version.Status == "INIT" ? "Deleted" : "Modified")} = now(), Status = ? WHERE Kdnr = ? and Module_ID = ?",
                 new OdbcParameter("Status", "REMOVE"),
                 new OdbcParameter("Kdnr", kdnr),
                 new OdbcParameter("Module_ID", version.Module_ID));
@@ -221,7 +246,7 @@ namespace SM.Managers
                 validation_token = man.ComputeHash(buffer);
             }
 
-            DirectoryInfo di = new DirectoryInfo("storage/" + module_id.ToString());
+            DirectoryInfo di = new DirectoryInfo(Path.Combine(this.fileStorePath, module_id.ToString()));
             if (!di.Exists)
                 di.Create();
 
@@ -235,9 +260,20 @@ namespace SM.Managers
                 new OdbcParameter("module_id", module_id));
         }
 
-        public FileStream GetVersionFile(Guid module_id, String version)
+        public FileStream GetVersionFile(Guid module_id, Int32 kdnr, out Module module)
         {
-            var path = Path.Combine("storage", module_id.ToString(), version + ".zip");
+            Module modVer = Mapper.GetSingle<Module>("SELECT Version FROM SM_Customers_Modules as cu " +
+                    "left join SM_Modules as mo on mo.Module_ID = cu.Module_ID and mo.IsActive = 1 " +
+                    "WHERE cu.Kdnr = ? and cu.Module_ID = ? and cu.IsActive = 1",
+                new OdbcParameter("kdnr", kdnr),
+                new OdbcParameter("module_id", module_id));
+
+            if (modVer == null || String.IsNullOrEmpty(modVer.Version))
+                throw new Exception("Kunde hat keine Berechtigung für dieses Modul!");
+            else
+                module = modVer;
+
+            var path = Path.Combine(this.fileStorePath, module_id.ToString(), modVer.Version + ".zip");
             return File.OpenRead(path);
         }
 

@@ -17,7 +17,7 @@ namespace SM.API.Controllers
         public VersionsController(IOptions<Config> appSettings)
             : base(appSettings)
         {
-            mm = new ModuleManager(Config.ConnectionString);
+            mm = new ModuleManager(Config.FileStore, Config.ConnectionString);
         }
 
         #region Verwaltung
