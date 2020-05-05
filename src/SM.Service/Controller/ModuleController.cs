@@ -104,6 +104,8 @@ namespace SM.Service.Controller
 
             sc.Stop();
 
+            // TODO Validation_Token prüfen
+
             using (MemoryStream ms = new MemoryStream(file))
             using (ZipFile zf = ZipFile.Read(ms))
             {
