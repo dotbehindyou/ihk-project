@@ -23,7 +23,7 @@ namespace SM.API.Controllers
                 {
                     Int32 kdnr = cm.GetCustomerKdnr(this.GetAuthToken(auth_Token));
 
-                    return mm.GetModulesFromCustomer(kdnr);
+                    return mm.GetModulesForService(kdnr);
                 }
                 catch (Exception e)
                 {
