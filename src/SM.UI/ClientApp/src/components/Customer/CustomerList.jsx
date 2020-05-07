@@ -43,7 +43,7 @@ class CustomerList extends React.Component {
     }
 
     searchCustomer() {
-        var uri = new URL('/api/Customers/Search');
+        var uri = new URL('/api/Customers/Search', window.location.origin);
         Object.keys(this.state.search).forEach(key => uri.searchParams.append(key, this.state.search[key]));
         fetch(uri)
             .then(res => res.json())
