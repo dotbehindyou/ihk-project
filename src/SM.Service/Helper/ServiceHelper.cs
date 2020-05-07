@@ -22,12 +22,7 @@ namespace SM.Service.Helper
                 if (!ServiceInstaller.Install(pathExe, service.Name, service.Module.Name))
                     throw new ServiceException(service, "Could not installed!");
 
-                var sc = new ServiceController(service.Name);
-
-                if (sc.Status != ServiceControllerStatus.Running)
-                    sc.Start();
-
-                return sc;
+                return new ServiceController(service.Name);
             }
             catch(Exception e)
             {
