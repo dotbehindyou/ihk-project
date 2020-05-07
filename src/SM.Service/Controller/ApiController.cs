@@ -31,10 +31,11 @@ namespace SM.Service.Controller
             hrp.Headers.Add("auth_token", authToken);
 
             HttpResponseMessage hrm = await client.SendAsync(hrp);
+            // TODO Status prüfen, ob 200
+            if(hrm.StatusCode == System.Net.HttpStatusCode.OK)
+                 return JsonConvert.DeserializeObject<List<Module>>(await hrm.Content.ReadAsStringAsync());
 
-            var obj = JsonConvert.DeserializeObject<List<Module>>(await hrm.Content.ReadAsStringAsync());
-
-            return obj;
+            return null;
         }
 
         public List<Module> GetModules()
