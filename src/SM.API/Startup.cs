@@ -36,6 +36,8 @@ namespace SM.API
             { // https://docs.microsoft.com/de-de/aspnet/core/host-and-deploy/iis/?view=aspnetcore-3.1#iis-options
                 // options.AutomaticAuthentication = false;
             });
+
+            Config.Current = Configuration.GetSection("Config").Get<Config>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
