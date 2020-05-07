@@ -10,22 +10,25 @@ namespace SM.API.Controllers
     [ApiController]
     public class VersionsController : BaseController
     {
-        private ModuleManager mm;
-
-        public VersionsController(IOptions<Config> appSettings)
-            : base(appSettings)
-        {
-            mm = new ModuleManager(Config.FileStore, Config.ConnectionString);
-        }
 
         [HttpGet("dl", Name = "Download")]
         public FileStreamResult Download([FromHeader] String auth_token, Guid module_id)
         {
-            Int32 kdnr;
-            Module module = null;
-            using(CustomerManager cm = new CustomerManager(this.Config.ConnectionString, this.Config.Werk))
-                kdnr = cm.GetCustomerKdnr(this.GetAuthToken(auth_token));
-            return File(mm.GetVersionFile(module_id, kdnr, out module), "application/zip", $"{module.Name}.zip");
+            using(ModuleManager mm = new ModuleManager())
+            using (CustomerManager cm = new CustomerManager(mm))
+            {
+                try
+                {
+                    Int32 kdnr = cm.GetCustomerKdnr(this.GetAuthToken(auth_token));
+                    Module module = null;
+                    return File(mm.GetVersionFile(module_id, kdnr, out module), "application/zip", $"{module.Name}.zip");
+                }
+                catch (Exception e)
+                {
+                    mm.Rollback();
+                    throw e;
+                }
+            }
         }
     }
 }

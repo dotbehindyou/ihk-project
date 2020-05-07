@@ -10,15 +10,6 @@ namespace SM.API.Controllers
 {
     public class BaseController : ControllerBase
     {
-        private readonly IOptions<Config> config;
-
-        protected Config Config { get => config?.Value; }
-
-        public BaseController(IOptions<Config> appSettings)
-        {
-            this.config = appSettings;
-        }
-
         public HttpResponseMessage FileResult(String fileName, String contentType, Stream fileStream)
         {
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);

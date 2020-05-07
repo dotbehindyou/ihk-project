@@ -1,36 +1,43 @@
 ﻿
+using Microsoft.Isam.Esent.Interop;
 using System;
 using System.Text;
 using Weiss.Data.Mapper;
 
 namespace SM.Managers
 {
-    public class BaseManager : IDisposable
-    {
-        private readonly String _connectionString;
-
+    public class BaseManager : IDisposable {
         private ObjectDataMapper _mapper;
 
-        protected ObjectDataMapper Mapper
+        public ObjectDataMapper Mapper
         {
-            get
-            {
-                String msg;
-                if (!_mapper.TestConnection(out msg))
-                    _mapper = ObjectDataMapper.Init(_connectionString);
+            get {
+                if(_mapper == null)
+                {
+                    _mapper = ObjectDataMapper.Init(Config.Current.ConnectionString);
+                }
                 return _mapper;
             }
         }
 
-        public BaseManager(String connectionString)
+        public BaseManager(BaseManager bm = null)
         {
-            this._connectionString = connectionString;
-            _mapper = ObjectDataMapper.Init(this._connectionString);
+            if (bm != null)
+                this._mapper = bm.Mapper;
         }
+
+        public void Commit() => _mapper.Commit();
+
+        public void Rollback() => _mapper.Rollback();
 
         public void Dispose()
         {
-            Mapper.Close();
+            _mapper?.Commit();
+            _mapper?.Close();
+            _mapper?.Dispose();
+            _mapper = null;
+
+            GC.Collect();
         }
     }
 }

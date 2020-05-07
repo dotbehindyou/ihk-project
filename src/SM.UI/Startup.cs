@@ -29,7 +29,7 @@ namespace SM.UI
                 configuration.RootPath = "ClientApp/build";
             });
 
-            services.Configure<Config>(Configuration.GetSection("Config"));
+            Config.Current = Configuration.GetSection("Config").Get<Config>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

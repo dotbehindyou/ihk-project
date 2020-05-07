@@ -9,79 +9,141 @@ namespace SM.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ModulesController : BaseController
-    {
-        private ModuleManager mm;
-
-        public ModulesController(IOptions<Config> appSettings)
-            : base(appSettings)
-        {
-            mm = new ModuleManager(Config.FileStore, Config.ConnectionString);
-        }
+    public class ModulesController : ControllerBase { 
 
         // GET: api/Module
         [HttpGet]
         public IEnumerable<Module> Get()
         {
-            return mm.GetMany();
+            using (ModuleManager mm = new ModuleManager())
+                try
+                {
+                    return mm.GetMany();
+                }
+                catch (Exception e)
+                {
+                    mm.Rollback();
+                    throw e;
+                }
         }
 
         // GET: api/Module/Customer
         [HttpGet("Customer/{kdnr}")]
         public IEnumerable<Module> GetModulesFromCustomer(Int32 kdnr)
         {
-            return mm.GetModulesFromCustomer(kdnr);
+            using (ModuleManager mm = new ModuleManager())
+                return mm.GetModulesFromCustomer(kdnr);
         }
 
         // GET: api/Module/5
         [HttpGet("{id}", Name = "Module")]
         public Module Get(Guid id)
         {
-            return mm.Get(id);
+            using (ModuleManager mm = new ModuleManager())
+                try
+                {
+                    return mm.Get(id);
+                }
+                catch (Exception e)
+                {
+                    mm.Rollback();
+                    throw e;
+                }
         }
 
         // Create: api/Modules
         [HttpPost]
         public Module Post([FromBody] Module value)
         {
-            return mm.Create(value.Name);
+            using (ModuleManager mm = new ModuleManager())
+                try
+                {
+                    return mm.Create(value.Name);
+                }
+                catch (Exception e)
+                {
+                    mm.Rollback();
+                    throw e;
+                }
         }
 
         // Set: api/Module/5
         [HttpPut("{id}")]
         public void Put(Guid id, [FromBody] Module value)
         {
-            mm.Update(value);
+            using (ModuleManager mm = new ModuleManager())
+                try
+                {
+                    mm.Update(value);
+                }
+                catch (Exception e)
+                {
+                    mm.Rollback();
+                    throw e;
+                }
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public void Delete(Guid id)
         {
-            mm.Remove(id);
+            using (ModuleManager mm = new ModuleManager())
+                try
+                {
+                    mm.Remove(id);
+                }
+                catch (Exception e)
+                {
+                    mm.Rollback();
+                    throw e;
+                }
         }
 
         #region CustomerModule
 
         [HttpPost("Customer/{kdnr}")]
-        public Boolean AddModuleToCustomer(Int32 kdnr, [FromBody] ModuleVersion module)
+        public void AddModuleToCustomer(Int32 kdnr, [FromBody] ModuleVersion module)
         {
-            mm.AddModuleToCustomer(kdnr, module);
-            return true;
+            using (ModuleManager mm = new ModuleManager())
+                try
+                {
+                    mm.AddModuleToCustomer(kdnr, module);
+                }
+                catch (Exception e)
+                {
+                    mm.Rollback();
+                    throw e;
+                }
         }
 
         [HttpPut("Customer/{kdnr}")]
-        public Boolean SetModuleToCustomer(Int32 kdnr, [FromBody] ModuleVersion module)
+        public void SetModuleToCustomer(Int32 kdnr, [FromBody] ModuleVersion module)
         {
-            mm.SetModuleToCustomer(kdnr, module);
-            return true;
+            using (ModuleManager mm = new ModuleManager())
+                try
+                {
+                    mm.SetModuleToCustomer(kdnr, module);
+                }
+                catch (Exception e)
+                {
+                    mm.Rollback();
+                    throw e;
+                }
         }
 
         [HttpDelete("Customer/{kdnr}")]
-        public Boolean RemoveModuleToCustomer(Int32 kdnr, [FromBody] ModuleVersion module)
+        public void RemoveModuleToCustomer(Int32 kdnr, [FromBody] ModuleVersion module)
         {
-            mm.RemoveModuleFromCustomer(kdnr, module);
-            return true;
+            using (ModuleManager mm = new ModuleManager())
+                try
+                {
+                    mm.RemoveModuleFromCustomer(kdnr, module.Module_ID, module.Status == "INIT");
+                }
+                catch (Exception e)
+                {
+                    mm.Rollback();
+                    throw e;
+                }
         }
 
         #endregion
