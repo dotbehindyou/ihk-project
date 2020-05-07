@@ -102,18 +102,11 @@ class VersionEditorModal extends React.Component {
                     cache: 'no-cache',
                     body: JSON.stringify(this.state.model)
                 })
-                .then(res => res.json())
                 .then(async (result) => {
-                    this.setState({
-                        model: { ...result },
-                        isNew: false
-                    });
                     this.close();
                 })
                 .catch((ex) => {
                     console.warn(ex);
-                })
-                .finally(() => {
                     this.setState({ isSaving: false });
                 });
         }
