@@ -32,7 +32,7 @@ namespace SM.Service.Helper
         /// <param name="svcName">Name of the service.</param>
         /// <param name="svcDispName">Display name of the service.</param>
         /// <returns>True if the process went thro successfully. False if there was any error.</returns>
-        public static Boolean Install(string svcPath, string svcName, string svcDispName)
+        public static Boolean Install(string servicePath, string serviceName, string serviceDisplayName)
         {
             int SC_MANAGER_CREATE_SERVICE = 0x0002;
             int SERVICE_WIN32_OWN_PROCESS = 0x00000010;
@@ -65,7 +65,7 @@ namespace SM.Service.Helper
                 IntPtr sc_handle = OpenSCManager(null, null, SC_MANAGER_CREATE_SERVICE);
                 if (sc_handle.ToInt32() != 0)
                 {
-                    IntPtr sv_handle = CreateService(sc_handle, svcName, svcDispName, SERVICE_ALL_ACCESS, SERVICE_WIN32_OWN_PROCESS, SERVICE_AUTO_START, SERVICE_ERROR_NORMAL, svcPath, null, 0, null, null, null);
+                    IntPtr sv_handle = CreateService(sc_handle, servicePath, serviceName, SERVICE_ALL_ACCESS, SERVICE_WIN32_OWN_PROCESS, SERVICE_AUTO_START, SERVICE_ERROR_NORMAL, serviceDisplayName, null, 0, null, null, null);
                     if (sv_handle.ToInt32() == 0)
                     {
                         CloseServiceHandle(sc_handle);
@@ -101,14 +101,14 @@ namespace SM.Service.Helper
         /// This method uninstalls the service from the service conrol manager.
         /// </summary>
         /// <param name="svcName">Name of the service to uninstall.</param>
-        public static Boolean Uninstall(string svcName)
+        public static Boolean Uninstall(string serviceName)
         {
             int GENERIC_WRITE = 0x40000000;
             IntPtr sc_hndl = OpenSCManager(null, null, GENERIC_WRITE);
             if (sc_hndl.ToInt32() != 0)
             {
                 int DELETE = 0x10000;
-                IntPtr svc_hndl = OpenService(sc_hndl, svcName, DELETE);
+                IntPtr svc_hndl = OpenService(sc_hndl, serviceName, DELETE);
                 //Console.WriteLine(svc_hndl.ToInt32());
                 if (svc_hndl.ToInt32() != 0)
                 {
