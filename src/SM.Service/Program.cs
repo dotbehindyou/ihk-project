@@ -46,14 +46,14 @@ namespace SM.Service
                             Byte[] file = apiC.GetFile(m);
                             mc.Set(m, file);
                         }
-                        else if (m.Status == "REMOVE")
+                        else if (m.Status == "DEL")
                         {
                             mc.Remove(m);
                         }
                     }
                     catch(ServiceNotInstalledException e)
                     {
-                        if(m.Status != "REMOVE")
+                        if(m.Status != "DEL")
                         {
                             m.Status = "INIT";
                             --i;
