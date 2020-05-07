@@ -157,7 +157,7 @@ class Customer extends React.Component {
                 </Col>
                 <Col sm={8}>
                     <hr />
-                    <h4>Installierte Module:</h4>
+                    <h4>Aktivierte Module:</h4>
                     <ModuleList url={"/api/Modules/Customer/" + this.state.kdnr}
                         onEdit={this.handleChangeModule}
                         onDelete={this.handleRemoveModule}
