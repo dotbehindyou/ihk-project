@@ -10,15 +10,7 @@ namespace SM.API.Controllers
     //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class CustomersController : BaseController
-    {
-        private CustomerManager cm;
-
-        public CustomersController(IOptions<Config> appSettings)
-            : base(appSettings)
-        {
-            cm = new CustomerManager(Config.ConnectionString, Config.Werk);
-        }
+    public class CustomersController : ControllerBase {
 
         #region Verwaltung
 
@@ -26,38 +18,84 @@ namespace SM.API.Controllers
         [HttpGet]
         public IEnumerable<Customer> Get()
         {
-            return cm.GetMany();
+            using (CustomerManager cm = new CustomerManager())
+            {
+                try
+                {
+                    return cm.GetMany();
+                }
+                catch(Exception e)
+                {
+                    cm.Rollback();
+                    throw e;
+                }
+            }
         }
 
         // GET: api/Customer
         [HttpGet("Search")]
         public IEnumerable<Customer> Search([FromQuery] Search search)
         {
-            return cm.GetMany(search);
+            using (CustomerManager cm = new CustomerManager())
+                try
+                {
+                    return cm.GetMany(search);
+                }
+                catch (Exception e)
+                {
+                    cm.Rollback();
+                    throw e;
+                }
         }
 
         // GET: api/Customer/{Int32}
         [HttpGet("{id}", Name = "Customer")]
         public Customer Get(Int32 id)
         {
-            return cm.Get(id);
+            using (CustomerManager cm = new CustomerManager())
+                try
+                {
+                    return cm.Get(id);
+                }
+                catch (Exception e)
+                {
+                    cm.Rollback();
+                    throw e;
+                }
         }
 
         // PUT: api/Customer/{Int32}
         [HttpPut("{id}")]
         public Customer Put(Int32 id)
         {
-            return cm.Create(id);
+            using (CustomerManager cm = new CustomerManager())
+                try
+                {
+                    return cm.Create(id);
+                }
+                catch (Exception e)
+                {
+                    cm.Rollback();
+                    throw e;
+                }
         }
 
         // DELETE: api/ApiWithActions/{Int32}
         [HttpDelete("{id}")]
         public void Delete(Int32 id)
         {
-            cm.Remove(id);
+            using (CustomerManager cm = new CustomerManager())
+                try
+                {
+                    cm.Remove(id);
+                }
+                catch (Exception e)
+                {
+                    cm.Rollback();
+                    throw e;
+                }
         }
 
         #endregion
-
     }
 }

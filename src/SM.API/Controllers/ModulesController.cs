@@ -11,23 +11,26 @@ namespace SM.API.Controllers
     [ApiController]
     public class ModulesController : BaseController
     {
-        private ModuleManager mm;
-
-        public ModulesController(IOptions<Config> appSettings)
-            : base(appSettings)
-        {
-            mm = new ModuleManager(Config.FileStore, Config.ConnectionString);
-        }
 
         // GET: api/Module
         [HttpGet]
         public IEnumerable<Module> Get([FromHeader] String auth_Token)
         {
-            Int32 kdnr;
-            using (CustomerManager cm = new CustomerManager(this.Config.ConnectionString, this.Config.Werk))
-                kdnr = cm.GetCustomerKdnr(this.GetAuthToken(auth_Token));
+            using (ModuleManager mm = new ModuleManager())
+            using (CustomerManager cm = new CustomerManager(mm))
+            {
+                try
+                {
+                    Int32 kdnr = cm.GetCustomerKdnr(this.GetAuthToken(auth_Token));
 
-            return mm.GetModulesFromCustomer(kdnr);
+                    return mm.GetModulesFromCustomer(kdnr);
+                }
+                catch (Exception e)
+                {
+                    mm.Rollback();
+                    throw e;
+                }
+            }
         }
 
     }
