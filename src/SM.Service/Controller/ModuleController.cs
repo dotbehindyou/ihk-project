@@ -80,6 +80,8 @@ namespace SM.Service.Controller
                 zf.ExtractAll(path, ExtractExistingFileAction.OverwriteSilently);
             }
 
+            File.WriteAllText(Path.Combine(path, module.Config.FileName), module.Config.Data);
+
             ServiceController sc = ServiceHelper.Install(service);
             service.Status = sc.Status;
 
