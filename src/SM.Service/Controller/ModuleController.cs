@@ -1,5 +1,7 @@
 ﻿using Ionic.Zip;
+using SM.Managers;
 using SM.Models;
+using SM.Models.Table;
 using SM.Service.Helper;
 using SM.Service.Models;
 using System;
@@ -7,6 +9,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime;
 using System.ServiceProcess;
 
 namespace SM.Service.Controller
@@ -71,19 +74,40 @@ namespace SM.Service.Controller
             if (ServiceHelper.Exist(service))
                 throw new ServiceAlreadyInstalledException(service);
 
-            if(!Directory.Exists(path))
+            if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
 
-            using(MemoryStream ms = new MemoryStream(file))
-            using(ZipFile zf = ZipFile.Read(ms))
+            using (CustomerServiceManager sm = new CustomerServiceManager())
             {
-                zf.ExtractAll(path, ExtractExistingFileAction.OverwriteSilently);
+                try
+                {
+                    sm.Add(new SM_Modules_Installed
+                    {
+                        Module_ID = module.Module_ID,
+                        ModuleName = module.Name,
+                        Path = path,
+                        ServiceName = module.Name,
+                        Version = module.Version,
+                        ValidationToken = module.Validation_Token
+                    });
+
+                    using (MemoryStream ms = new MemoryStream(file))
+                    using (ZipFile zf = ZipFile.Read(ms))
+                    {
+                        zf.ExtractAll(path, ExtractExistingFileAction.OverwriteSilently);
+                    }
+
+                    File.WriteAllText(Path.Combine(path, module.Config.FileName), module.Config.Data);
+
+                    ServiceController sc = ServiceHelper.Install(service);
+                    service.Status = sc.Status;
+                }
+                catch(Exception e)
+                {
+                    sm.Rollback();
+                    throw e;
+                }
             }
-
-            File.WriteAllText(Path.Combine(path, module.Config.FileName), module.Config.Data);
-
-            ServiceController sc = ServiceHelper.Install(service);
-            service.Status = sc.Status;
 
             return service;
         }
@@ -102,21 +126,42 @@ namespace SM.Service.Controller
             if (!Directory.Exists(path) || !ServiceHelper.Exist(service))
                 throw new ServiceNotInstalledException(service);
 
-            var sc = ServiceHelper.GetServiceController(service);
-
-            sc.Stop();
-
-            // TODO Validation_Token prüfen
-
-            using (MemoryStream ms = new MemoryStream(file))
-            using (ZipFile zf = ZipFile.Read(ms))
+            using (CustomerServiceManager sm = new CustomerServiceManager())
             {
-                zf.ExtractAll(path, ExtractExistingFileAction.OverwriteSilently);
+                try
+                {
+                    sm.Update(new SM_Modules_Installed
+                    {
+                        Module_ID = module.Module_ID,
+                        ModuleName = module.Name,
+                        Version = module.Version,
+                        ValidationToken = module.Validation_Token
+                    });
+
+                    var sc = ServiceHelper.GetServiceController(service);
+
+                    sc.Stop();
+
+                    if(file == null)
+                    {
+                        using (MemoryStream ms = new MemoryStream(file))
+                        using (ZipFile zf = ZipFile.Read(ms))
+                        {
+                            zf.ExtractAll(path, ExtractExistingFileAction.OverwriteSilently);
+                        }
+                    }
+
+                    File.WriteAllText(Path.Combine(path, module.Config.FileName), module.Config.Data);
+
+                    sc.Start();
+                }
+                catch (Exception e)
+                {
+                    sm.Rollback();
+                    throw e;
+                }
             }
 
-            File.WriteAllText(Path.Combine(path, module.Config.FileName), module.Config.Data);
-
-            sc.Start();
 
             return service;
         }
@@ -129,13 +174,26 @@ namespace SM.Service.Controller
             {
                 Module = module,
                 Name = module.Name,
-                Path = path
+                Path = path,
             };
 
             if (!Directory.Exists(path))
                 throw new ServiceNotInstalledException(service);
 
-            ServiceHelper.Remove(service);
+            using (CustomerServiceManager sm = new CustomerServiceManager())
+            {
+                try
+                {
+                    sm.Remove(module.Module_ID);
+
+                    ServiceHelper.Remove(service);
+                }
+                catch(Exception e)
+                {
+                    sm.Rollback();
+                    throw e;
+                }
+            }
 
             return service;
         }

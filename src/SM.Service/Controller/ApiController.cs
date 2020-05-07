@@ -16,22 +16,28 @@ namespace SM.Service.Controller
     {
         HttpClient client = new HttpClient();
 
-        Uri url;
+        Uri apiUrl;
         String authToken;
+
+        public HttpRequestMessage GetHttpRequest(HttpMethod method, String subUrl)
+        {
+            HttpRequestMessage hrp = new HttpRequestMessage(method, new Uri(apiUrl, subUrl));
+            hrp.Headers.Add("auth_token", authToken);
+            return hrp;
+        }
 
         public ApiController()
         {
-            url = new Uri(ConfigurationManager.AppSettings["api"]);
+            apiUrl = new Uri(ConfigurationManager.AppSettings["api"]);
             authToken = ConfigurationManager.AppSettings["auth_token"];
         }
 
-        public async Task<List<Module>> GetServicesAsync()
+        public async Task<List<Module>> GetModulesAsync()
         {
-            HttpRequestMessage hrp = new HttpRequestMessage(HttpMethod.Get, url.AbsoluteUri + "Modules");
-            hrp.Headers.Add("auth_token", authToken);
+            HttpRequestMessage hrp = this.GetHttpRequest(HttpMethod.Get, "Modules");
 
             HttpResponseMessage hrm = await client.SendAsync(hrp);
-            // TODO Status prüfen, ob 200
+
             if(hrm.StatusCode == System.Net.HttpStatusCode.OK)
                  return JsonConvert.DeserializeObject<List<Module>>(await hrm.Content.ReadAsStringAsync());
 
@@ -40,15 +46,49 @@ namespace SM.Service.Controller
 
         public List<Module> GetModules()
         {
-            var getModules = this.GetServicesAsync();
+            var getModules = this.GetModulesAsync();
+            getModules.Wait();
+            return getModules.Result;
+        }
+
+        public async Task<Boolean> SendStatusAsync(Models.Service service)
+        {
+            HttpRequestMessage hrp = this.GetHttpRequest(HttpMethod.Put, "Modules");
+
+            HttpResponseMessage hrm = await client.SendAsync(hrp);
+
+            return hrm.StatusCode == System.Net.HttpStatusCode.OK;
+        }
+
+        public Boolean SendStatus(Models.Service service)
+        {
+            var getModules = this.SendStatusAsync(service);
+            getModules.Wait();
+            return getModules.Result;
+        }
+
+        public async Task<Boolean> SendRemoveAsync(Models.Service service)
+        {
+            HttpRequestMessage hrp = this.GetHttpRequest(HttpMethod.Delete, "Modules");
+
+            String moduleJson = JsonConvert.SerializeObject(service);
+            hrp.Content = new StringContent(moduleJson, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage hrm = await client.SendAsync(hrp);
+
+            return hrm.StatusCode == System.Net.HttpStatusCode.OK;
+        }
+
+        public Boolean SendRemove(Models.Service service)
+        {
+            var getModules = this.SendRemoveAsync(service);
             getModules.Wait();
             return getModules.Result;
         }
 
         public async Task<Byte[]> GetFileAsync(Module moduleService)
         {
-            HttpRequestMessage hrp = new HttpRequestMessage(HttpMethod.Get, url.AbsoluteUri + $"{moduleService.Module_ID}/versions/dl");
-            hrp.Headers.Add("auth_token", authToken);
+            HttpRequestMessage hrp = this.GetHttpRequest(HttpMethod.Get, $"{moduleService.Module_ID}/versions/dl");
 
             HttpResponseMessage hrm = await client.SendAsync(hrp);
             if(hrm.StatusCode == System.Net.HttpStatusCode.OK)
@@ -61,6 +101,7 @@ namespace SM.Service.Controller
 
             return null;
         }
+
         public Byte[] GetFile(Module moduleService)
         {
             var getModules = this.GetFileAsync(moduleService);

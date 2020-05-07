@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.ServiceProcess;
 using System.Text;
+using SM.Managers;
 using SM.Models;
+using SM.Models.Table;
 using SM.Service.Controller;
 using SM.Service.Models;
 
@@ -21,13 +24,18 @@ namespace SM.Service
             if (Environment.UserInteractive)
             {
                 // TODO Auslagern und wiederholt durchlaufen lassen
-                // TODO Statusmeldung zurück gegeben
                 // TODO sich selbst installieren lassen
                 InitConsole();
+
+                Config.Current = new Config() { ConnectionString = ConfigurationManager.AppSettings["connectionString"] };
 
                 ApiController apiC = new ApiController();
 
                 List<Module> modules = apiC.GetModules();
+
+                List<SM_Modules_Installed> installedModules = null;
+                using (CustomerServiceManager sm = new CustomerServiceManager())
+                    installedModules = sm.GetMany();
 
                 ModuleController mc = new ModuleController();
 
@@ -39,16 +47,22 @@ namespace SM.Service
                         if (m.Status == "INIT")
                         {
                             Byte[] file = apiC.GetFile(m);
-                            mc.Add(m, file);
+                            apiC.SendStatus(mc.Add(m, file));
                         }
                         else if (m.Status == "UPDATE")
                         {
-                            Byte[] file = apiC.GetFile(m);
-                            mc.Set(m, file);
+                            Byte[] file = null;
+                            SM_Modules_Installed sm = installedModules.Where(x=> x.Module_ID == m.Module_ID).FirstOrDefault();
+                            if(sm.ValidationToken != m.Validation_Token)
+                            {
+                                file = apiC.GetFile(m);
+                            }
+
+                            apiC.SendStatus(mc.Set(m, file));
                         }
                         else if (m.Status == "DEL")
                         {
-                            mc.Remove(m);
+                            apiC.SendRemove(mc.Remove(m));
                         }
                     }
                     catch(ServiceNotInstalledException e)
@@ -80,6 +94,8 @@ namespace SM.Service
             }
             console?.Kill();
             console?.Dispose();
+
+            // TODO alle Installierte Module den aktuellen Status senden
         }
 
         static Process console = null;
