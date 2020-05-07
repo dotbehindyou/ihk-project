@@ -155,20 +155,20 @@ namespace SM.Managers
                 new OdbcParameter("Module_ID", version.Module_ID));
         }
 
-        public void RemoveModuleFromCustomer(Int32 kdnr, ModuleVersion version)
+        public void RemoveModuleFromCustomer(Int32 kdnr, Guid module_id, Boolean delete = false)
         {
-            Mapper.ExecuteQuery($"UPDATE SM_Customers_Modules SET {(version.Status == "INIT" ? "Deleted" : "Modified")} = now(), Status = ? WHERE Kdnr = ? and Module_ID = ?", true,
+            Mapper.ExecuteQuery($"UPDATE SM_Customers_Modules SET {(delete ? "Deleted" : "Modified")} = now(), Status = ? WHERE Kdnr = ? and Module_ID = ?", true,
                 new OdbcParameter("Status", "DEL"),
                 new OdbcParameter("Kdnr", kdnr),
-                new OdbcParameter("Module_ID", version.Module_ID));
+                new OdbcParameter("Module_ID", module_id));
         }
 
-        public void SetModuleStatusFromCustomer(Int32 kdnr, ModuleVersion version)
+        public void SetModuleStatusFromCustomer(Int32 kdnr, Guid module_id, String status)
         {
-            Mapper.ExecuteQuery($"UPDATE SM_Customers_Modules SET {(version.Status == "DEL" ? "Deleted" : "Modified")} = now(), Status = ? WHERE Kdnr = ? and Module_ID = ?", true,
-                new OdbcParameter("Status", version.Status),
+            Mapper.ExecuteQuery($"UPDATE SM_Customers_Modules SET Modified = now(), Status = ? WHERE Kdnr = ? and Module_ID = ?", true,
+                new OdbcParameter("Status", status),
                 new OdbcParameter("Kdnr", kdnr),
-                new OdbcParameter("Module_ID", version.Module_ID));
+                new OdbcParameter("Module_ID", module_id));
         }
 
         #endregion

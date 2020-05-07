@@ -137,7 +137,7 @@ namespace SM.API.Controllers
             using (ModuleManager mm = new ModuleManager())
                 try
                 {
-                    mm.RemoveModuleFromCustomer(kdnr, module);
+                    mm.RemoveModuleFromCustomer(kdnr, module.Module_ID, module.Status == "INIT");
                 }
                 catch (Exception e)
                 {
