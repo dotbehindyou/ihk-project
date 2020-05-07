@@ -82,7 +82,7 @@ namespace SM.Service
             console?.Dispose();
         }
 
-        static Process console;
+        static Process console = null;
 
         static void InitConsole()
         {
@@ -93,10 +93,10 @@ namespace SM.Service
             ProcessStartInfo psi = new ProcessStartInfo("powershell");
             psi.Arguments = "Get-Content .\\log.txt -Wait";
 
-            console = new Process();
-            console.StartInfo = psi;
+            //console = new Process();
+            //console.StartInfo = psi;
 
-            console.Start();
+            //console.Start();
         }
     }
 }
