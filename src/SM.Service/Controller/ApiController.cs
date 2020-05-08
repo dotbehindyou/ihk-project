@@ -55,6 +55,9 @@ namespace SM.Service.Controller
         {
             HttpRequestMessage hrp = this.GetHttpRequest(HttpMethod.Put, "Modules");
 
+            String moduleJson = JsonConvert.SerializeObject(service.Module);
+            hrp.Content = new StringContent(moduleJson, Encoding.UTF8, "application/json");
+
             HttpResponseMessage hrm = await client.SendAsync(hrp);
 
             return hrm.StatusCode == System.Net.HttpStatusCode.OK;
@@ -69,10 +72,7 @@ namespace SM.Service.Controller
 
         public async Task<Boolean> SendRemoveAsync(Models.Service service)
         {
-            HttpRequestMessage hrp = this.GetHttpRequest(HttpMethod.Delete, "Modules");
-
-            String moduleJson = JsonConvert.SerializeObject(service);
-            hrp.Content = new StringContent(moduleJson, Encoding.UTF8, "application/json");
+            HttpRequestMessage hrp = this.GetHttpRequest(HttpMethod.Delete, $"Modules/{service.Module.Module_ID}");
 
             HttpResponseMessage hrm = await client.SendAsync(hrp);
 
