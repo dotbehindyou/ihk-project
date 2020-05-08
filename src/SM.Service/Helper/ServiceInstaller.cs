@@ -4,36 +4,25 @@ using System.Runtime.InteropServices;
 
 namespace SM.Service.Helper
 {
-    internal class Win32
-    {
-        // Use DllImportAttribute to inport the Win32 MessageBox
-        // function.  Set the SetLastError flag to true to allow
-        // the function to set the Win32 error.
-        [DllImportAttribute("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        public static extern int MessageBox(IntPtr hwnd, String text, String caption, uint type);
-    }
-
     internal class ServiceInstaller
     {
         #region DLLImport
-        [DllImport("advapi32.dll", SetLastError = true)]
+        [DllImport("advapi32.dll")]
         public static extern IntPtr OpenSCManager(string lpMachineName, string lpSCDB, int scParameter);
-        [DllImport("Advapi32.dll", SetLastError = true)]
+        [DllImport("Advapi32.dll")]
         public static extern IntPtr CreateService(IntPtr hSCManager, string lpServiceName, string lpDisplayName,
         int dwDesiredAccess, int dwServiceType, int dwStartType, int dwErrorControl, string lpBinaryPathName,
         string lpLoadOrderGroup, int lpdwTagId, string lpDependencies, string lpServiceStartName, string lpPassword);
-        [DllImport("advapi32.dll", SetLastError = true)]
+        [DllImport("advapi32.dll")]
         public static extern void CloseServiceHandle(IntPtr SCHANDLE);
-        [DllImport("advapi32.dll", SetLastError = true)]
+        [DllImport("advapi32.dll")]
         public static extern int StartService(IntPtr SVHANDLE, int dwNumServiceArgs, string lpServiceArgVectors);
-        [DllImport("advapi32.dll", SetLastError = true)]
+        [DllImport("advapi32.dll")]
         public static extern IntPtr OpenService(IntPtr SCHANDLE, string lpSvcName, int dwNumServiceArgs);
-        [DllImport("advapi32.dll", SetLastError = true)]
+        [DllImport("advapi32.dll")]
         public static extern int DeleteService(IntPtr SVHANDLE);
-        [DllImport("kernel32.dll", SetLastError = true)]
+        [DllImport("kernel32.dll")]
         public static extern int GetLastError();
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern int FormatMessage(int dwFlags, IntPtr lpSource, int dwMessageId, int dwLanguageId, string lpBuffer, int nSize, IntPtr Arguments);
         #endregion
 
         /// <summary>
@@ -76,8 +65,8 @@ namespace SM.Service.Helper
                 IntPtr sc_handle = OpenSCManager(null, null, SC_MANAGER_CREATE_SERVICE);
                 if (sc_handle != IntPtr.Zero)
                 {
-                    IntPtr sv_handle = CreateService(sc_handle, servicePath, serviceName, SERVICE_ALL_ACCESS, SERVICE_WIN32_OWN_PROCESS, SERVICE_AUTO_START, SERVICE_ERROR_NORMAL, serviceDisplayName, null, 0, null, null, null);
-                    if (sv_handle != IntPtr.Zero)
+                    IntPtr sv_handle = CreateService(sc_handle, serviceName, serviceDisplayName, SERVICE_ALL_ACCESS, SERVICE_WIN32_OWN_PROCESS, SERVICE_AUTO_START, SERVICE_ERROR_NORMAL, servicePath, null, 0, null, null, null);
+                    if (sv_handle == IntPtr.Zero)
                     {
                         Int32 t = Marshal.GetLastWin32Error();
                         CloseServiceHandle(sc_handle);
