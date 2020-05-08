@@ -25,6 +25,9 @@ namespace SM.Managers
             module.Module_ID = Guid.NewGuid();
             module.Name = moduleName;
 
+            Mapper.ExecuteQuery("DELETE SM_Modules where Name = ? and IsActive = 0", true,
+                new OdbcParameter("name", moduleName));
+
             Mapper.ExecuteQuery("INSERT INTO SM_Modules (Module_ID, Name) VALUES (?,?)", true,
                 new OdbcParameter("module_id", module.Module_ID),
                 new OdbcParameter("name", module.Name));
@@ -267,6 +270,10 @@ namespace SM.Managers
             }
             ver.Config = this.CreateConfig(module_id, configFile.FileName, configFile.Format, configFile.Data);
 
+            Mapper.ExecuteQuery("DELETE SM_Modules_Version WHERE Module_ID = ? and Version = ? and IsActive = 0", true,
+                new OdbcParameter("module_id", module_id),
+                new OdbcParameter("Version", version));
+
             Mapper.ExecuteQuery("INSERT INTO SM_Modules_Version (Version, Module_ID, Validation_Token, Config_ID, Release_Date) " +
                 "VALUES (?, ?, ?, ?, ?)", true,
                 new OdbcParameter("Version", ver.Version),
@@ -365,7 +372,7 @@ namespace SM.Managers
             ConfigFile configFile = new ConfigFile();
             configFile.Config_ID = Guid.NewGuid();
             configFile.Data = configData;
-            configFile.Format = format;
+            configFile.Format = String.IsNullOrEmpty(format) ? null : "";
             configFile.FileName = configName;
 
             Mapper.ExecuteQuery("INSERT INTO SM_Modules_Config (Config_ID, Module_ID, FileName, Format, Data) " +
@@ -373,7 +380,7 @@ namespace SM.Managers
                 new OdbcParameter("Config_ID", configFile.Config_ID),
                 new OdbcParameter("Module_ID", module_id),
                 new OdbcParameter("FileName", configFile.FileName),
-                new OdbcParameter("Format", configFile.Format ?? ""),
+                new OdbcParameter("Format", configFile.Format ?? (Object)DBNull.Value),
                 new OdbcParameter("Data", configFile.Data));
 
             return configFile;
