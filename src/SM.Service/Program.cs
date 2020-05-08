@@ -35,55 +35,61 @@ namespace SM.Service
                 using (CustomerServiceManager sm = new CustomerServiceManager())
                     installedModules = sm.GetMany();
 
+                //var t = modules.Join(installedModules, i => i.Module_ID, m => m.Module_ID, (m, i) => new { m, i });
+                var result = from mod in modules
+                             join ins in installedModules on mod.Module_ID equals ins.Module_ID into jmods
+                             from jmod in jmods.DefaultIfEmpty()
+                             select new
+                             {
+                                 Module = mod,
+                                 ServiceInformation = jmod,
+                                 IsInstalled = jmod != null
+                             };
+
                 ModuleController mc = new ModuleController();
 
-                for(int i = 0; i < modules.Count; ++i)
+                foreach(var mod in result)
                 {
-                    var m = modules[i];
+                    Models.Service serv;
+                    if (mod.Module.Status == "DEL")
+                    {
+                        serv = mc.Remove(mod.Module);
+                        apiC.SendRemove(serv);
+
+                        continue;
+                    }
+                    
+                    if (mod.IsInstalled)
+                    {
+                        Byte[] file = null;
+                        SM_Modules_Installed sm = installedModules.Where(x=> x.Module_ID == mod.Module.Module_ID).FirstOrDefault();
+
+                        if (sm.ValidationToken != mod.Module.Validation_Token)
+                        {
+                            file = apiC.GetFile(mod.Module);
+                        }
+
+                        try
+                        {
+                            serv = mc.Set(mod.Module, file);
+                            apiC.SendStatus(serv);
+                            continue;
+                        }
+                        catch (ServiceNotInstalledException e)
+                        {
+
+                        }
+                    }
+
                     try
                     {
-                        if (m.Status == "INIT")
-                        {
-                            Byte[] file = apiC.GetFile(m);
-                            apiC.SendStatus(mc.Add(m, file));
-                        }
-                        else if (m.Status == "UPDATE")
-                        {
-                            Byte[] file = null;
-                            SM_Modules_Installed sm = installedModules.Where(x=> x.Module_ID == m.Module_ID).FirstOrDefault();
-                            if(sm == null || sm.ValidationToken == null)
-                            {
-                                m.Status = "INIT";
-                                --i;
-                                continue;
-                            }
+                        Byte[] file = apiC.GetFile(mod.Module);
+                        serv = mc.Add(mod.Module, file);
+                        apiC.SendStatus(serv);
+                    }
+                    catch (ServiceAlreadyInstalledException e)
+                    {
 
-                            if (sm.ValidationToken != m.Validation_Token)
-                            {
-                                file = apiC.GetFile(m);
-                            }
-                            apiC.SendStatus(mc.Set(m, file));
-                        }
-                        else if (m.Status == "DEL")
-                        {
-                            apiC.SendRemove(mc.Remove(m));
-                        }
-                    }
-                    catch(ServiceNotInstalledException e)
-                    {
-                        if(m.Status != "DEL")
-                        {
-                            m.Status = "INIT";
-                            --i;
-                        }
-                    }
-                    catch(ServiceAlreadyInstalledException e)
-                    {
-                        m.Status = "UPDATE";
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e);
                     }
                 }
             }
