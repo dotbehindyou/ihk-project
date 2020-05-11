@@ -54,7 +54,7 @@ namespace SM.Service.Controller
         public async Task<Boolean> SendStatusAsync(Models.Service service)
         {
             HttpRequestMessage hrp = this.GetHttpRequest(HttpMethod.Put, "Modules");
-
+            service.Module.Status = service.Status.ToString();
             String moduleJson = JsonConvert.SerializeObject(service.Module);
             hrp.Content = new StringContent(moduleJson, Encoding.UTF8, "application/json");
 
