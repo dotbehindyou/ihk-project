@@ -27,8 +27,9 @@ namespace SM.Managers {
 
         public void Add(SM_Modules_Installed mod)
         {
-            Mapper.ExecuteQuery("DELETE SM_Modules_Installed where Module_ID = ?", true,
-                new OdbcParameter("module_id", mod.Module_ID));
+            Mapper.ExecuteQuery("DELETE SM_Modules_Installed where (Module_ID = ? or ServiceName = ?) and IsActive = 0", true,
+                new OdbcParameter("module_id", mod.Module_ID),
+                new OdbcParameter("serviceName", mod.ServiceName));
 
             Mapper.ExecuteQuery("INSERT INTO SM_Modules_Installed (Module_ID, ServiceName, Version, ValidationToken, ModuleName, Path)" +
                 "VALUES(?,?,?,?,?,?)", true,
