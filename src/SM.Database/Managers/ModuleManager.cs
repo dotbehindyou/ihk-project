@@ -99,7 +99,7 @@ namespace SM.Managers
         {
             List<Module> mods = new List<Module>();
             foreach(var mod in Mapper.GetMany<Modules_Version_Config>("select mod.Module_ID, mod.Name as ModuleName, cus.Version, cus.Status, cof.Config_ID, cof.FileName as ConfigFileName, cus.Config as ConfigData, ver.Release_Date, ver.Validation_Token from SM_Customers_Modules as cus " +
-                    "left join SM_Modules as mod on cus.Module_ID = mod.Module_ID " +
+                    "inner join SM_Modules as mod on cus.Module_ID = mod.Module_ID " +
                     "left join SM_Modules_Version as ver on ver.Module_ID = cus.Module_ID and ver.Version = cus.Version " +
                     "left join SM_Modules_Config as cof on cof.Module_ID = mod.Module_ID and cof.Config_ID = ver.Config_ID " +
                     "where cus.Kdnr = ? and cus.IsActive = 1", true,
