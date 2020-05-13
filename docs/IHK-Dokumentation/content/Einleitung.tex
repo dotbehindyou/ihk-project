@@ -1,0 +1,53 @@
+% !TEX root = ../Index.tex
+\section{Einleitung}
+\label{sec:Einleitung}
+
+
+\subsection{Projektumfeld} 
+\label{sec:Projektumfeld}
+Das Projekt wird von Christopher Mogler in der Firma Weiss GmbH Softwarelösungen
+entwickelt. Sie wurde 1975 von Rolf Weiss mit Hauptsitz in Schiltach gegründet. Zu den ersten
+Anfängen der Firma wurde für mittelständische Unternehmen Auftragsprogrammierungen auf
+IBM-Systemen durchgeführt. Im Jahre 1985 wurde die Produktpalette auf \acsu{ERP}-Systeme, für
+mittelständische und größere Handels bzw. Industrieunternehmen, erweitert. \\
+Die Geschäftsleitung wurde 1998 von Martin Lauble übernommen. Ab dem Jahr 2002 wurde der
+Schwerpunkt der Software auf das Produkt PowerWeiss für Windows gelegt, welches als
+\acsu{CRM}-System für Handel, Industrie und Versicherungsagenturen genutzt werden kann.
+
+\subsection{Projektziel} 
+\label{sec:Projektziel}
+Die Firma hat für viele Zusatz Module dazugehörige Dienste. Diese müssen installiert und konfiguriert werden. \\
+Der Support muss sich auf die Kunden-Server drauf schalten und danach die Dienste manuell installieren und konfigurieren. Ziel ist es die Installation, Aktualisierung und Deinstallation zu automatisieren.
+Deshalb soll ein Dienst programmiert werden, was die anderen Dienste automatisch verwaltet. 
+Über eine Oberfläche kann die Firma Weiss, Dienste installieren, konfigurieren, aktualisieren und deinstallieren. Der Dienst auf dem Kunden-Server holt sich die aktuellen Daten über eine \acsu{REST}-\acsu{API} ab. \\
+Und gleicht die Dienste mit den Daten der \acsu{API} ab. 
+Bei einer Installation sollen die Dateien heruntergeladen werden. Danach werden die Dateien in ein Verzeichnis gespeichert. Die Dienste werden über die Windows-\acsu{API} per \acsu{CS} installiert. Die Dienste werden direkt gestartet.
+Bei einer Aktualisierung werden die ausgewählten Dienste gestoppt. Die Dateien werden mit den aktuellen Dateien überschrieben. Danach wird der Dienst wieder gestartet.
+Wenn Dienste deinstalliert werden sollen, werden die Dienste gestoppt und über die Windows-\acsu{API} vom Dienst-Verzeichnis entfernt. Die Dateien werden nicht gelöscht, um Fehler vorzubeugen.
+\subsection{Projektbegründung} 
+\label{sec:Projektbegruendung}
+Um Dienste zu installieren muss sich ein Mitarbeiter, der Firma Weiss, auf den Server drauf schalten. 
+Die aktuellen Dateien der Dienste kopieren und mit dem Windows bereitgestellten Programm "InstallUtil" installieren. Da "InstallUtil" nur über eine \acsu{CMD} verwendet werden kann, ist es sehr fehleranfällig. \\
+Die manuelle Installation ist sehr Zeit aufwendig, deshalb ist eine Automatisierung sehr sinnvoll.
+Mit einer Automatisierung werden Dienste per Knopfdruck In-, aktuali- und Deinstalliert oder konfiguriert, ohne das ein Mitarbeiter sich auf einen Server Zugriff verschaffen muss. 
+
+\subsection{Projektschnittstellen} 
+\label{sec:Projektschnittstellen}
+\begin{itemize}
+	\item Mit welchen anderen Systemen interagiert die Anwendung (technische Schnittstellen)?
+	\item Wer genehmigt das Projekt \bzw stellt Mittel zur Verfügung? 
+	\item Wer sind die Benutzer der Anwendung?
+	\item Wem muss das Ergebnis präsentiert werden?
+\end{itemize}
+Für die Datenspeicherung wird eine SQL-Anywhere-Datenbank verwendet. Der Zugriff auf diese Datenbank, wird über \acsu{ODBC} realisiert. \\
+\acsu{UI} und \acsu{REST} werden als Web Applikation bereitgestellt, diese wird über \acsu{ASP} verwaltet. Um \acsu{ASP} zu verwenden wird ein \acsu{IIS}-Dienst von Windows benötigt. \\
+Um Windows-Dienste verwalten zu können, wird auf die Windows-\acsu{API} zugegriffen, über die AdvAPI32 Bibliothek. \\
+\acsu{UI} verwendet \acsu{React} als Framework und \acsu{Node} zur verwaltung von \acsu{React}. 
+\\
+Das Projekt wurde durch Herrn Richter genehmigt, der Abteilungsleiter der Entwicklung – bei der Firma Weiss. Die Endnutzer sind die Mitarbeiter der Firma Weiss, die geschult werden durch den Autor und eine Anwenderdokumentation erhalten. \\
+
+\subsection{Projektabgrenzung[TODO]} 
+\label{sec:Projektabgrenzung}
+\begin{itemize}
+	\item Was ist explizit nicht Teil des Projekts (\insb bei Teilprojekten)?
+\end{itemize}
