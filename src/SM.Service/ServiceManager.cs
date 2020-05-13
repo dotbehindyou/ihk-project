@@ -9,7 +9,9 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
@@ -19,6 +21,8 @@ using System.Timers;
 namespace SM.Service
 {
     public partial class ServiceManager : ServiceBase {
+        private StreamWriter logWriter;
+
         private readonly ApiController apiC = new ApiController();
         private Thread serviceHanlderThread = null;
 
@@ -34,19 +38,36 @@ namespace SM.Service
 
         protected override void OnStart(string[] args)
         {
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+
+            logWriter = new StreamWriter(path: $"{DateTime.Now.ToString("yy-MM")}.log", append: true);
+            logWriter.AutoFlush = true;
+            Console.SetOut(logWriter);
+
+            Console.WriteLine("ServiceManager initialisiert");
+
             Config.Current = new Config() { ConnectionString = ConfigurationManager.AppSettings["connectionString"] };
 
             serviceHanlderThread = new Thread(this.ServiceHandler);
+            serviceHanlderThread.Start();
         }
 
         protected override void OnStop()
         {
-            if(serviceHanlderThread?.Join(3000) ?? false)
+            CancellationTokenSource.Cancel();
+
+            if ((serviceHanlderThread?.IsAlive ?? false) && (serviceHanlderThread?.Join(3000) ?? false))
                 serviceHanlderThread.Abort();
+
+            logWriter?.Dispose();
+
+            Console.WriteLine("ServiceManager wurde gestoppt");
         }
 
         private void ServiceHandler()
         {
+            Thread.Sleep(10000);
+            Console.WriteLine($"[{DateTime.Now}] ServiceHandler wird initialisiert");
             Thread moduleSyncThread, statusSyncThread;
             ManualResetEvent moduleSyncThreadResetEvent = new ManualResetEvent(false),
                 statusSyncThreadResetEvent = new ManualResetEvent(false);
@@ -59,7 +80,15 @@ namespace SM.Service
             {
                 while (!CancellationToken.IsCancellationRequested)
                 {
-                    this.ModuleSync(installedModules);
+                    try
+                    {
+                        Console.WriteLine($"[{DateTime.Now}] Module werden syncronisiert...");
+                        this.ModuleSync(installedModules);
+                    }
+                    catch(Exception e)
+                    {
+
+                    }
                     Thread.Sleep(1800 * 1000); // Jede hable Stunde die Version / Validation_Token abrufen
                 }
 
@@ -70,8 +99,16 @@ namespace SM.Service
             {
                 while (!CancellationToken.IsCancellationRequested)
                 {
-                    this.StatusSync(installedModules);
-                    Thread.Sleep(60 * 1000); // Jede Minute den Status aktualisieren 
+                    try
+                    {
+                        Console.WriteLine($"[{DateTime.Now}] Status wird aktualisiert...");
+                        this.StatusSync(installedModules);
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                    Thread.Sleep(60 * 1000); // Jede Minute den Status aktualisieren
                 }
 
                 statusSyncThreadResetEvent.Set();
@@ -86,14 +123,28 @@ namespace SM.Service
                 statusSyncThreadResetEvent
             };
 
-            WaitHandle.WaitAll(waitHandles);
+            try
+            {
+                WaitHandle.WaitAll(waitHandles);
+            }
+            catch (ThreadAbortException e)
+            {
+
+            }
         }
 
         private void ModuleSync(List<SM_Modules_Installed> installedModules)
         {
             ModuleController mc = new ModuleController();
+            List<Module> modules = null;
+            try
+            {
+                 modules = apiC.GetModules();
+            }
+            catch(Exception e)
+            {
 
-            List<Module> modules = apiC.GetModules();
+            }
 
             //var t = modules.Join(installedModules, i => i.Module_ID, m => m.Module_ID, (m, i) => new { m, i });
             var result = from mod in modules
@@ -112,6 +163,8 @@ namespace SM.Service
                 Models.Service serv;
                 if (mod.Module.Status == "DEL")
                 {
+                    Console.WriteLine($"[{DateTime.Now}] Module '{mod.Module.Name}' wird gelöscht.");
+
                     serv = mc.Remove(mod.Module);
                     apiC.SendRemove(serv);
 
@@ -122,6 +175,8 @@ namespace SM.Service
 
                 if (mod.IsInstalled)
                 {
+                    Console.WriteLine($"[{DateTime.Now}] Module '{mod.Module.Name}' wird aktualisiert.");
+
                     Byte[] file = null;
                     SM_Modules_Installed sm = installedModules.Where(x=> x.Module_ID == mod.Module.Module_ID).FirstOrDefault();
 
@@ -144,6 +199,8 @@ namespace SM.Service
 
                 try
                 {
+                    Console.WriteLine($"[{DateTime.Now}] Module '{mod.Module.Name}' wird instaliert.");
+
                     Byte[] file = apiC.GetFile(mod.Module);
                     serv = mc.Add(mod.Module, file);
                     apiC.SendStatus(serv);
