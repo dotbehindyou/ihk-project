@@ -21,33 +21,47 @@ namespace SM.Service
         /// </summary>
         static void Main(String[] args)
         {
-
             if (Environment.UserInteractive)
             {
-                Config.Current = new Config() { ConnectionString = ConfigurationManager.AppSettings["connectionString"] };
+                using (StreamWriter logWriter = new StreamWriter(path: $"{DateTime.Now:yy-MM}.install.log", append: true))
+                {
+                    logWriter.AutoFlush = true;
+                    Console.SetOut(logWriter);
 
-                Models.Service SM_Service = new Models.Service
-                {
-                    Name = "ServiceManager_Weiss",
-                    Path = Assembly.GetExecutingAssembly().Location,
-                };
+                    Console.WriteLine("ServiceManager");
 
-                if (args?.Any(x => x.ToLower() == "-i") ?? false) // -i als Parameter zum installieren
-                {
-                    Helper.ServiceInstaller.Install(SM_Service.Path, SM_Service.Name, "Service Manager");
-                }
-                else if (args?.Any(x => x.ToLower() == "-u") ?? false) // -u als Parameter zum deinstallieren
-                {
-                    Helper.ServiceInstaller.Uninstall(SM_Service.Name);
-                }
+                    Config.Current = new Config() { ConnectionString = ConfigurationManager.AppSettings["connectionString"] };
 
-                if (args?.Any(x => x.ToLower() == "-d") ?? false) // -d zum Debuggen 
-                {
-                    // TODO Debuggen ServiceBase.Run(new ServiceManager());
+                    Models.Service SM_Service = new Models.Service
+                    {
+                        Name = "ServiceManager_Weiss",
+                        Path = Assembly.GetExecutingAssembly().Location,
+                    };
+
+                    if (args?.Any(x => x.ToLower() == "-i") ?? false) // -i als Parameter zum installieren
+                    {
+                        if (Helper.ServiceInstaller.Install(SM_Service.Path, SM_Service.Name, "Service Manager"))
+                            Console.WriteLine("Service Manager installiert!");
+                        else
+                            Console.WriteLine("Service Manager konnte nicht installiert werden!");
+                    }
+                    else if (args?.Any(x => x.ToLower() == "-u") ?? false) // -u als Parameter zum deinstallieren
+                    {
+                        if(Helper.ServiceInstaller.Uninstall(SM_Service.Name))
+                            Console.WriteLine("Service Manager entfernt!");
+                        else
+                            Console.WriteLine("Service Manager konnte nicht deinstalliert werden!");
+                    }
+
+                    if (args?.Any(x => x.ToLower() == "-d") ?? false) // -d zum Debuggen
+                    {
+                        // TODO Debuggen ServiceBase.Run(new ServiceManager());
+                    }
                 }
             }
             else
             {
+                Console.WriteLine($"[{DateTime.Now}] Init Dienst");
                 ServiceBase[] ServicesToRun;
                 ServicesToRun = new ServiceBase[] { new ServiceManager() };
                 ServiceBase.Run(ServicesToRun);
