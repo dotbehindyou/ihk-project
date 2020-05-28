@@ -87,7 +87,7 @@ class Module extends React.Component {
         return <div>
             <Row>
                 <Col>
-                    <h2>{model.name} <small>{this.state.isNew ? 'als neues Module hinzufügen' : '('+(model.version || 'noch keine Version')+')'}</small></h2>
+                    <h2>{model.name} <small>{this.state.isNew ? '' : '('+(model.version || '')+')'}</small></h2>
                 </Col>
                 <Col style={{ textAlign: 'right' }}>
                     <Button outline color="danger" size="sm" onClick={this.close}><FontAwesomeIcon icon={faWindowClose} /></Button>
@@ -95,9 +95,9 @@ class Module extends React.Component {
             </Row>
             <hr />
             <Form>
-                <Label for="name">Name des Moduls</Label>
+                <Label for="name">Name</Label>
                 <InputGroup>
-                    <Input type="text" name="name" id="name" placeholder="Name vom Modul" value={model.name} onChange={this.handleChange}/>
+                    <Input type="text" name="name" id="name" placeholder="Name" value={model.name} onChange={this.handleChange}/>
                     <InputGroupAddon addonType="append">
                         <Button outline color="primary" type="button" onClick={this.save}>{this.state.isNew ? 'Erstellen' : 'Übernehmen'}</Button>
                     </InputGroupAddon>

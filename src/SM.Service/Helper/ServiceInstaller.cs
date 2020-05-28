@@ -63,10 +63,10 @@ namespace SM.Service.Helper
             try
             {
                 IntPtr sc_handle = OpenSCManager(null, null, SC_MANAGER_CREATE_SERVICE);
-                if (sc_handle.ToInt32() != 0)
+                if (sc_handle != IntPtr.Zero)
                 {
                     IntPtr sv_handle = CreateService(sc_handle, servicePath, serviceName, SERVICE_ALL_ACCESS, SERVICE_WIN32_OWN_PROCESS, SERVICE_AUTO_START, SERVICE_ERROR_NORMAL, serviceDisplayName, null, 0, null, null, null);
-                    if (sv_handle.ToInt32() == 0)
+                    if (sv_handle != IntPtr.Zero)
                     {
                         CloseServiceHandle(sc_handle);
                         return false;
@@ -105,12 +105,12 @@ namespace SM.Service.Helper
         {
             int GENERIC_WRITE = 0x40000000;
             IntPtr sc_hndl = OpenSCManager(null, null, GENERIC_WRITE);
-            if (sc_hndl.ToInt32() != 0)
+            if (sc_hndl != IntPtr.Zero)
             {
                 int DELETE = 0x10000;
                 IntPtr svc_hndl = OpenService(sc_hndl, serviceName, DELETE);
                 //Console.WriteLine(svc_hndl.ToInt32());
-                if (svc_hndl.ToInt32() != 0)
+                if (svc_hndl != IntPtr.Zero)
                 {
                     int i = DeleteService(svc_hndl);
                     if (i != 0)

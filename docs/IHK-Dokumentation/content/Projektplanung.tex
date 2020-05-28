@@ -1,4 +1,4 @@
-% !TEX root = ../Index.tex
+% !TEX root = ../Projektdokumentation.tex
 \section{Projektplanung} 
 \label{sec:Projektplanung}
 
@@ -6,35 +6,45 @@
 \subsection{Projektphasen}
 \label{sec:Projektphasen}
 
-\begin{itemize}
-	\item In welchem Zeitraum und unter welchen Rahmenbedingungen (\zB Tagesarbeitszeit) findet das Projekt statt?
-	\item Verfeinerung der Zeitplanung, die bereits im Projektantrag vorgestellt wurde.
-\end{itemize}
-Ein Durchführungszeitraum von 70 Stunden wurden zur Verfügung gestellt. Eine grobe Zeitplanung findet sich im \Anhang{tab:ZeitplannungShort}. Eine detailliertere Zeitplanung findet sich im \Anhang{app:Zeitplanung}.
+Das Projekt wurde vom 20. April bis 05. Mai realisiert. Der Arbeitstag wurde in diesem Zeitraum in sieben Stunden für das Projekt und eine Stunde für andere Themen aufgeteilt. Andere Themen sind \zB Fehlerbehebung, Support und Telefondienst. \*
 
-\tabelle{Zeitplanung}{tab:ZeitplannungShort}{TimetableShort}
-
+Tabelle~\ref{tab:Zeitplanung} zeigt die grobe Zeitplanung.
+\tabelle{Zeitplanung}{tab:Zeitplanung}{TimetableShort} 
+Eine detaillierte Zeitplanung findet sich im \Anhang{app:timer}.
 
 \subsection{Abweichungen vom Projektantrag}
 \label{sec:AbweichungenProjektantrag}
 
-\begin{itemize}
-	\item Sollte es Abweichungen zum Projektantrag geben (\zB Zeitplanung, Inhalt des Projekts, neue Anforderungen), müssen diese explizit aufgeführt und begründet werden.
-\end{itemize}
-
+Im Projektantrag wurde eine Offline Installation aufgeführt. Diese wurde aber durch die Leitung als nicht mehr relevant angesehen. Daher ist diese nicht etabliert worden. \\
+\\
+Bei einer Versionsänderung werden die Dateien komplett mit den neuen überschrieben. Das hat den Vorteil: weniger Quellcode für die Versionsprüfung und verringerte Fehler, bei einer falschen Validierung. Die Performance wird nicht beeinträchtigt, weil die Dienste nicht groß sind und selten viele einzelne Dateien vorweisen. 
 
 \subsection{Ressourcenplanung}
 \label{sec:Ressourcenplanung}
 
+Entwickelt wurde in Schiltach im Büro des Entwicklerteam 1.
+Von der Firma Weiss wurde die benötigten Ressourcen Hard- und Software bereitgestellt. \\
+\\
+Um Kosten gering wie möglich zu halten, wurde auf Software zurückgegriffen die frei zur Verfügung steht oder bereits Lizenzen im Unternehmen vorhanden waren. Hier ist eine Liste der verwendeten Anwendungen:
 \begin{itemize}
-	\item Detaillierte Planung der benötigten Ressourcen (Hard-/Software, Räumlichkeiten \usw).
-	\item \Ggfs sind auch personelle Ressourcen einzuplanen (\zB unterstützende Mitarbeiter).
-	\item Hinweis: Häufig werden hier Ressourcen vergessen, die als selbstverständlich angesehen werden (\zB PC, Büro). 
+    \item Visual Studio 2019    (\acsu{IDE})
+    \item Windows 10            (Betriebssystem)
+    \item SQL Anywhere          (\acsu{DBMS})
+    \item Interactive SQL       (\acsu{SQL} Editor mit integrierter Datenbank Schnittstelle)
+    \item SQL Central           (Administrations Tool für SQL Anywhere)
+    \item .NET Framework / Core (Runtime für \acsu{CS})
+    \item ReactJS               (Frontend-\acsu{JS}-Framework)
+    \item Bootstrap             (Frontend-\acsu{CSS}-Framework)
+    \item NodeJS                (Runtime für \acsu{JS})
 \end{itemize}
 
+Als organisatorische Hilfe wurde Herr Oehler zur Verfügung gestellt, für den Autor.
 
 \subsection{Entwicklungsprozess}
 \label{sec:Entwicklungsprozess}
-\begin{itemize}
-	\item Welcher Entwicklungsprozess wird bei der Bearbeitung des Projekts verfolgt (\zB Wasserfall, agiler Prozess)?
-\end{itemize}
+
+Da die einzelnen Programme nicht sehr aufwendig waren, wurde das erweiterte Wasserfallmodell eingesetzt.\\
+\\
+Die Implementierungsphase wurde in iterativen Zyklen durchgeführt. Ferner ist zu beachten, dass die einzelnen Teile komplett entwickelt wurden. Jedes Teilprojekt ist nach der Fertigstellung getestet worden, um neue oder vorhandene Funktionen auf Fehler zu prüfen.
+
+

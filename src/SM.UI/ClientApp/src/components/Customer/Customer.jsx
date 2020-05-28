@@ -144,7 +144,7 @@ class Customer extends React.Component {
                 <Col>
                     <hr />
                     <h4>Daten:</h4>
-                    <Label for="auth_token">Auth-Token für den Service:</Label>
+                    <Label for="auth_token">Authentifizierung-Token:</Label>
                     <InputGroup>
                         <Input id="auth_token" type="text" readOnly value={this.state.auth_Token || ''} />
                         <InputGroupAddon addonType="append">
@@ -157,7 +157,7 @@ class Customer extends React.Component {
                 </Col>
                 <Col sm={8}>
                     <hr />
-                    <h4>Aktivierte Module:</h4>
+                    <h4>Installierte Dienste:</h4>
                     <ModuleList url={"/api/Modules/Customer/" + this.state.kdnr}
                         onEdit={this.handleChangeModule}
                         onDelete={this.handleRemoveModule}

@@ -53,7 +53,7 @@ class ModulePage extends React.Component {
             renderdItem = <Module onClose={this.closeEditor} model={this.state.select} />;
 
         return <div>
-            <h4>Modulenverwaltung</h4>
+            <h4>Diensteverwaltung</h4>
             <hr />
             {renderdItem}
         </div>;

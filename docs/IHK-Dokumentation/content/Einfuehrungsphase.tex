@@ -1,0 +1,33 @@
+% !TEX root = ../Projektdokumentation.tex
+\section{Einführungsphase}
+\label{sec:Einfuehrungsphase}
+
+\subsection{Anwendungen}
+\label{sec:programs_install}
+
+\subsubsection{Oberfläche / \acsu{UI}}
+\label{sec:UI}
+
+Die Oberfläche wurde auf dem Cloud-Server der Firma Weiss hochgeladen. Auf diesen Cloud-Server läuft ein Windows-Betriebssystem mit der \acsu{IIS}-Applikation. \\
+Die Webanwendungen kann nur aus dem lokalen Netz abgerufen werden, um Unautorisierte Zugriffe zu verhindern. Um Außerhalb der Firma zugreifen zu können, wird ein \acsu{VPN}-Tunnel benötigt. 
+
+\subsubsection{API}
+\label{sec:API}
+
+Die \acsu{API} läuft wie die Oberfläche auf dem Cloud-Server der Firma Weiss. Die API ist aus dem öffentlichen Netz erreichbar, da die Daten nur über einen \acsu{SHA}-512 Token freigegeben werden. 
+
+\subsubsection{Verwaltungsdienst}
+\label{sec:Service}
+
+Um die Mitarbeiter zu Schulen, wurde auf einem Testgerät der Firma Weiss dieser Verwaltungsdienst installiert. Dieser ist mit einem Testkunde verknüpft.\\
+\\
+In der Schulung wurden die Dienste auf ausgewählten Kunden-Systeme installiert und ausgeführt.\\
+\\
+Dadurch das der Dienst sich selbst installieren kann, muss dieser nur ausgeführt werden. Davor muss die Konfiguration angepasst werden: Authentifizierung Token, Datenbank \acsu{ODBC} Daten, Filestore wo die Dienste installiert werden soll. 
+
+\subsection{Schulung}
+\label{sec:Schulung}
+
+Die Mitarbeiter wurden in einer 2,5 stündigen Schulungsveranstaltung geschult. Es wurde die Oberfläche präsentiert und erklärt. Danach ist auf die Installation des Verwaltungsdienst eingegangen worden. \\
+Die Mitarbeiter mussten selbst auf Kundensysteme den Verwaltungsdienst installieren und konfigurieren. \\
+In den letzten 10min ist man auf Fragen und Anregungen eingegangen.

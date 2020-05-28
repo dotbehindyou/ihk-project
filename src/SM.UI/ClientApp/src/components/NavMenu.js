@@ -26,7 +26,7 @@ export class NavMenu extends Component {
       <header>
           <Navbar color="dark" dark expand="md">
           <Container>
-            <NavbarBrand tag={Link} to="/">SM.UI</NavbarBrand>
+            <NavbarBrand tag={Link} to="/">Service Manager</NavbarBrand>
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
             <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
               <ul className="navbar-nav flex-grow">
@@ -34,7 +34,7 @@ export class NavMenu extends Component {
                   <NavLink tag={Link} to="/">Kunden</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} to="/Modules">Module</NavLink>
+                  <NavLink tag={Link} to="/Modules">Dienste</NavLink>
                 </NavItem>
               </ul>
             </Collapse>

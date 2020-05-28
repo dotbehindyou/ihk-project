@@ -58,7 +58,7 @@ class ModuleList extends React.Component {
 
         var edit;
         if (this.props.onEdit != null && this.props.isSelect !== true) {
-            edit = <td colSpan={this.props.showStatus ? 4 : 3}><Button size="sm" outline onClick={() => this.props.onEdit({})}>Modul hinzufügen <FontAwesomeIcon icon={faPlus} /></Button></td>;
+            edit = <td colSpan={this.props.showStatus ? 4 : 3}><Button size="sm" outline onClick={() => this.props.onEdit({})}>Dienst hinzufügen <FontAwesomeIcon icon={faPlus} /></Button></td>;
         }
 
         return <>
@@ -66,7 +66,7 @@ class ModuleList extends React.Component {
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Name des Moduls</th>
+                        <th>Dienst</th>
                         <th>Version</th>
                         {this.props.showStatus ? <th>Status</th> : null}
                     </tr>
