@@ -1,0 +1,27 @@
+.logo {
+  height: 32px;
+  margin: 16px;
+  color: white;
+}
+
+.logo .sm{
+  font-size: 13px;
+  transition: font-size 0.5s;
+}
+
+.logo .bg{
+  font-size: 22px;
+  transition: font-size 1s;
+}
+
+
+.site-layout .site-layout-background {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 20px;
+  min-height: 360px;
+  margin-bottom: 20px;
+}
+
+.row {
+  cursor: pointer;
+}

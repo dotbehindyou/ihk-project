@@ -20,6 +20,15 @@ namespace SM.UI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder => {
+                        builder.WithOrigins("*"); // TODO CORS über Config auslesen, wird für UI benötigt, Service ist egal
+                        builder.AllowAnyMethod();
+                        builder.AllowAnyHeader();
+                    });
+            });
 
             services.AddControllersWithViews();
 
@@ -49,6 +58,7 @@ namespace SM.UI
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+            app.UseCors();
 
             app.UseRouting();
 

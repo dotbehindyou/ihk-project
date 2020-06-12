@@ -1,22 +1,33 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router';
-import { Layout } from './components/Layout';
-import ModulePage from './components/Module/ModulePage';
+import React from 'react';
+import { Layout } from 'antd';
+import Navbar from './layout/Navbar';
 
-import 'moment/locale/de.js';
-import 'rc-datepicker/lib/style.css';
-import './custom.css'
-import CustomerPage from './components/Customer/CustomerPage';
+import {
+  BrowserRouter as Router,
+} from "react-router-dom";
 
-export default class App extends Component {
-  static displayName = App.name;
+import './css/App.css'
+import Body from './layout/Body';
 
-  render () {
+const { Footer } = Layout;
+
+class App extends React.Component {
+  
+
+  render() {
     return (
-        <Layout>
-            <Route exact path='/Modules' component={ModulePage} />
-            <Route exact path='/' component={CustomerPage} />
+      <Router>
+        <Layout  style={{minHeight: '100vh'}}>
+          <Navbar />        
+          <Layout className="site-layout">
+            <Body></Body>
+            <Footer style={{ textAlign: 'center' }}>Service Manager © {new Date().getFullYear()} Weiss GmbH Softwarelösungen</Footer>
+          </Layout>
         </Layout>
+      </Router>
     );
   }
 }
+
+
+export default App;
