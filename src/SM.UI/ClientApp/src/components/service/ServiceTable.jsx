@@ -42,7 +42,6 @@ class ServiceTable extends React.Component {
           onCancel={this.handleCancel}
         />
       ),
-      hidden: this.props.kdnr != null,
       width: 50,
     },
     {
@@ -63,6 +62,7 @@ class ServiceTable extends React.Component {
       render: (text, record) => (
         <Tag color={text ? "green" : "orange"}>{text ? text : <i>Leer</i>}</Tag>
       ),
+      width: 50,
     },
   ];
 
@@ -76,11 +76,12 @@ class ServiceTable extends React.Component {
     super(props);
 
     if (props.kdnr) {
-      let col = this.columns.filter((x) => x.key !== "operation");
+      let col = this.columns;//.filter((x) => x.key !== "operation");
       col.push({
         title: "Status",
         dataIndex: "status",
         key: "status",
+        width: 50,
       });
       this.columns = [...col];
     }
@@ -99,7 +100,11 @@ class ServiceTable extends React.Component {
     }
   }
   handleDelete(service) {
-    this.helper.deleteService(service);
+    if(this.props.onDelete){
+      this.props.onDelete(service);
+    }else{
+      this.helper.deleteService(service);
+    }
     let st = this.state.serviceList.filter(
       (x) => x.module_ID !== service.module_ID
     );

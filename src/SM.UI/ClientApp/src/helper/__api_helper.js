@@ -75,7 +75,30 @@ class API_Customer extends __API {
       )
       .then((res) => {
         alertStore.dispatch(
-          AddAlert("Dienst wurde zum Kunden hinzugefügt.", true, "success")
+          AddAlert("Dienst wird beim Kunden installiert.", true, "success")
+        );
+        return res;
+      });
+  }
+
+  removeService(kdnr, serviceId, service) {
+    console.log(serviceId);
+    let url = new URL("Modules/Customer/" + kdnr, __url);
+    return super
+      .get(
+        url,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(service),
+        },
+        false
+      )
+      .then((res) => {
+        alertStore.dispatch(
+          AddAlert("Dienst wird beim Kunden entfernt!", true, "warning")
         );
         return res;
       });
@@ -98,7 +121,7 @@ class API_Customer extends __API {
       )
       .then((res) => {
         alertStore.dispatch(
-          AddAlert("Daten wurden gespeichert.", true, "success")
+          AddAlert("Daten werden beim Kunden geändert.", true, "success")
         );
         return res;
       });

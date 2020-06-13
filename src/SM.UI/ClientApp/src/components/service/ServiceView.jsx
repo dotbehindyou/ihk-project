@@ -58,7 +58,7 @@ class ServiceView extends React.Component {
           <Row>
             <Col span={24}>
               <h2>
-                {this.state.name} {this.state.module_ID}
+                {this.state.name}
               </h2>
             </Col>
           </Row>

@@ -1,5 +1,7 @@
 import React from "react";
 import { Button, Popconfirm } from "antd";
+import { DeleteOutlined, SelectOutlined, SaveOutlined, CloseCircleOutlined } from '@ant-design/icons';
+
 
 class TableOperator extends React.Component {
   state = {
@@ -32,22 +34,26 @@ class TableOperator extends React.Component {
     return (
       <div>
         {this.props.isNew === true ? (
-          <Button.Group>
+          <Button.Group size="small">
             <Button type="primary" onClick={(e) => this.onSet()}>
-              Speichern
+              <SaveOutlined />
             </Button>
-            <Button onClick={(e) => this.onCancel()}>Abbrechen</Button>
+            <Button onClick={(e) => this.onCancel()}>
+              <CloseCircleOutlined />
+            </Button>
           </Button.Group>
         ) : (
-          <Button.Group>
-            <Button onClick={(e) => this.onOpen()}>Öffnen</Button>
+          <Button.Group size="small">
+            <Button onClick={(e) => this.onOpen()}>
+              <SelectOutlined />
+            </Button>
             <Popconfirm
               title="Löschen?"
               cancelText="Nein"
               onConfirm={() => this.onDelete()}
             >
               <Button hidden={this.props.hideDelete} type="danger">
-                Löschen
+               <DeleteOutlined />
               </Button>
             </Popconfirm>
           </Button.Group>

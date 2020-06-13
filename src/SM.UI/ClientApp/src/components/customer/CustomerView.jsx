@@ -26,6 +26,7 @@ class CustomerView extends React.Component {
     this.openService = this.openService.bind(this);
     this.handleAddService = this.handleAddService.bind(this);
     this.onNewServiceSelected = this.onNewServiceSelected.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -33,6 +34,7 @@ class CustomerView extends React.Component {
     return {
       kdnr: nextProps.kdnr,
       selected: {},
+      addService: false
     };
   }
 
@@ -65,15 +67,19 @@ class CustomerView extends React.Component {
   }
 
   openService(service) {
-    this.setState({ selected: service });
+    this.setState({ selected: service, addService: false });
   }
 
   handleAddService(e) {
-    this.setState({ addService: true });
+    this.setState({ addService: true, selected: null });
+  }
+  
+  handleDelete(e) {
+    this.helper.removeService(this.state.kdnr, e.module_ID, e);
   }
 
   onNewServiceSelected(e) {
-    this.setState({ addService: false });
+    this.setState({ addService: false, selected: e });
     console.log(e);
   }
 
@@ -125,8 +131,9 @@ class CustomerView extends React.Component {
           <Row>
             <Col span={24}>
               <ServiceTable
-                kdnr={this.state.kdnr}
+                kdnr={this.props.kdnr}
                 onOpenService={this.openService}
+                onDelete={this.handleDelete}
                 onAddService={this.handleAddService}
                 getFirstRow={(r) => this.setState({ selected: r })}
               />

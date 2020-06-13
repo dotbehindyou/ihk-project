@@ -1,5 +1,6 @@
 import React from "react";
 import __api_helper from "../../helper/__api_helper";
+import { Col } from "antd";
 import ServiceTable from "../service/ServiceTable";
 import ConfigEditor from "../version/ConfigEditor";
 import VersionTable from "../version/VersionTable";
@@ -8,10 +9,11 @@ class CustomerRightbar extends React.Component {
   helper = new __api_helper.API_Customer();
 
   state = {
-    selected: this.props.selected
+    selected: null, //Bei Version wächsel das befüllen!!!!
+    addService: this.props.addService,
   };
 
-  constructor(props){
+  constructor(props) {
     super(props);
 
     this.selectService = this.selectService.bind(this);
@@ -20,64 +22,66 @@ class CustomerRightbar extends React.Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    console.log(nextProps);
-    if(nextProps.selected != null){
-      let sel = prevState.selected || {};
-      if(nextProps.addService === false && prevState.addService !== false){
+    if (nextProps.selected != null) {
+      let sele = prevState.selected || {};
+      if(nextProps.selected.version !== sele.version){
         return {
-          selected: {...nextProps.selected},
-          addService: false
-        }
-      }
-      if(sel.version !== nextProps.selected.version){
-        return {
-          selected: {...nextProps.selected}
+          selected: nextProps.selected
         }
       }
     }
-    else if(nextProps.addService === true && prevState.addService !== true){
-      return {
-        selected: null,
-        addService: true,
-      };
-    } 
-
-    return null;
+    if (prevState.addService === nextProps.addService) return null;
+    return {
+      addService: nextProps.addService,
+      selected: nextProps.addService ? null : nextProps.selected,
+    };
   }
+
   componentDidMount() {}
 
-  selectService(e){
-    this.setState({selected: e});
+  save(config) {
+    let version = {
+      kdnr: this.props.kdnr,
+      module_ID: this.state.selected.module_ID,
+      version: this.state.selected.version,
+      status: this.state.selected.status,
+      config,
+    };
+    if (this.state.selected.isNew) {
+      this.helper.addService(this.props.kdnr, version.module_ID, version);
+    } else {
+      this.helper.updateServiceInformation(
+        this.props.kdnr,
+        version.module_ID,
+        version
+      );
+    }
   }
 
-  selectVersion(e){
-    let sel = this.state.selected;
-    sel.version = e.version;
-    if(this.props.onVersionSelected){
-      this.props.onVersionSelected(e);
-    }
-    this.setState({selected: {...sel, isAdd: true}, addService: false});
+  selectService(o) {
+    this.setState({ selected: o });
   }
 
-  save(config){
-    let sel = this.state.selected;
-    sel.config = config;
-    if(sel.isAdd){  
-      this.helper.addService(this.props.kdnr, sel.module_ID, sel);
-    }else{
-      this.helper.updateServiceInformation(this.props.kdnr, sel.module_ID, sel);
-    }
+  selectVersion(o) {
+    let ver = this.state.selected;
+    ver.version = o.version;
+
+    this.setState({ selected: { ...ver, isNew: true }, addService: false });
+
+    if (this.props.onVersionSelected) this.props.onVersionSelected({ ...o });
   }
 
   render() {
     let selected = this.state.selected || null;
-    if(this.state.addService){
-      if(selected === null){
+
+    if (this.state.addService) {
+      if (selected == null) {
         return (
           <div>
             <ServiceTable onOpenService={this.selectService} onlySelect />
-          </div>);
-      }else{
+          </div>
+        );
+      } else {
         return (
           <div>
             <h4>{selected.name}</h4>
@@ -86,10 +90,10 @@ class CustomerRightbar extends React.Component {
               serviceId={selected.module_ID}
               onOpenVersion={this.selectVersion}
             />
-          </div>);
+          </div>
+        );
       }
-    }
-    else if (
+    } else if (
       selected != null &&
       selected.module_ID != null &&
       selected.version != null
@@ -101,15 +105,15 @@ class CustomerRightbar extends React.Component {
           </h3>
           <ConfigEditor
             onSave={this.save}
-            hideFileInfo   
-            kdnr={this.props.kdnr}
+            hideFileInfo
+            kdnr={this.state.kdnr}
             serviceId={selected.module_ID}
             version={selected.version}
           ></ConfigEditor>
         </div>
       );
     }
-
+    console.log(this.props.selected);
     return <h2>Fehler</h2>; // TODO DEBUG return null;
   }
 }
