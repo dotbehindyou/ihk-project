@@ -170,6 +170,27 @@ class API_Services extends __API {
         return res;
       });
   }
+  setService(serviceId, service) {
+    let url = new URL("Modules/"+serviceId, this.api_url);
+    return super
+      .get(url, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(service),
+      }, false)
+      .then((res) => {
+        alertStore.dispatch(
+          AddAlert(
+            "Die Daten für Service '" + service.name + "' wurde erfolgreich aktualisiert!",
+            true,
+            "success"
+          )
+        );
+        return res;
+      });
+  }
   deleteService(service) {
     let url = new URL("Modules/" + service.module_ID, this.api_url);
     return super

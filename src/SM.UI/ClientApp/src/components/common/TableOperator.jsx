@@ -9,6 +9,7 @@ class TableOperator extends React.Component {
   };
 
   static getDerivedStateFromProps(props, state) {
+    if(props.isEdited !== state.isEdited) return {isEdited: props.isEdited};
     if (props.value.version !== state.version) return { ...props.value };
     return null;
   }
@@ -33,7 +34,7 @@ class TableOperator extends React.Component {
   render() {
     return (
       <div>
-        {this.props.isNew === true ? (
+        {this.state.isEdited === true ? (
           <Button.Group size="small">
             <Button type="primary" onClick={(e) => this.onSet()}>
               <SaveOutlined />

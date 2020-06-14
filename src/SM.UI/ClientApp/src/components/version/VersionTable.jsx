@@ -45,7 +45,7 @@ class VersionTable extends React.Component {
       render: (text, record) => (
         <TableOperator
           hideDelete={this.props.onlySelect}
-          isNew={record.isNew}
+          isEdited={record.isNew}
           value={record}
           onSave={this.handleSet}
           onDelete={this.handleDelete}

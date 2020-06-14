@@ -3,28 +3,6 @@ import { Table, Input, Button, Tag } from "antd";
 import __api_helper from "../../helper/__api_helper";
 import TableOperator from "../common/TableOperator";
 
-class ServiceNameRow extends React.Component {
-  state = {
-    text: "",
-  };
-  constructor(props) {
-    super(props);
-
-    this.state.text = props.value;
-
-    this.handleChange = this.handleChange.bind(this);
-  }
-  handleChange({ target: { value } }) {
-    this.setState({ text: value });
-    if (this.props.onChange) {
-      this.props.onChange(value);
-    }
-  }
-  render() {
-    return <Input value={this.state.text} onChange={this.handleChange} />;
-  }
-}
-
 class ServiceTable extends React.Component {
   columns = [
     {
@@ -35,7 +13,7 @@ class ServiceTable extends React.Component {
         <TableOperator
           hideDelete={this.props.onlySelect}
           value={record}
-          isNew={record.isNew}
+          isEdited={record.isEdited || record.isNew}
           onSave={this.handleSet}
           onDelete={this.handleDelete}
           onOpen={this.handleOpen}
@@ -51,8 +29,20 @@ class ServiceTable extends React.Component {
       render: (text, record) =>
         this.props.kdnr || this.props.onlySelect ? (
           <span>{text}</span>
-        ) : (
-          <ServiceNameRow value={text} onChange={(e) => (record.name = e)} />
+        ) : ( <Input value={text} onChange={({target: { value }}) => {
+          let st = this.state.serviceList.map(x=> {
+            if(x.module_ID === record.module_ID){
+              if(x.isEdited !== true){
+                x.isEdited = true;
+                x.redoName = x.name;
+              }
+              x.name = value;
+              return {...x};
+            }
+            return x;
+          });
+          this.setState({serviceList: st});
+         }} />
         ),
     },
     {
@@ -134,12 +124,34 @@ class ServiceTable extends React.Component {
         ser = ser.filter((val, key) => val.module_ID !== service.module_ID);
         this.setState({ serviceList: [...ser, res] });
       });
-    } else {
+    } else if(service.isEdited === true) {
+      this.helper.setService(service.module_ID, { ...service }).then((res) => {
+        let ser = this.state.serviceList.map(x => {
+          if(x.module_ID === service.module_ID){
+            x.isEdited = false;
+            x.redoName = null;
+            return {...x};
+          }
+          return x;
+        });
+        this.setState({ serviceList: ser });
+      });
     }
   }
   handleCancel(service) {
     let ser = this.state.serviceList;
-    ser = ser.filter((val, key) => val.module_ID !== service.module_ID);
+    if(service.isEdited){
+      ser = ser.map(x => {
+        if(x.module_ID === service.module_ID){
+          x.isEdited = false;
+          x.name = x.redoName;
+          console.log(x);
+        }
+        return x;
+      });
+    }else{
+      ser = ser.filter((val, key) => val.module_ID !== service.module_ID);
+    }
     this.setState({ serviceList: [...ser] });
   }
 
@@ -157,7 +169,7 @@ class ServiceTable extends React.Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (prevState.kdnr === nextProps.kdnr) return prevState;
+    if (prevState.kdnr === nextProps.kdnr) return null;
     return {
       kdnr: nextProps.kdnr,
     };

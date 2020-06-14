@@ -3,6 +3,7 @@ import __api_helper from "../../helper/__api_helper";
 import ServiceTable from "../service/ServiceTable";
 import ConfigEditor from "../version/ConfigEditor";
 import VersionTable from "../version/VersionTable";
+import { Button } from "antd";
 
 class CustomerRightbar extends React.Component {
   helper = new __api_helper.API_Customer();
@@ -16,18 +17,18 @@ class CustomerRightbar extends React.Component {
 
     this.selectService = this.selectService.bind(this);
     this.selectVersion = this.selectVersion.bind(this);
+    this.changeVersion = this.changeVersion.bind(this);
     this.save = this.save.bind(this);
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    console.log(nextProps);
     if(nextProps.selected != null){
-      let sel = prevState.selected || {};
+      let sel = prevState.selected || { };
       if(nextProps.addService === false && prevState.addService !== false){
         return {
           selected: {...nextProps.selected},
           addService: false
-        }
+        } 
       }
       if(sel.version !== nextProps.selected.version){
         return {
@@ -59,6 +60,11 @@ class CustomerRightbar extends React.Component {
     this.setState({selected: {...sel, isAdd: true}, addService: false});
   }
 
+  changeVersion(e){
+    let sel = this.state.selected;
+    this.setState({changeVersion: true, selected: {...sel}});
+  }
+
   save(config){
     let sel = this.state.selected;
     sel.config = config;
@@ -71,7 +77,7 @@ class CustomerRightbar extends React.Component {
 
   render() {
     let selected = this.state.selected || null;
-    if(this.state.addService){
+    if(this.state.addService || this.state.changeVersion){
       if(selected === null){
         return (
           <div>
@@ -99,7 +105,9 @@ class CustomerRightbar extends React.Component {
           <h3>
             {selected.name}({selected.version})
           </h3>
+          <Button onClick={this.changeVersion}>Version ändern</Button>
           <ConfigEditor
+            isNew={selected.isAdd}
             onSave={this.save}
             hideFileInfo   
             kdnr={this.props.kdnr}

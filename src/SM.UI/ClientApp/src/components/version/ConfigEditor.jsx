@@ -53,19 +53,21 @@ class ConfigEditor extends React.Component {
 
   async loadConfig() {
     let service;
-    if (this.props.version === "" || this.props.isNew) return;
-    if (this.props.kdnr) {
+    if(this.props.version === "")
+      return null;
+    if(this.props.isNew !== true && this.props.kdnr){
       service = await this.helper.getVersionFromCustomer(
         this.props.serviceId,
         this.props.version,
         this.props.kdnr
       );
-    } else {
+    }else{      
       service = await this.helper.getVersion(
         this.props.serviceId,
         this.props.version
       );
     }
+    
     // TODO Create Service
     this.setState({ ...service.config });
   }

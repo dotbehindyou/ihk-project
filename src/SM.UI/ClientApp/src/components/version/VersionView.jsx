@@ -73,9 +73,9 @@ class VersionView extends React.Component {
   }
 
   save(e) {
-    this.helper.save(this.props.serviceId, this.state.version, {
-      ...this.state,
-    });
+    let st = {...this.state};
+    st.file = null;
+    this.helper.save(this.props.serviceId, this.state.version, st);
     if (this.state.file) {
       console.log(this.state.file);
       this.helper.uploadFile(
