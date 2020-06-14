@@ -9,7 +9,8 @@ class CustomerRightbar extends React.Component {
   helper = new __api_helper.API_Customer();
 
   state = {
-    selected: this.props.selected
+    selected: this.props.selected,
+    changeVersion: false
   };
 
   constructor(props){
@@ -19,6 +20,7 @@ class CustomerRightbar extends React.Component {
     this.selectVersion = this.selectVersion.bind(this);
     this.changeVersion = this.changeVersion.bind(this);
     this.save = this.save.bind(this);
+    this.back = this.back.bind(this);
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -40,6 +42,7 @@ class CustomerRightbar extends React.Component {
       return {
         selected: null,
         addService: true,
+        changeVersion: false
       };
     } 
 
@@ -57,7 +60,11 @@ class CustomerRightbar extends React.Component {
     if(this.props.onVersionSelected){
       this.props.onVersionSelected(e);
     }
-    this.setState({selected: {...sel, isAdd: true}, addService: false});
+    if(this.state.changeVersion){
+      this.setState({selected: {...sel, isChanged: true}, addService: false, changeVersion: false});
+    }else{
+      this.setState({selected: {...sel, isAdd: true}, addService: false, changeVersion: false});
+    }
   }
 
   changeVersion(e){
@@ -75,6 +82,15 @@ class CustomerRightbar extends React.Component {
     }
   }
 
+  back(e){
+    if(this.state.changeVersion){
+      this.setState({changeVersion: false});
+    }
+    else {
+      this.setState({selected: null});
+    }
+  }
+
   render() {
     let selected = this.state.selected || null;
     if(this.state.addService || this.state.changeVersion){
@@ -87,6 +103,7 @@ class CustomerRightbar extends React.Component {
         return (
           <div>
             <h4>{selected.name}</h4>
+            <Button onClick={this.back}>Zurück</Button>
             <VersionTable
               onlySelect
               serviceId={selected.module_ID}
@@ -108,6 +125,7 @@ class CustomerRightbar extends React.Component {
           <Button onClick={this.changeVersion}>Version ändern</Button>
           <ConfigEditor
             isNew={selected.isAdd}
+            isChanged={selected.isChanged}
             onSave={this.save}
             hideFileInfo   
             kdnr={this.props.kdnr}

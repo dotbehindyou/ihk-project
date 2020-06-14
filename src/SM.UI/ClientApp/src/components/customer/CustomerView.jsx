@@ -25,7 +25,7 @@ class CustomerView extends React.Component {
     this.copyAuthToken = this.copyAuthToken.bind(this);
     this.openService = this.openService.bind(this);
     this.handleAddService = this.handleAddService.bind(this);
-    this.onNewServiceSelected = this.onNewServiceSelected.bind(this);
+    this.onServiceSelected = this.onServiceSelected.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
   }
 
@@ -78,7 +78,7 @@ class CustomerView extends React.Component {
     this.helper.removeService(this.state.kdnr, e.module_ID, e);
   }
 
-  onNewServiceSelected(e) {
+  onServiceSelected(e) {
     this.setState({ addService: false, selected: e });
     console.log(e);
   }
@@ -146,7 +146,7 @@ class CustomerView extends React.Component {
         >
           <CustomerRightbar
             kdnr={this.props.kdnr}
-            onVersionSelected={this.onNewServiceSelected}
+            onVersionSelected={this.onServiceSelected}
             selected={this.state.selected}
             addService={this.state.addService}
           />

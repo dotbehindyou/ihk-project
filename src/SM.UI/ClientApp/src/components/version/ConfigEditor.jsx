@@ -55,7 +55,7 @@ class ConfigEditor extends React.Component {
     let service;
     if(this.props.version === "")
       return null;
-    if(this.props.isNew !== true && this.props.kdnr){
+    if(this.props.isNew !== true && this.props.isChanged !== true && this.props.kdnr){
       service = await this.helper.getVersionFromCustomer(
         this.props.serviceId,
         this.props.version,
@@ -68,7 +68,6 @@ class ConfigEditor extends React.Component {
       );
     }
     
-    // TODO Create Service
     this.setState({ ...service.config });
   }
 
