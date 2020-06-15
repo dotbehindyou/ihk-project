@@ -1,6 +1,6 @@
 import moment from "moment";
 import alertStore from "../store/index";
-import { AddAlert } from "../store/actions/alert.actions";
+import { AddAlert } from "../store/alerts/alerts.actions";
 
 //const __url = new URL("/api/", window.location.origin);
 const __url = new URL("https://localhost/api/");

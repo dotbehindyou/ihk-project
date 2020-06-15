@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { AddAlert, RemoveAlert } from "../../../store/actions/alert.actions";
+import { AddAlert, RemoveAlert } from "../../../store/alerts/alerts.actions";
 import { Alert } from "antd";
 
 const mapStateToProps = (state) => ({

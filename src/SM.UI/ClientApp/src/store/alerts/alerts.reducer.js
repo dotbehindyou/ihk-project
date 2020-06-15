@@ -1,6 +1,10 @@
-const alertReducer = (state = [], action) => {
+import { ADD_ALERT, REM_ALERT } from "./alerts.actions";
+
+const ALERTS_INIT_STATE = [];
+
+const alertReducer = (state = ALERTS_INIT_STATE, action) => {
   switch (action.type) {
-    case "ADD_ALERT":
+    case ADD_ALERT:
       return [
         ...state,
         {
@@ -11,7 +15,7 @@ const alertReducer = (state = [], action) => {
           seen: false,
         },
       ];
-    case "REM_ALERT":
+    case REM_ALERT:
       return state.filter((x, key) => x.id !== action.id);
     default:
       return state;
