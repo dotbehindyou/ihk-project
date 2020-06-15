@@ -16,13 +16,8 @@ namespace SM.Service.Helper
         [DllImport("advapi32.dll")]
         public static extern void CloseServiceHandle(IntPtr SCHANDLE);
         [DllImport("advapi32.dll")]
-<<<<<<< Updated upstream
-        public static extern int StartService(IntPtr SVHANDLE, int dwNumServiceArgs, string lpServiceArgVectors);
-        [DllImport("advapi32.dll")]
-=======
         public static extern IntPtr StartService(IntPtr SVHANDLE, int dwNumServiceArgs, string lpServiceArgVectors);
         [DllImport("advapi32.dll", SetLastError = true)]
->>>>>>> Stashed changes
         public static extern IntPtr OpenService(IntPtr SCHANDLE, string lpSvcName, int dwNumServiceArgs);
         [DllImport("advapi32.dll")]
         public static extern IntPtr DeleteService(IntPtr SVHANDLE);
@@ -74,12 +69,6 @@ namespace SM.Service.Helper
                 IntPtr sc_handle = OpenSCManager(null, null, SC_MANAGER_CREATE_SERVICE);
                 if (sc_handle != IntPtr.Zero)
                 {
-<<<<<<< Updated upstream
-                    IntPtr sv_handle = CreateService(sc_handle, serviceName, serviceDisplayName, SERVICE_ALL_ACCESS, SERVICE_WIN32_OWN_PROCESS, SERVICE_AUTO_START, SERVICE_ERROR_NORMAL, servicePath, null, 0, null, null, null);
-                    if (sv_handle == IntPtr.Zero)
-                    {
-                        Int32 t = Marshal.GetLastWin32Error();
-=======
                     IntPtr sv_handle = CreateService(sc_handle, serviceName, serviceDisplayName, SERVICE_ALL_ACCESS, SERVICE_WIN32_OWN_PROCESS,
                          SERVICE_AUTO_START, SERVICE_ERROR_NORMAL, servicePath, null, 0, null, null, null);
                     if (sv_handle == IntPtr.Zero)
@@ -87,7 +76,6 @@ namespace SM.Service.Helper
                         int g = GetLastError().ToInt32();
                         Console.WriteLine(sv_handle.ToInt32());
                         Console.WriteLine("Dienst konnte nicht hinzugefügt werden!");
->>>>>>> Stashed changes
                         CloseServiceHandle(sc_handle);
                         return false;
                     }

@@ -11,12 +11,8 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-<<<<<<< Updated upstream
-using System.Net;
-=======
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
->>>>>>> Stashed changes
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
@@ -25,10 +21,6 @@ using System.Timers;
 
 namespace SM.Service
 {
-<<<<<<< Updated upstream
-    public partial class ServiceManager : ServiceBase {
-        private StreamWriter logWriter;
-=======
     public partial class ServiceManager : ServiceBase
     {
 #if DEBUG
@@ -39,7 +31,6 @@ namespace SM.Service
         private Timer updateStatus = new Timer(300 * 1000); // 300 Sekunden
         private Timer updateRessource = new Timer(30 * 1000 * 60); // 30 min
 #endif
->>>>>>> Stashed changes
 
         private readonly ApiController apiC = new ApiController();
         private Thread serviceHanlderThread = null;
@@ -56,9 +47,6 @@ namespace SM.Service
 
         protected override void OnStart(string[] args)
         {
-<<<<<<< Updated upstream
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-=======
             System.Net.ServicePointManager.ServerCertificateValidationCallback += delegate (
                 object sender,
                 X509Certificate cert,
@@ -70,7 +58,6 @@ namespace SM.Service
 
             updateStatus.Elapsed += this.OnUpdateStatus;
             updateRessource.Elapsed += this.OnUpdateRessources;
->>>>>>> Stashed changes
 
             logWriter = new StreamWriter(path: $"{DateTime.Now.ToString("yy-MM")}.log", append: true);
             logWriter.AutoFlush = true;
@@ -117,7 +104,7 @@ namespace SM.Service
                         Console.WriteLine($"[{DateTime.Now}] Module werden syncronisiert...");
                         this.ModuleSync(installedModules);
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
 
                     }
@@ -171,9 +158,9 @@ namespace SM.Service
             List<Module> modules = null;
             try
             {
-                 modules = apiC.GetModules();
+                modules = apiC.GetModules();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
 
             }
@@ -210,7 +197,7 @@ namespace SM.Service
                     Console.WriteLine($"[{DateTime.Now}] Module '{mod.Module.Name}' wird aktualisiert.");
 
                     Byte[] file = null;
-                    SM_Modules_Installed sm = installedModules.Where(x=> x.Module_ID == mod.Module.Module_ID).FirstOrDefault();
+                    SM_Modules_Installed sm = installedModules.Where(x => x.Module_ID == mod.Module.Module_ID).FirstOrDefault();
 
                     if (sm.ValidationToken != mod.Module.Validation_Token)
                     {
