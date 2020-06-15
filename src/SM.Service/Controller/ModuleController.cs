@@ -196,8 +196,8 @@ namespace SM.Service.Controller
                 Path = path,
             };
 
-            if (!Directory.Exists(path))
-                throw new ServiceNotInstalledException(service);
+            if (!Directory.Exists(path) || !ServiceHelper.Exist(service))
+                return service;
 
             using (CustomerServiceManager sm = new CustomerServiceManager())
             {

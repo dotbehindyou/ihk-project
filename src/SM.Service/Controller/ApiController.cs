@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,6 +20,7 @@ namespace SM.Service.Controller
 
         Uri apiUrl;
         String authToken;
+
 
         public HttpRequestMessage GetHttpRequest(HttpMethod method, String subUrl)
         {
@@ -54,6 +57,9 @@ namespace SM.Service.Controller
         public async Task<Boolean> SendStatusAsync(Models.Service service)
         {
             HttpRequestMessage hrp = this.GetHttpRequest(HttpMethod.Put, "Modules");
+            service.Module.Status = service.Status.ToString();
+            String moduleJson = JsonConvert.SerializeObject(service.Module);
+            hrp.Content = new StringContent(moduleJson, Encoding.UTF8, "application/json");
 
             HttpResponseMessage hrm = await client.SendAsync(hrp);
 
@@ -69,10 +75,7 @@ namespace SM.Service.Controller
 
         public async Task<Boolean> SendRemoveAsync(Models.Service service)
         {
-            HttpRequestMessage hrp = this.GetHttpRequest(HttpMethod.Delete, "Modules");
-
-            String moduleJson = JsonConvert.SerializeObject(service);
-            hrp.Content = new StringContent(moduleJson, Encoding.UTF8, "application/json");
+            HttpRequestMessage hrp = this.GetHttpRequest(HttpMethod.Delete, $"Modules/{service.Module.Module_ID}");
 
             HttpResponseMessage hrm = await client.SendAsync(hrp);
 

@@ -52,8 +52,8 @@ namespace SM.API.Controllers
             }
         }
 
-        [HttpDelete]
-        public void Delete([FromHeader] String auth_Token, Guid module_id)
+        [HttpDelete("{id}")]
+        public void Delete([FromHeader] String auth_Token, Guid id)
         {
             using (ModuleManager mm = new ModuleManager())
             using (CustomerManager cm = new CustomerManager(mm))
@@ -61,7 +61,7 @@ namespace SM.API.Controllers
                 try
                 {
                     Int32 kdnr = cm.GetCustomerKdnr(this.GetAuthToken(auth_Token));
-                    mm.RemoveModuleFromCustomer(kdnr, module_id, true);
+                    mm.RemoveModuleFromCustomer(kdnr, id, true);
                 }
                 catch (Exception e)
                 {

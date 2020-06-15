@@ -2,7 +2,7 @@ import moment from "moment";
 import alertStore from "../store";
 import { AddAlert } from "../actions/alert.actions";
 
-const __url = new URL("https://localhost:44337/api/");
+const __url = new URL("/api/", window.location.origin);
 
 class __API {
   async get(url, init, isJsonResult = true) {
@@ -171,19 +171,25 @@ class API_Services extends __API {
       });
   }
   setService(serviceId, service) {
-    let url = new URL("Modules/"+serviceId, this.api_url);
+    let url = new URL("Modules/" + serviceId, this.api_url);
     return super
-      .get(url, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
+      .get(
+        url,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(service),
         },
-        body: JSON.stringify(service),
-      }, false)
+        false
+      )
       .then((res) => {
         alertStore.dispatch(
           AddAlert(
-            "Die Daten für Service '" + service.name + "' wurde erfolgreich aktualisiert!",
+            "Die Daten für Service '" +
+              service.name +
+              "' wurde erfolgreich aktualisiert!",
             true,
             "success"
           )

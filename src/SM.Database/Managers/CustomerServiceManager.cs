@@ -27,6 +27,10 @@ namespace SM.Managers {
 
         public void Add(SM_Modules_Installed mod)
         {
+            Mapper.ExecuteQuery("DELETE SM_Modules_Installed where (Module_ID = ? or ServiceName = ?) and IsActive = 0", true,
+                new OdbcParameter("module_id", mod.Module_ID),
+                new OdbcParameter("serviceName", mod.ServiceName));
+
             Mapper.ExecuteQuery("INSERT INTO SM_Modules_Installed (Module_ID, ServiceName, Version, ValidationToken, ModuleName, Path)" +
                 "VALUES(?,?,?,?,?,?)", true,
                 new OdbcParameter("Module_ID", mod.Module_ID),
@@ -39,8 +43,7 @@ namespace SM.Managers {
 
         public void Update(SM_Modules_Installed mod)
         {
-            Mapper.ExecuteQuery("UPDATE SM_MOdules_Installed SET Modified = now(), ServiceName = ?, Version = ?, ValidationToken = ?, ModuleName = ? where Module_ID = ?", true,
-                new OdbcParameter("ServiceName", mod.ServiceName),
+            Mapper.ExecuteQuery("UPDATE SM_Modules_Installed SET Updated = now(), Version = ?, ValidationToken = ?, ModuleName = ? where Module_ID = ?", true,
                 new OdbcParameter("Version", mod.Version),
                 new OdbcParameter("ValidationToken", mod.ValidationToken),
                 new OdbcParameter("ModuleName", mod.ModuleName),
