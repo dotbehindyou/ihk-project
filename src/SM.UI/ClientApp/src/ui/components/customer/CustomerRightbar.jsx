@@ -1,5 +1,5 @@
 import React from "react";
-import __api_helper from "../../helper/__api_helper";
+import __api_helper from "../../../helper/__api_helper";
 import ServiceTable from "../service/ServiceTable";
 import ConfigEditor from "../version/ConfigEditor";
 import VersionTable from "../version/VersionTable";
@@ -10,10 +10,10 @@ class CustomerRightbar extends React.Component {
 
   state = {
     selected: this.props.selected,
-    changeVersion: false
+    changeVersion: false,
   };
 
-  constructor(props){
+  constructor(props) {
     super(props);
 
     this.selectService = this.selectService.bind(this);
@@ -24,82 +24,89 @@ class CustomerRightbar extends React.Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if(nextProps.selected != null){
-      let sel = prevState.selected || { };
-      if(nextProps.addService === false && prevState.addService !== false){
+    if (nextProps.selected != null) {
+      let sel = prevState.selected || {};
+      if (nextProps.addService === false && prevState.addService !== false) {
         return {
-          selected: {...nextProps.selected},
-          addService: false
-        } 
+          selected: { ...nextProps.selected },
+          addService: false,
+        };
       }
-      if(sel.version !== nextProps.selected.version){
+      if (sel.version !== nextProps.selected.version) {
         return {
-          selected: {...nextProps.selected}
-        }
+          selected: { ...nextProps.selected },
+        };
       }
-    }
-    else if(nextProps.addService === true && prevState.addService !== true){
+    } else if (nextProps.addService === true && prevState.addService !== true) {
       return {
         selected: null,
         addService: true,
-        changeVersion: false
+        changeVersion: false,
       };
-    } 
+    }
 
     return null;
   }
   componentDidMount() {}
 
-  selectService(e){
-    this.setState({selected: e});
+  selectService(e) {
+    this.setState({ selected: e });
   }
 
-  selectVersion(e){
+  selectVersion(e) {
     let sel = this.state.selected;
     sel.version = e.version;
-    if(this.props.onVersionSelected){
+    if (this.props.onVersionSelected) {
       this.props.onVersionSelected(e);
     }
-    if(this.state.changeVersion){
-      this.setState({selected: {...sel, isChanged: true}, addService: false, changeVersion: false});
-    }else{
-      this.setState({selected: {...sel, isAdd: true}, addService: false, changeVersion: false});
+    if (this.state.changeVersion) {
+      this.setState({
+        selected: { ...sel, isChanged: true },
+        addService: false,
+        changeVersion: false,
+      });
+    } else {
+      this.setState({
+        selected: { ...sel, isAdd: true },
+        addService: false,
+        changeVersion: false,
+      });
     }
   }
 
-  changeVersion(e){
+  changeVersion(e) {
     let sel = this.state.selected;
-    this.setState({changeVersion: true, selected: {...sel}});
+    this.setState({ changeVersion: true, selected: { ...sel } });
   }
 
-  save(config){
+  save(config) {
     let sel = this.state.selected;
     sel.config = config;
-    if(sel.isAdd){  
+    if (sel.isAdd) {
       this.helper.addService(this.props.kdnr, sel.module_ID, sel);
-    }else{
+    } else {
       this.helper.updateServiceInformation(this.props.kdnr, sel.module_ID, sel);
     }
   }
 
-  back(e){
-    if(this.state.changeVersion){
-      this.setState({changeVersion: false});
-    }
-    else {
-      this.setState({selected: null});
+  back(e) {
+    if (this.state.changeVersion) {
+      this.setState({ changeVersion: false });
+    } else {
+      this.setState({ selected: null });
     }
   }
 
   render() {
     let selected = this.state.selected || null;
-    if(this.state.addService || this.state.changeVersion){
-      if(selected === null){
+    if (this.state.addService || this.state.changeVersion) {
+      if (selected === null) {
         return (
           <div>
             <ServiceTable onOpenService={this.selectService} onlySelect />
-          </div>);
-      }else{
+          </div>
+        );
+      } else {
         return (
           <div>
             <h4>{selected.name}</h4>
@@ -109,10 +116,10 @@ class CustomerRightbar extends React.Component {
               serviceId={selected.module_ID}
               onOpenVersion={this.selectVersion}
             />
-          </div>);
+          </div>
+        );
       }
-    }
-    else if (
+    } else if (
       selected != null &&
       selected.module_ID != null &&
       selected.version != null
@@ -127,7 +134,7 @@ class CustomerRightbar extends React.Component {
             isNew={selected.isAdd}
             isChanged={selected.isChanged}
             onSave={this.save}
-            hideFileInfo   
+            hideFileInfo
             kdnr={this.props.kdnr}
             serviceId={selected.module_ID}
             version={selected.version}

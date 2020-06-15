@@ -1,7 +1,7 @@
 import React from "react";
-import CustomerTable from "../customer/CustomerTable";
-import CustomerView from "../customer/CustomerView";
-import Content from "../../layout/Content";
+import CustomerTable from "../components/customer/CustomerTable";
+import CustomerView from "../components/customer/CustomerView";
+import Content from "../layout/Content";
 
 class CustomerPage extends React.Component {
   state = {

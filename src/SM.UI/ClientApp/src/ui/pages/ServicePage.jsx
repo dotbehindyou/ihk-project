@@ -1,7 +1,7 @@
 import React from "react";
-import Content from "../../layout/Content";
-import ServiceTable from "../service/ServiceTable";
-import ServiceView from "../service/ServiceView";
+import Content from "../layout/Content";
+import ServiceTable from "../components/service/ServiceTable";
+import ServiceView from "../components/service/ServiceView";
 
 class ServicePage extends React.Component {
   state = {

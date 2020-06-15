@@ -1,9 +1,9 @@
 import moment from "moment";
-import alertStore from "../store";
-import { AddAlert } from "../actions/alert.actions";
+import alertStore from "../store/index";
+import { AddAlert } from "../store/actions/alert.actions";
 
-const __url = new URL("/api/", window.location.origin);
-
+//const __url = new URL("/api/", window.location.origin);
+const __url = new URL("https://localhost/api/");
 class __API {
   async get(url, init, isJsonResult = true) {
     return await fetch(url, init)
@@ -25,23 +25,21 @@ class __API {
 }
 
 class API_Customer extends __API {
-  api_url = new URL("Customers", __url);
-
   async getCustomers() {
-    return super.get(this.api_url, {
+    return super.get(new URL("Customers", __url), {
       method: "GET",
     });
   }
 
   async getCustomer(kdnr) {
-    let url = new URL("Customers/" + kdnr, this.api_url);
+    let url = new URL("Customers/" + kdnr, __url);
     return super.get(url, {
       method: "GET",
     });
   }
 
   async initCustomer(kdnr) {
-    let url = new URL("Customers/" + kdnr, this.api_url);
+    let url = new URL("Customers/" + kdnr, __url);
     return super
       .get(url, {
         method: "PUT",
@@ -59,7 +57,6 @@ class API_Customer extends __API {
   }
 
   addService(kdnr, serviceId, service) {
-    console.log(serviceId);
     let url = new URL("Modules/Customer/" + kdnr, __url);
     return super
       .get(
@@ -82,7 +79,6 @@ class API_Customer extends __API {
   }
 
   removeService(kdnr, serviceId, service) {
-    console.log(serviceId);
     let url = new URL("Modules/Customer/" + kdnr, __url);
     return super
       .get(
@@ -105,7 +101,6 @@ class API_Customer extends __API {
   }
 
   updateServiceInformation(kdnr, serviceId, service) {
-    console.log(serviceId);
     let url = new URL("Modules/Customer/" + kdnr, __url);
     return super
       .get(
