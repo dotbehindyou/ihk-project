@@ -11,7 +11,12 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+<<<<<<< Updated upstream
 using System.Net;
+=======
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
+>>>>>>> Stashed changes
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
@@ -20,8 +25,21 @@ using System.Timers;
 
 namespace SM.Service
 {
+<<<<<<< Updated upstream
     public partial class ServiceManager : ServiceBase {
         private StreamWriter logWriter;
+=======
+    public partial class ServiceManager : ServiceBase
+    {
+#if DEBUG
+        private Timer updateStatus = new Timer(10 * 1000); // 10 Sekunden
+        private Timer updateRessource = new Timer(30 * 1000); // 30 Sekunden
+
+#else
+        private Timer updateStatus = new Timer(300 * 1000); // 300 Sekunden
+        private Timer updateRessource = new Timer(30 * 1000 * 60); // 30 min
+#endif
+>>>>>>> Stashed changes
 
         private readonly ApiController apiC = new ApiController();
         private Thread serviceHanlderThread = null;
@@ -38,7 +56,21 @@ namespace SM.Service
 
         protected override void OnStart(string[] args)
         {
+<<<<<<< Updated upstream
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+=======
+            System.Net.ServicePointManager.ServerCertificateValidationCallback += delegate (
+                object sender,
+                X509Certificate cert,
+                X509Chain chain,
+                SslPolicyErrors sslPolicyErrors)
+            {
+                return true;
+            };
+
+            updateStatus.Elapsed += this.OnUpdateStatus;
+            updateRessource.Elapsed += this.OnUpdateRessources;
+>>>>>>> Stashed changes
 
             logWriter = new StreamWriter(path: $"{DateTime.Now.ToString("yy-MM")}.log", append: true);
             logWriter.AutoFlush = true;

@@ -5,6 +5,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+<<<<<<< Updated upstream
+=======
+using System.Runtime.InteropServices;
+>>>>>>> Stashed changes
 using System.ServiceProcess;
 using System.Text;
 using SM.Managers;
@@ -16,6 +20,22 @@ using SM.Service.Models;
 namespace SM.Service
 {
     static class Program {
+<<<<<<< Updated upstream
+=======
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool AllocConsole();
+
+        [DllImport("kernel32", SetLastError = true)]
+        private static extern bool AttachConsole(int dwProcessId);
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetForegroundWindow();
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out int lpdwProcessId);
+
+>>>>>>> Stashed changes
         /// <summary>
         /// Der Haupteinstiegspunkt für die Anwendung.
         /// </summary>
@@ -23,6 +43,7 @@ namespace SM.Service
         {
             if (Environment.UserInteractive)
             {
+<<<<<<< Updated upstream
                 using (StreamWriter logWriter = new StreamWriter(path: $"{DateTime.Now:yy-MM}.install.log", append: true))
                 {
                     logWriter.AutoFlush = true;
@@ -56,12 +77,41 @@ namespace SM.Service
                     if (args?.Any(x => x.ToLower() == "-d") ?? false) // -d zum Debuggen
                     {
                         // TODO Debuggen ServiceBase.Run(new ServiceManager());
+=======
+                File.AppendAllText("log_.txt", "UserInteractive");
+                int u;
+                IntPtr ptr = GetForegroundWindow();
+                GetWindowThreadProcessId(ptr, out u);
+                Process process = Process.GetProcessById(u);
+                if (!AttachConsole(process.Id)) AllocConsole();
+
+                if (args.Length < 1 || args.Any<String>(x => x == "-i" || x == "--install"))
+                {
+                    String path = Assembly.GetEntryAssembly().Location;
+                    if (Helper.ServiceInstaller.Install(path, "SM.Service", "Service Manager"))
+                        Console.WriteLine("Dienst wurde installiert...");
+                    else
+                        Console.WriteLine("Dienste konnte nicht installiert werden!");
+                }
+                else
+                {
+                    if(args.Any<String>(x=> x == "-u" || x == "--uninstall"))
+                    {
+                        if (Helper.ServiceInstaller.Uninstall("SM.Service"))
+                            Console.WriteLine("Dienst wurde erfolgreich deinstalliert...");
+                        else
+                            Console.WriteLine("Dienst konnte nicht deinstalliert werden!");
+>>>>>>> Stashed changes
                     }
                 }
             }
             else
             {
+<<<<<<< Updated upstream
                 Console.WriteLine($"[{DateTime.Now}] Init Dienst");
+=======
+                File.AppendAllText("log.txt", "ServicesToRun");
+>>>>>>> Stashed changes
                 ServiceBase[] ServicesToRun;
                 ServicesToRun = new ServiceBase[] { new ServiceManager() };
                 ServiceBase.Run(ServicesToRun);

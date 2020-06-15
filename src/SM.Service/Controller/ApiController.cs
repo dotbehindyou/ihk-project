@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,6 +20,7 @@ namespace SM.Service.Controller
 
         Uri apiUrl;
         String authToken;
+
 
         public HttpRequestMessage GetHttpRequest(HttpMethod method, String subUrl)
         {
