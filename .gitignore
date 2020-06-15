@@ -13,3 +13,4 @@ obj
 src/packages/
 src/SM.UI/storage/
 src/SM.UI/ClientApp/.vscode/launch.json
+/src/SM.UI/ClientApp/.vscode
