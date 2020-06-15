@@ -1,17 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import App from "./App";
+import App from "./ui/App";
 import * as serviceWorker from "./serviceWorker";
 
-import alertStore from "./store";
+import store from "./store/index";
 
 import "antd/dist/antd.dark.css";
-import AlertList from "./components/alert/AlertList";
+import AlertList from "./ui/components/alert/AlertList";
 
 ReactDOM.render(
   //<React.StrictMode></React.StrictMode>
-  <Provider store={alertStore}>
+  <Provider store={store}>
     <AlertList />
     <App />
   </Provider>,

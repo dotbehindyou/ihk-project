@@ -1,5 +1,5 @@
 import React from "react";
-import __api_helper from "../../helper/__api_helper";
+import __api_helper from "../../../helper/__api_helper";
 import { Input, Button, Row, Col } from "antd";
 import ServiceTable from "../service/ServiceTable";
 import CustomerRightbar from "./CustomerRightbar";
@@ -34,7 +34,7 @@ class CustomerView extends React.Component {
     return {
       kdnr: nextProps.kdnr,
       selected: {},
-      addService: false
+      addService: false,
     };
   }
 
@@ -73,7 +73,7 @@ class CustomerView extends React.Component {
   handleAddService(e) {
     this.setState({ addService: true, selected: null });
   }
-  
+
   handleDelete(e) {
     this.helper.removeService(this.state.kdnr, e.module_ID, e);
   }

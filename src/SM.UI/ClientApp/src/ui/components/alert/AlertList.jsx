@@ -1,7 +1,18 @@
 import React from "react";
 import { connect } from "react-redux";
-import { AddAlert, RemoveAlert } from "../../actions/alert.actions";
+import { AddAlert, RemoveAlert } from "../../../store/actions/alert.actions";
 import { Alert } from "antd";
+
+const mapStateToProps = (state) => ({
+  alerts: state.alerts,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  removeAlert: (id) => dispatch(RemoveAlert(id)),
+  addAlert: (text, type, icon) => dispatch(AddAlert(text, icon, type)),
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 class AlertList extends React.Component {
   state = {
@@ -70,13 +81,4 @@ class AlertList extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  alerts: state,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  removeAlert: (id) => dispatch(RemoveAlert(id)),
-  addAlert: (text, type, icon) => dispatch(AddAlert(text, icon, type)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(AlertList);
+export default connector(AlertList);

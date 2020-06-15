@@ -1,5 +1,5 @@
 import React from "react";
-import __api_helper from "../../helper/__api_helper";
+import __api_helper from "../../../helper/__api_helper";
 import { Row, Col } from "antd";
 import VersionTable from "../version/VersionTable";
 import VersionView from "../version/VersionView";
@@ -57,9 +57,7 @@ class ServiceView extends React.Component {
         <Col span={12} style={{ paddingRight: 20 }}>
           <Row>
             <Col span={24}>
-              <h2>
-                {this.state.name}
-              </h2>
+              <h2>{this.state.name}</h2>
             </Col>
           </Row>
           <Row>

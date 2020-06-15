@@ -1,5 +1,5 @@
 import React from "react";
-import __api_helper from "../../helper/__api_helper";
+import __api_helper from "../../../helper/__api_helper";
 import { Row, Col, Input, Button, Select } from "antd";
 
 import Editor from "react-simple-code-editor";
@@ -53,21 +53,24 @@ class ConfigEditor extends React.Component {
 
   async loadConfig() {
     let service;
-    if(this.props.version === "")
-      return null;
-    if(this.props.isNew !== true && this.props.isChanged !== true && this.props.kdnr){
+    if (this.props.version === "") return null;
+    if (
+      this.props.isNew !== true &&
+      this.props.isChanged !== true &&
+      this.props.kdnr
+    ) {
       service = await this.helper.getVersionFromCustomer(
         this.props.serviceId,
         this.props.version,
         this.props.kdnr
       );
-    }else{      
+    } else {
       service = await this.helper.getVersion(
         this.props.serviceId,
         this.props.version
       );
     }
-    
+
     this.setState({ ...service.config });
   }
 

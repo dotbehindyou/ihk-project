@@ -1,5 +1,5 @@
 import React from "react";
-import __api_helper from "../../helper/__api_helper";
+import __api_helper from "../../../helper/__api_helper";
 import { Row, Col, DatePicker, Input, Button } from "antd";
 
 import ConfigEditor from "./ConfigEditor";
@@ -73,7 +73,7 @@ class VersionView extends React.Component {
   }
 
   save(e) {
-    let st = {...this.state};
+    let st = { ...this.state };
     st.file = null;
     this.helper.save(this.props.serviceId, this.state.version, st);
     if (this.state.file) {

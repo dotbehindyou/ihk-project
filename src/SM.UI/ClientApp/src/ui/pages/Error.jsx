@@ -1,7 +1,7 @@
 import React from "react";
-import Content from "../../layout/Content";
+import Content from "../layout/Content";
 
-class Error404 extends React.Component {
+class Error extends React.Component {
   render() {
     return (
       <Content>
@@ -17,4 +17,4 @@ class Error404 extends React.Component {
   }
 }
 
-export default Error404;
+export default Error;
