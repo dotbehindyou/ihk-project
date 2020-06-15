@@ -1,0 +1,43 @@
+% !TEX root = ../Index.tex
+\section{Einleitung}
+\label{sec:Einleitung}
+
+\subsection{Projektumfeld} 
+\label{sec:Projektumfeld}
+Das Projekt wurde von Christopher Mogler in der Firma Weiss GmbH Softwarelösungen
+entwickelt. Die Firma wurde 1975 von Rolf Weiss mit Hauptsitz in Schiltach gegründet. Am Anfang hat die Firma für mittelständische Unternehmen Auftragsprogrammierungen für
+\acsu{IBM}-Systemen durchgeführt. Im Jahre 1985 wurde die Produktpalette mit \acsu{ERP}-Systemen für
+mittelständische und größere Handels bzw. Industrieunternehmen erweitert. \\
+Die Geschäftsleitung wurde 1998 von Martin Lauble übernommen. Ab dem Jahr 2002 wurde der
+Schwerpunkt der Software auf das Produkt PowerWeiss für Windows gelegt, welches als
+\acsu{CRM}-System für Handel, Industrie und Versicherungsagenturen genutzt werden kann.
+
+\subsection{Projektziel} 
+\label{sec:Projektziel}
+Um Dienste verwalten zu können benötigt der Weiss Mitarbeiter Zugriff auf das aktuelle Kundensystem. Um den Zugriff gewährleisten zu können, müssen bestimmte Anwendung installiert sein. 
+Ferner sind manche Systeme nur über einen Client-Rechner eines Kunden direkt erreichbar. \\
+Wenn der Fernzugriff gewährleistet ist, müssen die aktuellen Dateien des Dienstes auf das Kundensystem kopiert werden. Aktuell ist das Problem, dass Dienst Dateien nicht standardisiert abgelegt werden. 
+Es müssen Dienst Dateien so oft mühsam gesucht werden. \\
+Dienste auf Windows-System verwalten zu können wird das Tool InstallUtil verwendet, was von Microsoft bereitgestellt wird. 
+Der Nachteil dieses Tools ist, dass es nur über eine Eingabeaufforderung verwendet werden kann, was die Fehleranfälligkeit erhöht. \\
+Nach einer Installation müssen Dienste konfiguriert werden. Wenn der Dienst nicht konfiguriert wird, kommt es zu einem Fehlerhaften verhalten. \\
+Die Konfigurationen werden in verschiedenen Auszeichnungssprache geschrieben (\zB \acsu{JSON}, \acsu{XML}, \acsu{INI}). Da jede Sprache eine eigene Syntax aufweist, kann es schnell zu Syntaxfehler führen. 
+
+
+\subsection{Projektschnittstellen} 
+\label{sec:Projektschnittstellen}
+
+Für die Datenspeicherung wird eine SQL-Anywhere-Datenbank verwendet. Der Zugriff auf diese Datenbank, wird über \acsu{ODBC} realisiert. \\
+Oberfläche und API werden als Web-Applikation bereitgestellt, diese wird über \acsu{ASP} verwaltet. \acsu{ASP} auf Windows-Systeme ausführen zu können wird der \acsu{IIS}-Dienst von Windows verwendet. \\
+\\
+Um auf den Dienst-Pool von Windows zugreifen zu können, wird auf die Windows-\acsu{API} zugegriffen. Dies wird durch die AdvAPI32-Bibliothek ermöglicht.
+Diese Bibliothek wird von Windows bereitgestellt und muss daher nicht gesondert nachinstalliert werden. \\
+Da durch das die Oberfläche auf ReactJS aufbaut ist, wird Serverseitig eine NodeJS Anwendung ausgeführt. \\
+Das Projekt wurde durch Herrn Richter genehmigt, der Abteilungsleiter der Entwicklung – bei der Firma Weiss. Die Endbenutzer sind die Mitarbeiter der Firma Weiss, die geschult wurden durch den Autor. Für bestimmte Fragen wird eine Anwenderdokumentation bereitgestellt, die eine Übersicht aller Prozesse bietet. 
+
+\subsection{Projektabgrenzung} 
+\label{sec:Projektabgrenzung}
+
+Oberfläche und \acsu{API} wird auf vorhandenen Systemen installiert und ausgeführt. Es wird keine neue Hardware benötigt.\\
+Der \acsu{IT}-Betrieb der Weiss GmbH übernimmt die Installation auf den Kundensysteme.
+

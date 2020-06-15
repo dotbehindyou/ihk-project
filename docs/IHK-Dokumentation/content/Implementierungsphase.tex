@@ -1,0 +1,28 @@
+% !TEX root = ../Projektdokumentation.tex
+\section{Implementierungsphase} 
+\label{sec:Implementierungsphase}
+
+\subsection{Implementierung der Datenstrukturen}
+\label{sec:ImplementierungDatenstrukturen}
+
+Die Tabellen wurden mit hilfe von SQL Central erstellt. Der Autor musste die aufwendigen \acsu{SQL}-Scripts nicht selber schreiben. \\
+Die \acsu{SQL}-Skripte können über SQL Central generiert werden. Zum Erstellen der Tabellen auf der Datenbank, müssen nur die generierten Skripte auf der Datenbank ausgeführt werden. 
+
+
+\subsection{Implementierung der Benutzeroberfläche}
+\label{sec:ImplementierungBenutzeroberflaeche}
+
+Die Oberfläche wurde als Webapplikation und auf Basis einer Single-Page-Anwendung realisiert. Als Frontend Framework wurde ReactJS verwendet. \\
+ReactJS Seiten werden in Komponenten aufgeteilt, um Code und vor allem rekursiven Code zu sparen. \\
+Komponenten bestehen aus \acsu{JSX}-Dateien. \acsu{JSX} ist eine von React entwickeltes Format. Es ermöglicht in JavaScript \acsu{XML}/\acsu{HTML} Code zu verwenden. Komponenten können auch mehrfach verwendet werden.\\
+Als Frontend-\acsu{CSS}-Framework wurde Bootstrap verwendet. \\
+Teile der Seite sind im \Anhang{app:view_real}, als Screenshots beigefügt.
+
+
+\subsection{Implementierung der Geschäftslogik}
+\label{sec:ImplementierungGeschaeftslogik}
+
+Um die Dienste installieren zu können wurde die Windows-\acsu{API} angesprochen. Dies wurde mit der AdvAPI32 Bibliothek durchgeführt. Bevor diese verwendet werden kann, muss die bestimmten Funktion der Bibliothek importiert werden. Siehe \Anhang{app:sourceCode} erstes Abbild. \\
+Um auf den Dienst-Pool zugreifen zu können, wird der ServiceControll-Manager von Windows geöffnet. Dadurch bekommt der Dienst die Berechtigung Dienste zu Verwalten. \\
+Wenn ein Dienst deinstalliert werden soll, wird der Dienst gestoppt (wird von der Bibliothek übernommen) und vom Dienst-Pool entfernt.
+Sollte ein Dienst hinzugefügt werden, wird der Dienstname, der Pfad der Dienst-Anwendung und über welchen Benutzer der Dienst gestartet werden soll angegeben. Nach dem Hinzufügen wird die Rückmeldung der Funktion geprüft, ob Fehler entstanden sind.\\ Wenn nicht, wird der Dienst gestartet und beim erfolgreichen Start wird die Installation als abgeschlossen angesehen.

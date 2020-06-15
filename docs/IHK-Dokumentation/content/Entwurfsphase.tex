@@ -1,0 +1,51 @@
+% !TEX root = ../Index.tex
+\section{Entwurfsphase} 
+\label{sec:Entwurfsphase}
+
+\subsection{Zielplattform}
+\label{sec:Zielplattform}
+
+Für \acsu{DBMS} wurde SQL-Anywhere verwendet. Durch die Standardisierung der Firma Weiss, ist es bereit bei jedem Kunden installiert. \\
+Der Verwaltungsdienst und die Web-Anwendung wurden in \acsu{CS} programmiert. Einer der standardisierten Programmiersprachen in der Firma Weiss ist \acsu{CS}. Daher besitzen alle System von Kunden und der Firma Weiss die benötigte Software um die Applikationen ausführen zu können. \\
+Die Web-Anwendungen verwenden als Background Framework \acsu{ASP}, dadurch wird können \acsu{HTTP} Anforderungen einfacher bearbeitet und zurückgegeben werden. \\
+\\
+Die Oberfläche verwendet als Frontend Framework ReactJS. Da ReactJS auf \acsu{MVC}-Paradigma aufbaut, wird viel rekursiver Code gespart und hat zu einem großen Zeitersparnis geführt.  \\
+Ferner ist zu beachten, dass die Oberfläche als Webanwendung realisiert wurde. Dadurch sinkt die Wartungsarbeit für einzelne Rechner und zudem steigt die Benutzerfreundlichkeit, keine Zusatzsoftware installiert werden muss. Updates sind für den Endbenutzer nicht relevant, da die Versionsänderung Serverseitig stattfindet. Man ist als Web-Anwendung nicht System gebunden, was dazu führt das man mit jedem Browser fähigen Endgerät die Dienste verwalten und steuern kann. Das Gerät sollte aber einen aktuellen Browser verwenden. \\
+Um bestimmte Funktionen von ReactJS steuern zu können, muss Serverseitig eine NodeJS Anwendung laufen. \\
+\\
+Die \acsu{API} wurde auf den \acsu{REST}-Standard aufbaut. Aus diesem Grund wurde die Anwendung als Webapplikation realisiert. Es gibt unterschiedliche \acsu{REST}-Methoden, diese können problemlos mit \acsu{HTTP}-Methoden überlagert werden.\\
+\\
+Der Verwaltungsdienst wurde als Windows-Dienst realisiert. Die Anwendung läuft im Hintergrund und wird daher als Dienst programmiert. Um Dienste verwalten und steuern zu können, wird auf die Windows-\acsu{API} zugegriffen. Als Bibliothek wird die AdvAPI32 verwendet. Diese wird von Windows bereitgestellt. \\
+Alle Kunden-Systeme laufen auf Windows-Betriebssystemen, daher muss nicht zwingend Systemübergreifend programmiert werden.
+
+\subsection{Architekturdesign}
+\label{sec:Architekturdesign}
+
+Die Webanwendung wurde mit \acsu{ASP} realisiert. \acsu{ASP} ist ein Framework für \acsu{CS}, um die Kommunikation über \acsu{HTTP} zu vereinfachen. Es ist Open-Source und kann frei genutzt werden, zudem wird aktiv daran weiterentwickelt und ist sehr Performant. \\
+\\
+Für die Oberfläche wurde ReactJS und Bootstrap verwendet. \\
+ReactJS ist ein Framework was oft für Single-Page-Applikationen verwendet wird. Das bedeutet, dass eine komplette Anwendung nur über eine \acsu{HTML}-Seite funktioniert. Um das Realisieren zu können wird die Seite in Komponenten aufgeteilt. Durch \acsu{JSX} wird es ermöglicht in JavaScript \acsu{HTML}-Code zu schreiben. Komponenten können daher aus JavaScript und \acsu{HTML} bestehen. Durch Komponenten wird viel rekursiver Code gespart, das hat den Grund, dass Komponenten mehrfach eingesetzt werden können. \\
+\\
+Der Dienst wird als Windows-Dienst realisiert. Es hat den Grund um die Anwendung von Windows-Dienst-Pool verwalten zu lassen. Das hat den Vorteil, dass die Anwendung komplett im Hintergrund laufen kann. \\
+\\
+Das \acsu{MVC}-Paradigma  unterteilt die Anwendung in drei Bereiche. Model, repräsentiert die Daten; View, zeigt die Daten an; Controller, verbindet Model mit der View. Die Zielsetzung ist es den Quellcode zu vereinfachen und die Wiederverwendbarkeit zu steigern.
+
+
+\subsection{Entwurf der Benutzeroberfläche}
+\label{sec:Benutzeroberflaeche} 
+
+Im Anhang sind die erstellten Konzepte Designs für die Oberfläche. Diese wurden mit dem Mockup-Programm Pencil erstellt. Die Designs konzentrierten sich auf Benutzerfreundlichkeit, weil die Oberfläche nur für interne zugänglich ist. Ferner wurde auf Corporate Design verzichtet.\\
+Aus Zeitgründen wurde auf die Optimierung der Oberfläche für Mobile Endgeräte verzichtet. 
+
+\subsection{Datenmodell}
+\label{sec:Datenmodell}
+
+Die endgültigen Tabellen und Datenstrukturen wurde in einem Tabellenmodell konzeptioniert. Zeitgleich wurden die Relationen, mit deren Kardinalitäten, gezeichnet. \\
+Im \Anhang{app:database_table} finden sich die Konzeptionierten Modelle, mit deren Entitäten.
+
+\subsection{Geschäftslogik}
+\label{sec:Geschaeftslogik}
+
+Die Aktivitätsdiagramme wurden mit ARIS Express erstellt. Das Aktivitätsdiagramm  wurde im \Anhang{app:useCase_controll} beigefügt. Das Diagramm zeigt den Ablauf für die Oberfläche und Dienstprüfung. 
+
+

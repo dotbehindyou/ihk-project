@@ -1,0 +1,104 @@
+% !TEX root = ../Index.tex
+\section{Analysephase} 
+\label{sec:Analysephase}
+
+
+\subsection{Ist-Analyse} 
+\label{sec:IstAnalyse}
+
+Wenn ein Kunden-System angepasst werden muss, benötigt der Mitarbeiter der Firma Weiss Zugriff auf dieses System. Er muss einen Remotezugriff aufbauen, oft wird die Anwendung TeamViewer dafür verwendet.\\
+Es kann vorkommen, dass die Fernwartung nicht durchgeführt werden kann. Die Ursache können sein: Das die entsprechende Software nicht ausgeführt wird, auch kann es an aktuelle Probleme eines Internetproviders liegen, bestimmte Kundenserver können nur über einen Client-Rechner vom Kunden erreicht werden, selten müssen sich Mitarbeiter den Zugriff über den Kunden freischalten lassen.\\
+Es werden Systeme Eingriffe durchgeführt, dadurch werden administrative Rechte benötigt. \\
+\\
+Bei einer Installation eines Dienstes wird der Zugriff auf den Kundenserver benötigt.\\
+Hat ein Mitarbeiter Zugriff auf den Kundenserver, so müssen die Dateien für die Dienste auf den Server kopiert werden.
+Sind die Dateien auf das System kopiert, so kann der Mitarbeiter die Dateien aufbereiten für die Installation. Der Mitarbeiter kann frei entscheiden, wo die Dienste installiert werden. Um einen Dienst installieren zu können wird das InstallUtil-Tool, was von Windows bereitgestellt wird, verwendet. Dieses Tool kann nur über eine Eingabeaufforderung angesteuert werden. Ferner ist zu beachten, dass eine fehlerhafte Installation, aus der Log, nicht direkt ersichtlich ist. Sollte die Installation erfolgreich sein, muss die Konfigurationsdatei angepasst werden. Im Anschluss muss der Mitarbeiter den Dienst zusätzlich starten. Der Dienst sollte nach dem Starten geprüft werden, ob Fehler auftauchen: Status des Dienstes in der Diensteverwaltung von Windows, Ereignisanzeige oder Log-Datei. Nachdem der Dienst installiert und geprüft wurde, kann der Fernzugriff beendet werden.\\
+\\
+Muss ein Dienst angepasst werden, so führt der Mitarbeiter eine Fernwartung durch, um Zugriff auf das Kundensystem zu bekommen. Bevor ein Dienst angepasst werden kann, muss dieser zuvor gestoppt werden. Das bei der Installation der Pfad frei gewählt werden kann, kann es vorkommen, dass die Installationspfade der Dienste nicht direkt gefunden werden.\\
+Sollte nur die Konfiguration angepasst werden, wird diese über den vorhandenen Text-Editor beim Kunden bearbeitet und gespeichert.\\
+Bei einer Versionsänderung müssen die passenden Version Dateien gesucht und auf das System hochgeladen werden. Die Dateien haben keinen einheitlichen Ablageort. Um die Versionsänderung durchzuführen, werden die Dateien mit den neuen überschrieben. Es kann vorkommen, dass die Konfigurationsdatei mit überschrieben wird. \\
+Nach der Anpassung kann der Dienst erneut gestartet werden. Wie bei der Installation sollte nach dem Starten der Dienst noch zusätzlich geprüft werden.\\
+\\
+Sollte ein Dienst nicht mehr im Gebrauch sein, so kann dieser aus dem Kundensystem entfernt werden. Dazu benötigt der Mitarbeiter Zugriff auf das System, wo der Dienst installiert ist. Um Dienste aus dem Dienst-Pool von Windows entfernen zu können, wird das gleiche Tool, wie bei der Installation verwendet. Auch hier ist zu beachten, dass die Log-Ausgabe nicht direkt darauf hinweist, dass ein Fehler entstanden ist. InstallUtil übernimmt das Stoppen des Dienstes, bei der Deinstallation. Die Dienst-Dateien müssen nicht entfernt werden. Sollen die Dateien entfernt werden, so muss der Mitarbeiter den Installations-Pfad des Dienstes herausfinden und die Dateien löschen.
+
+\subsection{Wirtschaftlichkeitsanalyse}
+\label{sec:Wirtschaftlichkeitsanalyse}
+
+Sollte ein Mitarbeiter keinen direkten Zugriff auf einen Server bekommen, so wird hier viel Zeit benötigt für die Kommunikation und Organisation mit dem Kunden. Wenn der Verwaltungsdienst bereits beim Kunden installiert ist, wird kein Fernzugriff mehr benötigt. Der Dienst kann komplett autonom die Dienste verwaltet. \\
+\\
+Version Dateien für Dienste müssen gesucht werden, da es keinen standardisierten Ablageort gibt. Durch die Oberfläche sind alle Dienste tabellarisch aufgelistet. Die Entwickler laden über die Oberfläche aktuelle Versionen mit dazugehöriger Konfiguration hoch. Hier ergibt sich ein einheitlicher Ablageort. \\
+\\
+Beim Installieren und Deinstallieren von Diensten, wird InstallUtil benötigt. Dieses Tool kann nur über eine Eingabeaufforderung verwendet werden. Es ist Fehleranfälliger und Fehler werden in der Log nicht direkt ersichtlich. Durch die Oberfläche können Dienste per Knopfdruck installiert oder wieder entfernt werden.
+\\
+Es kann Zeit gespart und Fehler minimiert werden. Man kann Abläufe besser kontrolliert und steuern.
+
+\subsubsection{\gqq{Make or Buy}-Entscheidung}
+\label{sec:MakeOrBuyEntscheidung}
+
+Es gibt Anwendungen die Dienste verwalten und Statusmeldung zurückliefern können. Aus wirtschaftlicher Sicht ist trotzdem die “Make”-Methode gewählt worden. Die Anwendungen haben zu viele andere Funktionen, die nicht verwendet werden. Was es dadurch nicht wirtschaftlich macht, wenn für die meisten Funktionen bezahlt wird, aber diese nicht verwendet werden.
+
+\subsubsection{Projektkosten}
+\label{sec:Projektkosten}
+
+Die Kosten für die Durchführung des Projekts setzen sich sowohl aus Personal-, als auch aus Ressourcenkosten zusammen. Der Autor verdient als Auszubildender \eur{950} im Monat. 
+
+\begin{eqnarray}
+8 \mbox{ h/Tag} \cdot 220 \mbox{ Tage/Jahr} = 1.760 \mbox{ h/Jahr}\\
+\eur{950}\mbox{/Monat} \cdot 12 \mbox{ Monate/Jahr} = \eur{11.400} \mbox{/Jahr}\\
+\frac{\eur{11.400} \mbox{/Jahr}}{1.760 \mbox{ h/Jahr}} \approx \eur{6,477}\mbox{/h}
+\end{eqnarray}
+
+Es ergibt sich also ein Stundenlohn von \eur{6,477}. 
+Die Durchführungszeit des Projekts beträgt 70 Stunden. Für die Nutzung von Ressourcen\footnote{Räumlichkeiten, Arbeitsplatzrechner etc.} wird 
+ein pauschaler Stundensatz von \eur{15} angenommen. Für die anderen Mitarbeiter wird pauschal ein Stundenlohn von \eur{30} angenommen. 
+Eine Aufstellung der Kosten befindet sich in Tabelle~\ref{tab:Kostenaufstellung} und sie betragen insgesamt \eur{2.663,39}.
+\tabelle{Kostenaufstellung}{tab:Kostenaufstellung}{Kostenaufstellung.tex}
+
+\subsubsection{Amortisationsdauer}
+\label{sec:Amortisationsdauer}
+
+Bei einer Zeiteinsparung von 30 Minuten am Tag für jeden der 10 Anwender und 220 Arbeitstagen im Jahr ergibt sich eine gesamte Zeiteinsparung von 
+\begin{eqnarray}
+10 \cdot 220 \mbox{ Tage/Jahr} \cdot 30 \mbox{ min/Tag} = 66.000 \mbox{ min/Jahr} \approx 1.100 \mbox{ h/Jahr} 
+\end{eqnarray}
+
+Dadurch ergibt sich eine jährliche Einsparung von 
+\begin{eqnarray}
+1.100 \mbox{h} \cdot \eur{(30 + 15)}{\mbox{/h}} = \eur{49.500}
+\end{eqnarray}
+
+Die Amortisationszeit beträgt also $\frac{\eur{2.663,39}}{\eur{49.500}\mbox{/Jahr}} \approx 0,054 \mbox{ Jahre} \approx 2,4 \mbox{ Wochen}$.
+
+Das Projekt hat sich also innerhalb von zwei bis drei Wochen amortisiert. 
+
+\subsection{Anwendungsfälle}
+\label{sec:Anwendungsfaelle}
+
+\subsubsection{Installation}
+\label{sec:Fall_Installation}
+
+Wenn beim Kunden ein Dienst installiert werden soll, wird über eine Oberfläche der Dienst mit der Version ausgewählt. Die Oberfläche zwingt die Anpassung der Konfiguration. Beim Speichern werden die Daten in die Datenbank gespeichert. Der Dienst beim Kunden selektiert die Daten und installiert automatisch diesen Dienst mit der gelieferten Konfigurationsdatei.
+
+\subsubsection{Versionsänderung}
+\label{sec:Fall_Update}
+
+Sollte beim Kunden eine neue oder andere Version installiert sein, wird dies wieder über die Oberfläche gesteuert. Die Konfigurationsdatei wird mit der neuen Konfiguration ausgetauscht. Alle Änderungen werden wieder in die Datenbank der Firma Weiss gespeichert. Über die Web-Schnittstelle bekommt der Verwaltungsdienst die Änderungen mitgeteilt und aktualisiert den Dienst. \\
+Beim ändern der Dateien von einem Dienst muss der Dienst gestoppt werden, dies wird vom Verwaltungsdienst übernommen. Und bei erfolgreicher Installation wieder gestartet. 
+
+\subsubsection{Anpassung}
+\label{sec:Fall_Anpassung}
+
+Über die Oberfläche wird die Konfiguration angepasst, wenn diese Fehlerhafte oder veraltete Daten enthält. Beim speichern werden die änderungen in die Datenbank der Firma Weiss gespeichert. Der Dienst bekommt die Änderung mit und überschreibt die aktuelle Konfigurationsdatei. \\
+Der Dienst wird davor gestoppt und nach dem Austausch wieder gestartet. 
+
+\subsubsection{Deinstallation}
+\label{sec:Fall_Deinstallation}
+
+Bei einer Deinstallation wird der Dienst über eine Oberfläche entfernt. Der Status in der Datenbank wird zu \Datentyp{REMOVE} geändert. Beim Kunden wird der Dienst gestoppt und aus dem Dienst-Pool von Windows entfernt.
+
+\subsubsection{Statusmeldung}
+\label{sec:Fall_Status}
+
+Status und Zustände der aktuellen Dienste werden regelmäßig überliefert und in die Datenbank gespeichert. Über die Oberfläche kann in der Kundenansicht die Stati der Dienste gesehen werden. 
+
+

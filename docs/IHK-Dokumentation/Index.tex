@@ -1,0 +1,76 @@
+\documentclass[
+	ngerman,
+	toc=listof, % Abbildungsverzeichnis sowie Tabellenverzeichnis in das Inhaltsverzeichnis aufnehmen
+	toc=bibliography, % Literaturverzeichnis in das Inhaltsverzeichnis aufnehmen
+	footnotes=multiple, % Trennen von direkt aufeinander folgenden Fußnoten
+	parskip=half, % vertikalen Abstand zwischen Absätzen verwenden anstatt horizontale Einrückung von Folgeabsätzen
+	numbers=noendperiod % Den letzten Punkt nach einer Nummerierung entfernen (nach DIN 5008)
+]{scrartcl}
+\pdfminorversion=5 % erlaubt das Einfügen von pdf-Dateien bis Version 1.7, ohne eine Fehlermeldung zu werfen (keine Garantie für fehlerfreies Einbetten!)
+
+\usepackage[utf8]{inputenc} % muss als erstes eingebunden werden, da Meta/Packages ggfs. Sonderzeichen enthalten
+
+\usepackage{listings}
+\usepackage{color}
+\usepackage{float}
+
+\input{Meta} % Metadaten zu diesem Dokument (Autor usw.)
+\input{helper/Packages} % verwendete Packages
+\input{helper/Pagestyle} % Definitionen zum Aussehen der Seiten
+\input{helper/Commands} % eigene allgemeine Befehle, die z.B. die Arbeit mit LaTeX erleichtern
+%\input{Befehle} % eigene projektspezifische Befehle, z.B. Abkürzungen usw.
+
+\begin{document}
+
+%\includegraphics[graphicx]{content/Frontpage.pdf}
+
+\phantomsection
+\include{Fontpage}
+
+\includepdf[pages={1-7}]{content/Antrag.pdf}
+
+
+\thispagestyle{plain}
+\pdfbookmark[1]{Deckblatt}{deckblatt}
+\include{Deckblatt}
+\cleardoublepage
+
+% Preface --------------------------------------------------------------------
+\phantomsection
+\pagenumbering{Roman}
+\pdfbookmark[1]{Inhaltsverzeichnis}{inhalt}
+\tableofcontents
+\cleardoublepage
+
+\newcommand{\abkvz}{Abkürzungsverzeichnis}
+\renewcommand{\nomname}{\abkvz}
+\section*{\abkvz}
+\markboth{\abkvz}{\abkvz}
+\addcontentsline{toc}{section}{\abkvz}
+\input{Shortcuts}
+\clearpage
+
+\phantomsection
+\listoffigures
+\cleardoublepage
+
+\phantomsection
+\listoftables
+\cleardoublepage
+
+\phantomsection
+\lstlistoflistings
+\cleardoublepage
+
+% Inhalt ---------------------------------------------------------------------
+\pagenumbering{arabic}
+\input{Contents}
+\clearpage
+
+% Anhang ---------------------------------------------------------------------
+\appendix
+\pagenumbering{roman}
+\input{Attachments}
+
+
+\end{document}

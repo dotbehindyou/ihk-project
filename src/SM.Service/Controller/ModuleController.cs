@@ -61,6 +61,25 @@ namespace SM.Service.Controller
             return this.ReadLocalModules();
         }
 
+        public Models.Service GetService(SM_Modules_Installed sm)
+        {
+            Models.Service s = new Models.Service
+            {
+                Path = sm.Path,
+                Module = new Module
+                {
+                    Name = sm.ModuleName,
+                    Version = sm.Version
+                },
+                Name = sm.ServiceName
+            };
+
+            var sc = ServiceHelper.GetServiceController(s);
+            s.Status = sc.Status;
+
+            return s;
+        }
+
         public Models.Service Add(Module module, Byte[] file)
         {
             String path = Path.Combine(this.moduleStore, module.Name);

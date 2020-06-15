@@ -12,3 +12,4 @@ obj
 *.user
 src/packages/
 src/SM.UI/storage/
+src/SM.UI/ClientApp/.vscode/launch.json

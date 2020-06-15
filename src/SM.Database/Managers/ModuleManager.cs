@@ -222,6 +222,11 @@ namespace SM.Managers
                 new OdbcParameter("Module", module_id),
                 new OdbcParameter("Version", version));
 
+            if(proc == null)
+            {
+                return null;
+            }
+
             return new ModuleVersion
             {
                 Version = proc.Version,
@@ -251,6 +256,15 @@ namespace SM.Managers
             //if(versionFile != null)
             //    File.WriteAllBytes(Path.Combine(ver.Module_ID.ToString(), version + ".zip"), versionFile);
 
+            if(configFile == null)
+            {
+                configFile = new ConfigFile()
+                {
+                    FileName = "config.json",
+                    Format = "json",
+                    Data = ""
+                };
+            }
             ver.Config = this.CreateConfig(module_id, configFile.FileName, configFile.Format, configFile.Data);
 
             Mapper.ExecuteQuery("INSERT INTO SM_Modules_Version (Version, Module_ID, Validation_Token, Config_ID, Release_Date) " +
@@ -261,6 +275,15 @@ namespace SM.Managers
                 new OdbcParameter("Config_ID", ver.Config.Config_ID),
                 new OdbcParameter("Release_Date", ver.ReleaseDate));
 
+
+            return ver;
+        }
+        public ModuleVersion SetVersion(Guid module_id, String version, ModuleVersion ver)
+        {
+            Mapper.ExecuteQuery("UPDATE SM_Modules_Version SET Release_Date = ? where Module_ID = ? and Version = ?", true,
+                new OdbcParameter("Release_Date", ver.ReleaseDate),
+                new OdbcParameter("Module_ID", ver.Module_ID),
+                new OdbcParameter("Version", ver.Version));
 
             return ver;
         }

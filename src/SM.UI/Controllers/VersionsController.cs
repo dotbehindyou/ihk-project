@@ -119,6 +119,8 @@ namespace SM.API.Controllers
                         else
                             mm.UpdateConfig(versionForm.Config);
                     }
+
+                    mm.SetVersion(module_id, version, versionForm);
                 }
                 catch (Exception e)
                 {
