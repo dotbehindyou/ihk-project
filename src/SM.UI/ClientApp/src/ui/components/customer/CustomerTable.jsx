@@ -1,8 +1,20 @@
 import React from "react";
 import { Table } from "antd";
 import __api_helper from "../../../helper/__api_helper";
+import { connect } from "react-redux";
+import { fetchAll } from "../../../store/versions/versions.action";
 
-class CustomerTable extends React.Component {
+const mapStateToProps = (state) => ({
+  selected: state.services.selected,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchVersions: (serviceId) => dispatch(fetchAll(serviceId))
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+export class CustomerTable extends React.Component {
   columns = [
     {
       title: "Kunden Nr",
@@ -24,31 +36,7 @@ class CustomerTable extends React.Component {
     },
   ];
 
-  helper = new __api_helper.API_Customer();
-
-  state = {
-    customerList: [],
-  };
-
-  constructor(props) {
-    super(props);
-
-    this.rowEvent = this.rowEvent.bind(this);
-  }
-
-  async componentDidMount() {
-    var customerList = await this.helper.getCustomers();
-    this.setState({ customerList });
-  }
-
-  rowEvent(record, rowIndex) {
-    return {
-      onClick: (eve) => {
-        this.props.onOpenCustomer({ ...record });
-        record.isRegisterd = true;
-      },
-    };
-  }
+  static getSta
 
   render() {
     return (
@@ -66,4 +54,4 @@ class CustomerTable extends React.Component {
   }
 }
 
-export default CustomerTable;
+export default connector(CustomerTable);

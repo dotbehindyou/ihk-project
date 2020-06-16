@@ -4,11 +4,13 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 
 import alertReducer from "./alerts/alerts.reducer";
 import servicesReducer from "./services/services.reducer";
+import versionsReducer from "./versions/versions.reducer";
 import { fetchAllServiceAsync } from "./services/services.actions";
 
 const rootReducer = combineReducers({
   alerts: alertReducer,
   services: servicesReducer,
+  versions: versionsReducer,
 });
 
 const loggerMiddleware = createLogger();
