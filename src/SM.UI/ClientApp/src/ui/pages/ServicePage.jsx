@@ -2,42 +2,36 @@ import React from "react";
 import Content from "../layout/Content";
 import ServiceTable from "../components/service/ServiceTable";
 import ServiceView from "../components/service/ServiceView";
+import { connect } from "react-redux";
 
-class ServicePage extends React.Component {
-  state = {
-    selected: null, // { module_ID: "7ff26a94-2ecf-4773-8a68-6bbf3b91319b" }, // TODO Debug },
-  };
+const mapStateToProps = (state) => ({
+  selected: state.services.selected,
+});
 
-  constructor(props) {
-    super(props);
+const mapDispatchToProps = (dispatch) => ({
+  //fetchAll: () => dispatch(fetchAllServiceAsync()),
+});
 
-    this.openService = this.openService.bind(this);
-  }
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
-  openService(service) {
-    this.setState({ selected: service });
-  }
+export class ServicePage extends React.Component {
 
   render() {
-    var selected = this.state.selected || {};
-    var isSelected = this.state.selected == null;
+    let isSelected = this.props.selected.service != null;
 
     return (
       <div>
-        <Content hide={isSelected}>
-          <ServiceView
-            serviceId={selected.module_ID}
-            isNew={selected.version === "" || selected.version == null}
-          />
+        <Content hide={!isSelected}>
+          <ServiceView />
         </Content>
 
         <Content>
           <h2>Dienste</h2>
-          <ServiceTable onOpenService={this.openService} />
+          <ServiceTable />
         </Content>
       </div>
     );
   }
 }
 
-export default ServicePage;
+export default connector(ServicePage);
