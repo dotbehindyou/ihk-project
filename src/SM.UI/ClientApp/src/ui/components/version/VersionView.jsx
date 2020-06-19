@@ -3,8 +3,17 @@ import __api_helper from "../../../helper/__api_helper";
 import { Row, Col, DatePicker, Input, Button } from "antd";
 
 import ConfigEditor from "./ConfigEditor";
+import { connect } from "react-redux";
 
-class VersionView extends React.Component {
+const mapStateToProps = (state) => ({
+  serviceStore: state.services,
+});
+
+const mapDispatchToProps = (dispatch) => ({});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+export class VersionView extends React.Component {
   helper = new __api_helper.API_Version();
 
   state = {
@@ -143,4 +152,4 @@ class VersionView extends React.Component {
   }
 }
 
-export default VersionView;
+export default connector(VersionView);
