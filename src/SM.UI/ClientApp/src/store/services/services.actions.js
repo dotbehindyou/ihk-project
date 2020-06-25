@@ -39,14 +39,6 @@ export function addService() {
     }
 }
 
-export const EDIT_SERVICE = "EDIT_SERVICE";
-export function editService(service) {
-    return {
-        type: EDIT_SERVICE,
-        service
-    }
-}
-
 export const CANCEL_EDIT_SERVICE = "CANCEL_EDIT_SERVICE";
 export function cancelEditService(service) {
     return {
